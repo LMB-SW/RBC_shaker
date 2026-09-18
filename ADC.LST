@@ -1,0 +1,304 @@
+C51 COMPILER V8.12   ADC                                                                   09/18/2026 15:10:49 PAGE 1   
+
+
+C51 COMPILER V8.12, COMPILATION OF MODULE ADC
+OBJECT MODULE PLACED IN ADC.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.exe ADC.c DB OE BR INCDIR(C:\SiLabs\MCU\Inc) LARGE
+
+line level    source
+
+   1          #include <c8051f350.h>
+   2          #include "ADC.h"
+   3          #include "display.h"
+   4                                                                          // za sad ideja da ga pokrece PC posto je poslao kalibracione podatke (ako se ide na tu opciju tj 
+             -ne na flash)
+   5          char ADC_canrun= 0;                     // kako za system calib registre (offs i gain), tako i za aplikacione calib (X0 i X
+             -1) i tada postaviti ADC_canrun= 1 i ADC_Loop_Start= 1
+   6                   ADC_Loop_Start= 0;                     // startuje prvu ADC konverziju
+   7          
+   8          int  sampCnt= 0;
+   9          unsigned long  ADC_samps[MAXSAMPS];
+  10                  unsigned long ADC_avg;
+  11          unsigned long Wght= 0;
+  12          unsigned long X0, X1;                   // za nulu i za 500 gr, dobijeni komunikacijom
+  13                  unsigned long REF_value;
+  14          
+  15                  unsigned int unit = 500; //50000;               ///Privremeno
+  16          
+  17                  unsigned char FiltDivisor = 8;
+  18          
+  19          //      int Gres=0;
+  20          
+  21          union{ 
+  22                  unsigned long  ul;
+  23                  unsigned char  uch[4];
+  24          }ULONG;
+  25          
+  26          extern Dspstruct  dspvar;
+  27          
+  28          long ADC2Blong(void){               // bipolarna verzija
+  29   1      long poml;
+  30   1      
+  31   1        ULONG.uch[3]= ADC0L;  //ULONG.uch[3]= 0;
+  32   1        ULONG.uch[2]= ADC0M;  //ULONG.uch[2]= ADC0H;
+  33   1        ULONG.uch[1]= ADC0H;  //ULONG.uch[1]= ADC0M;
+  34   1        ULONG.uch[0]= 0;              //ULONG.uch[0]= ADC0L;
+  35   1      
+  36   1        if (ULONG.ul & 0x00800000){
+  37   2              poml= 0- (0x01000000- ULONG.ul);
+  38   2        }
+  39   1        else poml= ULONG.ul;
+  40   1      
+  41   1        return poml >> CUT;
+  42   1      }
+  43          
+  44          unsigned long ADC2Ulong(void){  // unipolarna verzija
+  45   1      
+  46   1        ULONG.uch[3]= ADC0L;  //ULONG.uch[3]= 0;
+  47   1        ULONG.uch[2]= ADC0M;  //ULONG.uch[2]= ADC0H;
+  48   1        ULONG.uch[1]= ADC0H;  //ULONG.uch[1]= ADC0M;
+  49   1        ULONG.uch[0]= 0;              //ULONG.uch[0]= ADC0L;
+  50   1      
+  51   1        return ULONG.ul >> CUT;
+  52   1      }
+  53          
+C51 COMPILER V8.12   ADC                                                                   09/18/2026 15:10:49 PAGE 2   
+
+  54          /////////////////////////////////////////////////////////////////////
+  55          
+  56          long ADC_Filter(long new_value)
+  57          {
+  58   1          static long filtered = 0;
+  59   1          static bit first = 1;
+  60   1      
+  61   1          if (first)
+  62   1          {
+  63   2              filtered = new_value;
+  64   2              first = 0;
+  65   2          }
+  66   1          else
+  67   1          {
+  68   2              filtered = filtered + (new_value - filtered) / FiltDivisor;     // delilac je bio 8
+  69   2          }
+  70   1      
+  71   1          return filtered;
+  72   1      }
+  73          
+  74          /////////////////////////////////////////////////////////////////////
+  75          void InternCalibO(void)
+  76          {
+  77   1              ADC0MD= 0x80;  // idle
+  78   1      
+  79   1              ADC0MD= 0x84;  // startuj intern offs
+  80   1              while (!AD0INT) {}
+  81   1      
+  82   1              ADC0STA &= ~0x20;       //ADC0STA |= ~0x20;
+  83   1      
+  84   1      }
+  85          /////////////////////////////////////////////////////////////////////
+  86          
+  87          void InternCalibG(void)
+  88          {
+  89   1              ADC0MD= 0x80;  // idle
+  90   1      
+  91   1              ADC0MD= 0x85;  // startuj intern offs
+  92   1              while (!AD0INT) {}
+  93   1      
+  94   1              ADC0STA &= ~0x20;       //ADC0STA |= ~0x20;
+  95   1      
+  96   1      }
+  97          /////////////////////////////////////////////////////////////////////
+  98          
+  99          
+ 100          void SysCalibO(void){                   // inicira ga serijska komunikacija 
+ 101   1      
+ 102   1        ADC0MD= 0x80;  // idle
+ 103   1      
+ 104   1      //      ADC0STA = 0x00;                 //ZA PROBU
+ 105   1        
+ 106   1        ADC0MD= 0x86;  // startuj sys offs
+ 107   1        while (!AD0INT) {}
+ 108   1         
+ 109   1        //ADC0MD= 0x80; vratice se automatski posle calib
+ 110   1      
+ 111   1        ADC0STA &= ~0x20;     //ADC0STA |= ~0x20;
+ 112   1      
+ 113   1        ULONG.uch[3]= ADC0COL;        //ULONG.uch[3]= 0;
+ 114   1        ULONG.uch[2]= ADC0COM;        //ULONG.uch[2]= ADC0COH;
+ 115   1        ULONG.uch[1]= ADC0COH;        //ULONG.uch[1]= ADC0COM;
+C51 COMPILER V8.12   ADC                                                                   09/18/2026 15:10:49 PAGE 3   
+
+ 116   1        ULONG.uch[0]= 0;                      //ULONG.uch[0]= ADC0COL;
+ 117   1      
+ 118   1        //save ULONG.ul u flash ili salji na UART, ali verovatno u flash uz kontrolne karaktere (npr CS) 
+ 119   1      }
+ 120          
+ 121          void SysCalibG(void){                                   //19.52mV za PGA= 128
+ 122   1      
+ 123   1        ADC0MD= 0x80;  // idle
+ 124   1      
+ 125   1      //      ADC0STA = 0x00;                 //ZA PROBU
+ 126   1        
+ 127   1        ADC0MD= 0x87;  // startuj sys gain
+ 128   1        while (!AD0INT) {}
+ 129   1         
+ 130   1        //ADC0MD= 0x80; vratice se automatski posle calib 
+ 131   1      
+ 132   1        ADC0STA &= ~0x20;     //ADC0STA |= ~0x20;
+ 133   1      
+ 134   1        ULONG.uch[3]= ADC0CGL;        //ULONG.uch[3]= 0;
+ 135   1        ULONG.uch[2]= ADC0CGM;        //ULONG.uch[2]= ADC0CGH;
+ 136   1        ULONG.uch[1]= ADC0CGH;        //ULONG.uch[1]= ADC0CGM;
+ 137   1        ULONG.uch[0]= 0;                      //ULONG.uch[0]= ADC0CGL;
+ 138   1      
+ 139   1        //save ULONG.ul u flash ili salji na UART, ali verovatno u flash uz kontrolne karaktere (npr CS)
+ 140   1      }
+ 141          
+ 142          void AppCalibO(void){                   // inicira ga serijska komunikacija  - daje X0
+ 143   1      long pomL;
+ 144   1       
+ 145   1        ADC0MD= 0x80;  // idle
+ 146   1      
+ 147   1      //      ADC0STA = 0x00;                 //ZA PROBU
+ 148   1        
+ 149   1        ADC0MD= 0x82;  // start conv
+ 150   1        while (!AD0INT) {}
+ 151   1         
+ 152   1        //ADC0MD= 0x80; vratice se automatski posle cit
+ 153   1      
+ 154   1        ADC0STA &= ~0x20;     //ADC0STA |= ~0x20;
+ 155   1        
+ 156   1        ULONG.uch[3]= ADC0L;  //ULONG.uch[3]= 0;
+ 157   1        ULONG.uch[2]= ADC0M;  //ULONG.uch[2]= ADC0H;
+ 158   1        ULONG.uch[1]= ADC0H;  //ULONG.uch[1]= ADC0M;
+ 159   1        ULONG.uch[0]= 0;              //ULONG.uch[0]= ADC0L;
+ 160   1      
+ 161   1        #ifdef BIPOLAR  
+ 162   1                if (ULONG.ul & 0x00800000){
+ 163   2                      pomL= 0- (0x01000000- ULONG.ul);
+ 164   2                }
+ 165   1                else pomL= ULONG.ul;
+ 166   1        #else 
+                        pomL= ULONG.ul;               // mozda moze i sa 3 bita da prodje
+                #endif
+ 169   1      
+ 170   1        pomL= pomL >> CUT;
+ 171   1        //save pomL u flash ili salji na UART kao X0
+ 172   1      
+ 173   1                              X0 = pomL;      // OVO SAMO RADI TESTA - KASNIJE TO TREBA DA SE SALJE APP-U
+ 174   1      
+ 175   1      }
+ 176          
+ 177          void AppCalibG(void){                   // - daje X1
+C51 COMPILER V8.12   ADC                                                                   09/18/2026 15:10:49 PAGE 4   
+
+ 178   1      unsigned long adrd;
+ 179   1       
+ 180   1        ADC0MD= 0x80;  // idle
+ 181   1      
+ 182   1      //      ADC0STA = 0x00;                 //ZA PROBU
+ 183   1        
+ 184   1        ADC0MD= 0x82;  // start conv
+ 185   1        while (!AD0INT) {}
+ 186   1         
+ 187   1        //ADC0MD= 0x80; vratice se automatski posle cit
+ 188   1      
+ 189   1        ADC0STA &= ~0x20;     //ADC0STA |= ~0x20;
+ 190   1        
+ 191   1        ULONG.uch[3]= ADC0L;  //ULONG.uch[3]= 0;
+ 192   1        ULONG.uch[2]= ADC0M;  //ULONG.uch[2]= ADC0H;
+ 193   1        ULONG.uch[1]= ADC0H;  //ULONG.uch[1]= ADC0M;
+ 194   1        ULONG.uch[0]= 0;              //ULONG.uch[0]= ADC0L;
+ 195   1              
+ 196   1        adrd= ULONG.ul >> CUT;
+ 197   1      
+ 198   1        //save u flash ili salji na UART kao X1
+ 199   1      
+ 200   1                      X1 = adrd;      // OVO SAMO RADI TESTA - KASNIJE TO TREBA DA SE SALJE APP-U
+ 201   1      }
+ 202          
+ 203          
+ 204          void ADCLoop(void){
+ 205   1      unsigned long suma;
+ 206   1      int i;
+ 207   1      //unsigned long ADC_avg;        ///unsigned int ADC_avg;        //ZA TEST
+ 208   1      
+ 209   1        
+ 210   1        if (!ADC_canrun) return;
+ 211   1      
+ 212   1        if (ADC_Loop_Start){
+ 213   2           ADC_Loop_Start= 0;
+ 214   2               ADC0MD= 0x80;  // idle 
+ 215   2               ADC0MD= 0x82;  // start conv  //verovatno moze samo jedna cmd ili mozda Delay izmedju (ispitati)
+ 216   2               return;
+ 217   2        }
+ 218   1      
+ 219   1      //              if(AD0BUSY || AD0CBSY || AD0ERR)
+ 220   1      //                      Gres = 1;
+ 221   1      
+ 222   1        if (!AD0INT) return;
+ 223   1        else {
+ 224   2                  ADC0STA &= ~0x20;   //ADC0STA |= ~0x20;
+ 225   2      
+ 226   2                      #ifdef  BIPOLAR
+ 227   2                              ADC_samps[sampCnt++]= ADC2Blong();
+ 228   2                      #else
+                                      ADC_samps[sampCnt++]= ADC2Ulong();
+                              #endif
+ 231   2      
+ 232   2                      if (sampCnt == MAXSAMPS){
+ 233   3                              sampCnt= 0;
+ 234   3                              suma= 0;
+ 235   3                              for (i= 0; i< MAXSAMPS; i++){
+ 236   4                                 #ifdef BIPOLAR
+ 237   4                                   suma+= (long)ADC_samps[i];
+ 238   4                                 #else 
+                                           suma+= ADC_samps[i];
+C51 COMPILER V8.12   ADC                                                                   09/18/2026 15:10:49 PAGE 5   
+
+                                         #endif
+ 241   4                              }
+ 242   3                              ADC_avg= suma/MAXSAMPS;
+ 243   3                              //Wght= (unit * (ADC_avg- X0)) / (X1-X0); // u 0.01 gramima                     ///Wght= (50000 * (ADC_avg- X0)) / (X1-X0
+             -); // u 0.01 gramima
+ 244   3                      
+ 245   3                              ADC_avg = ADC_Filter(ADC_avg);  // Dodatno filtriranje ADC vrednosti
+ 246   3                                              
+ 247   3                                      if(ADC_avg <= X0)
+ 248   3                                              Wght=0;                 
+ 249   3                                      else
+ 250   3                                              Wght= (unit * (ADC_avg- X0)) / (X1-X0);
+ 251   3                                      
+ 252   3      /*
+ 253   3                                      if(Wght>10000)
+ 254   3                                              Wght = Wght/100;        //Wght = Wght >> 8;
+ 255   3                                      else if(Wght<10000 && Wght>1000)
+ 256   3                                              Wght = Wght/10;         //Wght = Wght >> 4;
+ 257   3                                      else if(Wght<1000 && Wght>100)
+ 258   3                                              Wght = Wght;
+ 259   3                                      else if(Wght<100 && Wght>10)
+ 260   3                                              Wght = Wght/1000;       //Wght = Wght >> 12;
+ 261   3      */
+ 262   3      
+ 263   3                              dspvar.newweight= Wght;
+ 264   3                      }
+ 265   2      
+ 266   2      //              ADC0MD= 0x80;   /// PRIVREMENO - ZA TEST
+ 267   2      //              ADC0MD= 0x82;  
+ 268   2        }
+ 269   1      }
+ 270          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1056    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =    164      18
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

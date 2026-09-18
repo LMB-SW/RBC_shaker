@@ -1,0 +1,154 @@
+C51 COMPILER V8.12   INTERRUPTS                                                            09/18/2026 15:10:50 PAGE 1   
+
+
+C51 COMPILER V8.12, COMPILATION OF MODULE INTERRUPTS
+OBJECT MODULE PLACED IN interrupts.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.exe interrupts.c DB OE BR INCDIR(C:\SiLabs\MCU\Inc) LARGE
+
+line level    source
+
+   1          //#include <c8051f350.h>
+   2          #include "CPU_setup.h"
+   3          #include "display.h"
+   4          #include "communication.h"
+   5          
+   6          
+   7          #define TIMER2_PERIOD   1       // 1ms
+   8          
+   9          extern bit MessageReceived;
+  10          
+  11          
+  12          xdata unsigned char ComData[UART0_BUFFER_SIZE];
+  13          
+  14          unsigned int CntRX0 = 0;
+  15          
+  16          unsigned char sendByteDelay = 0;
+  17          
+  18          unsigned char Hundred_ms = 100 * TIMER2_PERIOD; // 100counts x 1ms = 100ms
+  19          unsigned int OneSecond = 1000 * TIMER2_PERIOD;          // 1000counts x 1ms = 1s
+  20          unsigned int OneMin = 60000 * TIMER2_PERIOD;            // 60000counts x 1ms = 1min
+  21          
+  22          unsigned char disp_cnt = DISPLAY_REFRESH_PERID - 1;
+  23          bit disp_show_flag = 0;
+  24          
+  25                  unsigned char ADCsemp = 10;
+  26                  unsigned char ADCcnt = 10;
+  27          
+  28                  extern char ADC_Loop_Start;
+  29          
+  30          //      bit Gres=0;
+  31          
+  32          
+  33          void Timer2_ISR(void) interrupt 5{                      // na 1ms (PROVERITI !!!  --  jeste na 1ms, provereno osciloskopom)
+  34   1      
+  35   1              
+  36   1              TF2H = 0;         /* clear Timer2 interrupt flag */
+  37   1      
+  38   1              //////////////////////////////////////////////////////////
+  39   1      
+  40   1              if(Hundred_ms)
+  41   1                      Hundred_ms--;
+  42   1              else
+  43   1              {
+  44   2                      Hundred_ms = 100 * TIMER2_PERIOD;
+  45   2      
+  46   2                      if(sendByteDelay)
+  47   2                              sendByteDelay--;
+  48   2                      
+  49   2                      ///P1 = ~P1;
+  50   2      
+  51   2                      ///ADC_Loop_Start = 1;          //PRIVREMENO, ZA TEST
+  52   2      
+  53   2              }
+  54   1      
+  55   1              //////////////////////////////////////////////////////////
+C51 COMPILER V8.12   INTERRUPTS                                                            09/18/2026 15:10:50 PAGE 2   
+
+  56   1      
+  57   1              if(OneSecond)
+  58   1                      OneSecond--;
+  59   1              else
+  60   1              {
+  61   2                      OneSecond = 1000 * TIMER2_PERIOD;
+  62   2                      
+  63   2                      ///P1 = ~P1;
+  64   2      
+  65   2              }
+  66   1      
+  67   1              //////////////////////////////////////////////////////////
+  68   1      
+  69   1              if(disp_cnt)
+  70   1                      disp_cnt--;
+  71   1              else
+  72   1              {
+  73   2                      disp_cnt = DISPLAY_REFRESH_PERID - 1;
+  74   2      
+  75   2                      disp_show_flag = 1;
+  76   2      
+  77   2              }
+  78   1      
+  79   1                              if(ADCcnt)
+  80   1                                      ADCcnt--;
+  81   1                              else
+  82   1                              {
+  83   2                                      ADCcnt = ADCsemp;
+  84   2                                      ADC_Loop_Start = 1;             //PRIVREMENO, ZA TEST
+  85   2                              }
+  86   1      
+  87   1      }
+  88          
+  89          void Uart0_ISR(void) interrupt 4{  
+  90   1      
+  91   1              if(RI0 && !MessageReceived)             //Receiving
+  92   1              {
+  93   2                      ComData[CntRX0]=SBUF0;                          //Iz registra UART-a osmobitni podatak se smesta u elemente niza ComData                
+  94   2                      
+  95   2                      // ovde treba obezbediti validaciju pristiglog podatka
+  96   2                      
+  97   2                      CntRX0++;
+  98   2      
+  99   2                      if(CntRX0 == MESSAGE_SIZE)
+ 100   2                              //kraj prijema - primljena kompletna poruka
+ 101   2                              MessageReceived = 1;
+ 102   2                              CntRX0 = 0; 
+ 103   2      
+ 104   2                      if(CntRX0 > (UART0_BUFFER_SIZE-1))
+ 105   2                              CntRX0 = 0; 
+ 106   2      
+ 107   2      
+ 108   2                      //RI0 = 0;      
+ 109   2              }
+ 110   1              
+ 111   1              RI0 = 0;
+ 112   1      
+ 113   1                      
+ 114   1              if(TI0)         //Transmitting
+ 115   1              {
+ 116   2                      
+ 117   2                      TI0 = 0;        
+C51 COMPILER V8.12   INTERRUPTS                                                            09/18/2026 15:10:50 PAGE 3   
+
+ 118   2              }
+ 119   1      
+ 120   1      }
+ 121          
+ 122          /*
+ 123          void ADC0_ISR (void) interrupt 10{
+ 124          
+ 125          }
+ 126          */
+ 127          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    218    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     21    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

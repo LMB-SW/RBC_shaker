@@ -1,0 +1,102 @@
+C51 COMPILER V8.12   MAIN                                                                  09/18/2026 15:10:50 PAGE 1   
+
+
+C51 COMPILER V8.12, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.exe main.c DB OE BR INCDIR(C:\SiLabs\MCU\Inc) LARGE
+
+line level    source
+
+   1          #include "ADC.h"
+   2          #include "CPU_setup.h"
+   3          #include "display.h"
+   4          #include "functions.h"
+   5          #include "communication.h"
+   6          
+   7          
+   8          //      bit intO=0, intG=0, intOG=0, scO=0, scG=0, acO=0, acG=0;                // pomocni flagovi za test samo
+   9          //              int i;
+  10          
+  11          //              extern unsigned long X0, X1;
+  12          
+  13          extern char ADC_canrun;
+  14          extern unsigned char BoardAddress;
+  15          
+  16          //unsigned char speed = 0x64;
+  17          
+  18          
+  19          int main(void)
+  20          {
+  21   1      
+  22   1      //                      unsigned long SumaX;
+  23   1      
+  24   1              /* disable watchdog timer */
+  25   1      //      PCA0MD &= ~0x40;  /* WDTE = 0 (clear watchdog timer */
+  26   1      
+  27   1              DisableWDT();
+  28   1      
+  29   1        #ifdef BIPOLAR 
+  30   1              CPUInit(1);
+  31   1        #else  
+                  CPUInit(0);
+                #endif
+  34   1      
+  35   1              BoardAddress = SetBoardAddress();
+  36   1      
+  37   1              DisplayInit();
+  38   1              
+  39   1      
+  40   1              EA = 1;
+  41   1      
+  42   1      //                      SendMotorSpeed(speed);
+  43   1      //                      Delay_ms(100);
+  44   1      
+  45   1                      STx = 1;
+  46   1      
+  47   1        while(1)
+  48   1        {
+  49   2      
+  50   2      //      STx = ~STx;
+  51   2      
+  52   2      //      SendMotorSpeed(0x0a);
+  53   2      //      Delay_ms(1000);
+  54   2      
+  55   2      /*      SendMotorSpeed(0x23);
+C51 COMPILER V8.12   MAIN                                                                  09/18/2026 15:10:50 PAGE 2   
+
+  56   2              Delay_ms(1000);
+  57   2              SendMotorSpeed(0x32);
+  58   2              Delay_ms(1000);
+  59   2              SendMotorSpeed(0x64);
+  60   2              Delay_ms(1000);
+  61   2      */      
+  62   2      
+  63   2      //      STx = ~STx;
+  64   2      //      Delay_us(10);
+  65   2      
+  66   2              STx = ~STx;
+  67   2              Delay_ms(5000);
+  68   2              
+  69   2      
+  70   2      //      DisplayLoop();
+  71   2      //  ADCLoop();
+  72   2              //CommLup();
+  73   2      
+  74   2        }
+  75   1      
+  76   1      }
+  77          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     34    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

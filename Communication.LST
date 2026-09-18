@@ -1,0 +1,192 @@
+C51 COMPILER V8.12   COMMUNICATION                                                         09/18/2026 15:10:50 PAGE 1   
+
+
+C51 COMPILER V8.12, COMPILATION OF MODULE COMMUNICATION
+OBJECT MODULE PLACED IN Communication.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.exe Communication.c DB OE BR INCDIR(C:\SiLabs\MCU\Inc) LARGE
+
+line level    source
+
+   1          #include <c8051f350.h>
+   2          #include "Communication.h"
+   3          #include "functions.h"
+   4          #include "ADC.h"
+   5          
+   6          
+   7          bit MessageReceived = 0;
+   8          bit MessageSending = 0;
+   9          
+  10          unsigned char BoardAddress;
+  11          unsigned char Command;
+  12          
+  13          unsigned char bufT[MESSAGE_SIZE];
+  14          unsigned char bufR[MESSAGE_SIZE];
+  15          
+  16          extern unsigned long Wght;
+  17          extern unsigned long ADC_avg;
+  18          extern unsigned long X0, X1;
+  19          extern unsigned long REF_value;
+  20          extern xdata unsigned char ComData[UART0_BUFFER_SIZE];
+  21          
+  22          
+  23          void SendMessage(unsigned long Data)
+  24          {
+  25   1              unsigned char cnt;
+  26   1              
+  27   1              bufT[0] = START;
+  28   1              bufT[1] = BoardAddress;
+  29   1              bufT[2] = Command;
+  30   1      
+  31   1              bufT[3] = (Data & 0xFF000000) >> 24;
+  32   1              bufT[4] = (Data & 0x00FF0000) >> 16;
+  33   1              bufT[5] = (Data & 0x0000FF00) >> 8;
+  34   1              bufT[6] = (Data & 0x000000FF);
+  35   1      
+  36   1              bufT[7] = END;
+  37   1              bufT[8] = GenCheckSum;
+  38   1      
+  39   1              //sending
+  40   1              MessageSending = 1;
+  41   1              ES0= 0; //disable UART interrupt
+  42   1      
+  43   1              for(cnt = 0; cnt < 9; cnt++)
+  44   1                      putc0(bufT[cnt]);
+  45   1      
+  46   1              MessageSending = 0;
+  47   1              ES0= 1; //enable UART interrupt
+  48   1              
+  49   1      }
+  50          
+  51          unsigned char GenCheckSum(void)
+  52          {
+  53   1              unsigned char cnt, chck=0;
+  54   1      
+  55   1              for(cnt = 0; cnt < MESSAGE_SIZE-1; cnt++)
+C51 COMPILER V8.12   COMMUNICATION                                                         09/18/2026 15:10:50 PAGE 2   
+
+  56   1              chck = chck ^ bufT[cnt];
+  57   1       
+  58   1              return chck;    
+  59   1      }
+  60          
+  61          
+  62          unsigned char CalcCheckSum(unsigned char *buf)
+  63          {
+  64   1              unsigned char cnt, chck=0;
+  65   1      
+  66   1              for(cnt = 0; cnt < MESSAGE_SIZE-1; cnt++)
+  67   1              chck = chck ^ buf[cnt];
+  68   1       
+  69   1              return chck;    
+  70   1      }
+  71          
+  72          
+  73          unsigned long ConvertBytesToLong(unsigned char *command)
+  74          {
+  75   1              unsigned long val = 0;
+  76   1      
+  77   1              val = val + (long) command[3];
+  78   1              val = val * 256L + (long) command[4];
+  79   1              val = val * 256L + (long) command[5];
+  80   1              val = val * 256L + (long) command[6];
+  81   1      
+  82   1              return val;
+  83   1      }
+  84          
+  85          
+  86          unsigned char AnalyzeReceivedMessage(unsigned char *message)
+  87          {
+  88   1              
+  89   1              //if(buf[0] != START || buf[])
+  90   1      
+  91   1              if(message[1] != BoardAddress)
+  92   1                      return 0;                                                       // neodgovarajuca adresa
+  93   1              
+  94   1              if(message[8] != CalcCheckSum(message))
+  95   1                      return 2;                                                       // pogresna cek-suma
+  96   1      
+  97   1      
+  98   1              Command = message[2];
+  99   1              //CommandType = Command;        
+ 100   1      
+ 101   1              switch (Command)
+ 102   1              {
+ 103   2                      case REQUEST_FOR_WEIGHT:        
+ 104   2      
+ 105   2                              SendMessage(Wght);                      
+ 106   2                              break;
+ 107   2      
+ 108   2                      case REQUEST_FOR_AD_VALUE:       
+ 109   2      
+ 110   2                              SendMessage(ADC_avg); 
+ 111   2                              break;
+ 112   2                              
+ 113   2                      case REQUEST_FOR_X0_CURRENT_VALUE:
+ 114   2                              
+ 115   2                              SendMessage(X0);
+ 116   2                              break;
+ 117   2      
+C51 COMPILER V8.12   COMMUNICATION                                                         09/18/2026 15:10:50 PAGE 3   
+
+ 118   2                      case REQUEST_FOR_X1_CURRENT_VALUE:
+ 119   2      
+ 120   2                              SendMessage(X1);
+ 121   2                              break;
+ 122   2      
+ 123   2                      case TAKE_REF_POINT_FOR_ZER0:
+ 124   2      
+ 125   2                              AppCalibO();
+ 126   2                              break;
+ 127   2      
+ 128   2                      case TAKE_REF_POINT_FOR_REF_VALUE:
+ 129   2      
+ 130   2                              REF_value = ConvertBytesToLong(message);        // vidi sta ces sa ovim REF_value
+ 131   2                              AppCalibG();
+ 132   2                              break;
+ 133   2      
+ 134   2                      case WRITE_X0_VALUE:
+ 135   2      
+ 136   2                              X0 = ConvertBytesToLong(message);
+ 137   2                              break;
+ 138   2              
+ 139   2                      case WRITE_X1_VALUE:    
+ 140   2                      
+ 141   2                              X1 = ConvertBytesToLong(message);
+ 142   2                              break;
+ 143   2              }
+ 144   1      
+ 145   1              return 1;
+ 146   1                      
+ 147   1      }
+ 148          
+ 149          
+ 150          
+ 151          void CommunicationLoop(void)
+ 152          {
+ 153   1              unsigned char i;
+ 154   1      
+ 155   1              if(MessageReceived)             // stigla poruka od masine
+ 156   1              {
+ 157   2                      for(i=0; i<MESSAGE_SIZE; i++)
+ 158   2                      bufR[i] = ComData[i];
+ 159   2      
+ 160   2                      AnalyzeReceivedMessage(bufR);
+ 161   2      
+ 162   2                      MessageReceived = 0;                    
+ 163   2              }
+ 164   1      
+ 165   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    819    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     20      18
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

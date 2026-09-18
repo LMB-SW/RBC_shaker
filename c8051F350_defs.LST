@@ -1,0 +1,528 @@
+C51 COMPILER V8.12   C8051F350_DEFS                                                        09/07/2026 09:16:19 PAGE 1   
+
+
+C51 COMPILER V8.12, COMPILATION OF MODULE C8051F350_DEFS
+OBJECT MODULE PLACED IN c8051F350_defs.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.exe c8051F350_defs.h DB OE BR INCDIR(C:\SiLabs\MCU\Inc) LARGE
+
+line level    source
+
+   1          //-----------------------------------------------------------------------------
+   2          // C8051F350_defs.h
+   3          //-----------------------------------------------------------------------------
+   4          // Copyright 2008 Silicon Laboratories, Inc.
+   5          // http://www.silabs.com
+   6          //
+   7          // Program Description:
+   8          //
+   9          // Register/bit definitions for the C8051F35x/'F35x family.
+  10          // **Important Note**: The compiler_defs.h header file should be included
+  11          // before including this header file.
+  12          //
+  13          // Target:         C8051F35x, 'F35x
+  14          // Tool chain:     Keil
+  15          // Command Line:   None
+  16          //
+  17          // Release 1.4
+  18          //    -28 APR 2008 (BW)
+  19          //    -Corrected SFR16 addresses for TMR3 and DP
+  20          // Release 1.3
+  21          //    -3 MAR 2008 (BW)
+  22          //    -Reordered some SFRs and defines to address order.
+  23          // Release 1.2
+  24          //    -29 FEB 2008
+  25          //    -Made compiler independant by AS
+  26          //    -Added 16-bit sfr definitions
+  27          //
+  28          //-----------------------------------------------------------------------------
+  29          // Header File Preprocessor Directive
+  30          //-----------------------------------------------------------------------------
+  31          
+  32          #ifndef C8051F350_DEFS_H
+  33          #define C8051F350_DEFS_H
+  34          
+  35          //-----------------------------------------------------------------------------
+  36          // Byte Registers
+  37          //-----------------------------------------------------------------------------
+  38          
+  39          SFR(P0, 0x80);                            // PORT 0 LATCH
+*** ERROR C141 IN LINE 39 OF C8051F350_DEFS.H: syntax error near '0x80'
+  40          SFR(SP, 0x81);                            // STACK POINTER
+*** ERROR C141 IN LINE 40 OF C8051F350_DEFS.H: syntax error near '0x81'
+  41          SFR(DPL, 0x82);                           // DATA POINTER LOW
+*** ERROR C141 IN LINE 41 OF C8051F350_DEFS.H: syntax error near '0x82'
+  42          SFR(DPH, 0x83);                           // DATA POINTER HIGH
+*** ERROR C141 IN LINE 42 OF C8051F350_DEFS.H: syntax error near '0x83'
+  43          SFR(PCON, 0x87);                          // POWER CONTROL
+*** ERROR C141 IN LINE 43 OF C8051F350_DEFS.H: syntax error near '0x87'
+  44          SFR(TCON, 0x88);                          // TIMER/COUNTER CONTROL
+*** ERROR C141 IN LINE 44 OF C8051F350_DEFS.H: syntax error near '0x88'
+  45          SFR(TMOD, 0x89);                          // TIMER/COUNTER MODE
+*** ERROR C141 IN LINE 45 OF C8051F350_DEFS.H: syntax error near '0x89'
+  46          SFR(TL0, 0x8A);                           // TIMER/COUNTER 0 LOW
+*** ERROR C141 IN LINE 46 OF C8051F350_DEFS.H: syntax error near '0x8A'
+  47          SFR(TL1, 0x8B);                           // TIMER/COUNTER 1 LOW
+C51 COMPILER V8.12   C8051F350_DEFS                                                        09/07/2026 09:16:19 PAGE 2   
+
+*** ERROR C141 IN LINE 47 OF C8051F350_DEFS.H: syntax error near '0x8B'
+  48          SFR(TH0, 0x8C);                           // TIMER/COUNTER 0 HIGH
+*** ERROR C141 IN LINE 48 OF C8051F350_DEFS.H: syntax error near '0x8C'
+  49          SFR(TH1, 0x8D);                           // TIMER/COUNTER 1 HIGH
+*** ERROR C141 IN LINE 49 OF C8051F350_DEFS.H: syntax error near '0x8D'
+  50          SFR(CKCON, 0x8E);                         // CLOCK CONTROL
+*** ERROR C141 IN LINE 50 OF C8051F350_DEFS.H: syntax error near '0x8E'
+  51          SFR(PSCTL, 0x8F);                         // PROGRAM STORE R/W CONTROL
+*** ERROR C141 IN LINE 51 OF C8051F350_DEFS.H: syntax error near '0x8F'
+  52          SFR(P1, 0x90);                            // PORT 1 LATCH
+*** ERROR C141 IN LINE 52 OF C8051F350_DEFS.H: syntax error near '0x90'
+  53          SFR(TMR3CN, 0x91);                        // TIMER/COUNTER 3CONTROL
+*** ERROR C141 IN LINE 53 OF C8051F350_DEFS.H: syntax error near '0x91'
+  54          SFR(TMR3RLL, 0x92);                       // TIMER/COUNTER 3 RELOAD LOW
+*** ERROR C141 IN LINE 54 OF C8051F350_DEFS.H: syntax error near '0x92'
+  55          SFR(TMR3RLH, 0x93);                       // TIMER/COUNTER 3 RELOAD HIGH
+*** ERROR C141 IN LINE 55 OF C8051F350_DEFS.H: syntax error near '0x93'
+  56          SFR(TMR3L, 0x94);                         // TIMER/COUNTER 3 LOW
+*** ERROR C141 IN LINE 56 OF C8051F350_DEFS.H: syntax error near '0x94'
+  57          SFR(TMR3H, 0x95);                         // TIMER/COUNTER 3 HIGH
+*** ERROR C141 IN LINE 57 OF C8051F350_DEFS.H: syntax error near '0x95'
+  58          SFR(IDA0, 0x96);                          // CURRENT MODE DAC0 LOW
+*** ERROR C141 IN LINE 58 OF C8051F350_DEFS.H: syntax error near '0x96'
+  59          SFR(SCON0, 0x98);                         // UART0 CONTROL
+*** ERROR C141 IN LINE 59 OF C8051F350_DEFS.H: syntax error near '0x98'
+  60          SFR(SBUF0, 0x99);                         // UART0 DATA BUFFER
+*** ERROR C141 IN LINE 60 OF C8051F350_DEFS.H: syntax error near '0x99'
+  61          SFR(ADC0DECL, 0x9A);                      // ADC0 DECIMATION LOW
+*** ERROR C141 IN LINE 61 OF C8051F350_DEFS.H: syntax error near '0x9A'
+  62          SFR(ADC0DECH, 0x9B);                      // ADC0 DECIMATION HIGH
+*** ERROR C141 IN LINE 62 OF C8051F350_DEFS.H: syntax error near '0x9B'
+  63          SFR(CPT0CN, 0x9C);                        // COMPARATOR0 CONTROL
+*** ERROR C141 IN LINE 63 OF C8051F350_DEFS.H: syntax error near '0x9C'
+  64          SFR(CPT0MD, 0x9D);                        // COMPARATOR0 MODE SELECTION
+*** ERROR C141 IN LINE 64 OF C8051F350_DEFS.H: syntax error near '0x9D'
+  65          SFR(CPT0MX, 0x9F);                        // COMPARATOR0 MUX SELECTION
+*** ERROR C141 IN LINE 65 OF C8051F350_DEFS.H: syntax error near '0x9F'
+  66          SFR(P2, 0xA0);                            // PORT 2 LATCH
+*** ERROR C141 IN LINE 66 OF C8051F350_DEFS.H: syntax error near '0xA0'
+  67          SFR(SPI0CFG, 0xA1);                       // SPI CONFIGURATION
+*** ERROR C141 IN LINE 67 OF C8051F350_DEFS.H: syntax error near '0xA1'
+  68          SFR(SPI0CKR, 0xA2);                       // SPI CLOCK RATE CONTROL
+*** ERROR C141 IN LINE 68 OF C8051F350_DEFS.H: syntax error near '0xA2'
+  69          SFR(SPI0DAT, 0xA3);                       // SPI DATA
+*** ERROR C141 IN LINE 69 OF C8051F350_DEFS.H: syntax error near '0xA3'
+  70          SFR(P0MDOUT, 0xA4);                       // PORT 0 OUTPUT MODE CONFIGURATION
+*** ERROR C141 IN LINE 70 OF C8051F350_DEFS.H: syntax error near '0xA4'
+  71          SFR(P1MDOUT, 0xA5);                       // PORT 1 OUTPUT MODE CONFIGURATION
+*** ERROR C141 IN LINE 71 OF C8051F350_DEFS.H: syntax error near '0xA5'
+  72          SFR(P2MDOUT, 0xA6);                       // PORT 2 OUTPUT MODE CONFIGURATION
+*** ERROR C141 IN LINE 72 OF C8051F350_DEFS.H: syntax error near '0xA6'
+  73          SFR(IE, 0xA8);                            // INTERRUPT ENABLE
+*** ERROR C141 IN LINE 73 OF C8051F350_DEFS.H: syntax error near '0xA8'
+  74          SFR(CLKSEL, 0xA9);                        // CLOCK SELECT
+*** ERROR C141 IN LINE 74 OF C8051F350_DEFS.H: syntax error near '0xA9'
+  75          SFR(EMI0CN, 0xAA);                        // EXTERNAL MEMORY INTERFACE CONTROL
+*** ERROR C141 IN LINE 75 OF C8051F350_DEFS.H: syntax error near '0xAA'
+  76          SFR(ADC0CGL, 0xAB);                       // ADC0 GAIN CALIBRATION LOW
+*** ERROR C141 IN LINE 76 OF C8051F350_DEFS.H: syntax error near '0xAB'
+  77          SFR(ADC0CGM, 0xAC);                       // ADC0 GAIN CALIBRATION MIDDLE
+*** ERROR C141 IN LINE 77 OF C8051F350_DEFS.H: syntax error near '0xAC'
+  78          SFR(ADC0CGH, 0xAD);                       // ADC0 GAIN CALIBRATION HIGH
+C51 COMPILER V8.12   C8051F350_DEFS                                                        09/07/2026 09:16:19 PAGE 3   
+
+*** ERROR C141 IN LINE 78 OF C8051F350_DEFS.H: syntax error near '0xAD'
+  79          SFR(OSCXCN, 0xB1);                        // EXTERNAL OSCILLATOR CONTROL
+*** ERROR C141 IN LINE 79 OF C8051F350_DEFS.H: syntax error near '0xB1'
+  80          SFR(OSCICN, 0xB2);                        // INTERNAL OSCILLATOR CONTROL
+*** ERROR C141 IN LINE 80 OF C8051F350_DEFS.H: syntax error near '0xB2'
+  81          SFR(OSCICL, 0xB3);                        // INTERNAL OSCILLATOR CALIBRATION
+*** ERROR C141 IN LINE 81 OF C8051F350_DEFS.H: syntax error near '0xB3'
+  82          SFR(FLSCL, 0xB6);                         // FLASH SCALE
+*** ERROR C141 IN LINE 82 OF C8051F350_DEFS.H: syntax error near '0xB6'
+  83          SFR(FLKEY, 0xB7);                         // FLASH LOCK AND KEY
+*** ERROR C141 IN LINE 83 OF C8051F350_DEFS.H: syntax error near '0xB7'
+  84          SFR(IP, 0xB8);                            // INTERRUPT PRIORITY
+*** ERROR C141 IN LINE 84 OF C8051F350_DEFS.H: syntax error near '0xB8'
+  85          SFR(IDA0CN, 0xB9);                        // CURRENT MODE DAC0 CONTROL
+*** ERROR C141 IN LINE 85 OF C8051F350_DEFS.H: syntax error near '0xB9'
+  86          SFR(ADC0COL, 0xBA);                       // ADC0 OFFSET CALIBRATION LOW
+*** ERROR C141 IN LINE 86 OF C8051F350_DEFS.H: syntax error near '0xBA'
+  87          SFR(ADC0COM, 0xBB);                       // ADC0 OFFSET CALIBRATION MIDDLE
+*** ERROR C141 IN LINE 87 OF C8051F350_DEFS.H: syntax error near '0xBB'
+  88          SFR(ADC0COH, 0xBC);                       // ADC0 OFFSET CALIBRATION HIGH
+*** ERROR C141 IN LINE 88 OF C8051F350_DEFS.H: syntax error near '0xBC'
+  89          SFR(ADC0BUF, 0xBD);                       // ADC0 BUFFER CONTROL
+*** ERROR C141 IN LINE 89 OF C8051F350_DEFS.H: syntax error near '0xBD'
+  90          SFR(CLKMUL, 0xBE);                        // CLOCK MULTIPLIER
+*** ERROR C141 IN LINE 90 OF C8051F350_DEFS.H: syntax error near '0xBE'
+  91          SFR(ADC0DAC, 0xBF);                       // ADC0 OFFSET DAC
+*** ERROR C141 IN LINE 91 OF C8051F350_DEFS.H: syntax error near '0xBF'
+  92          SFR(SMB0CN, 0xC0);                        // SMBUS CONTROL
+*** ERROR C141 IN LINE 92 OF C8051F350_DEFS.H: syntax error near '0xC0'
+  93          SFR(SMB0CF, 0xC1);                        // SMBUS CONFIGURATION
+*** ERROR C141 IN LINE 93 OF C8051F350_DEFS.H: syntax error near '0xC1'
+  94          SFR(SMB0DAT, 0xC2);                       // SMBUS DATA
+*** ERROR C141 IN LINE 94 OF C8051F350_DEFS.H: syntax error near '0xC2'
+  95          SFR(ADC0L, 0xC3);                         // ADC0 OUTPUT LOW
+*** ERROR C141 IN LINE 95 OF C8051F350_DEFS.H: syntax error near '0xC3'
+  96          SFR(ADC0M, 0xC4);                         // ADC0 OUTPUT MIDDLE
+*** ERROR C141 IN LINE 96 OF C8051F350_DEFS.H: syntax error near '0xC4'
+  97          SFR(ADC0H, 0xC5);                         // ADC0 OUTPUT HIGH
+*** ERROR C141 IN LINE 97 OF C8051F350_DEFS.H: syntax error near '0xC5'
+  98          SFR(ADC0MUX, 0xC6);                       // ADC0 MULTIPLEXER
+*** ERROR C141 IN LINE 98 OF C8051F350_DEFS.H: syntax error near '0xC6'
+  99          SFR(TMR2CN, 0xC8);                        // TIMER/COUNTER 2 CONTROL
+*** ERROR C141 IN LINE 99 OF C8051F350_DEFS.H: syntax error near '0xC8'
+ 100          SFR(TMR2RLL, 0xCA);                       // TIMER/COUNTER 2 RELOAD LOW
+*** ERROR C141 IN LINE 100 OF C8051F350_DEFS.H: syntax error near '0xCA'
+ 101          SFR(TMR2RLH, 0xCB);                       // TIMER/COUNTER 2 RELOAD HIGH
+*** ERROR C141 IN LINE 101 OF C8051F350_DEFS.H: syntax error near '0xCB'
+ 102          SFR(TMR2L, 0xCC);                         // TIMER/COUNTER 2 LOW
+*** ERROR C141 IN LINE 102 OF C8051F350_DEFS.H: syntax error near '0xCC'
+ 103          SFR(TMR2H, 0xCD);                         // TIMER/COUNTER 2 HIGH
+*** ERROR C141 IN LINE 103 OF C8051F350_DEFS.H: syntax error near '0xCD'
+ 104          SFR(PSW, 0xD0);                           // PROGRAM STATUS WORD
+*** ERROR C141 IN LINE 104 OF C8051F350_DEFS.H: syntax error near '0xD0'
+ 105          SFR(REF0CN, 0xD1);                        // VOLTAGE REFERENCE CONTROL
+*** ERROR C141 IN LINE 105 OF C8051F350_DEFS.H: syntax error near '0xD1'
+ 106          SFR(P0SKIP, 0xD4);                        // PORT 0 SKIP
+*** ERROR C141 IN LINE 106 OF C8051F350_DEFS.H: syntax error near '0xD4'
+ 107          SFR(P1SKIP, 0xD5);                        // PORT 1 SKIP
+*** ERROR C141 IN LINE 107 OF C8051F350_DEFS.H: syntax error near '0xD5'
+ 108          SFR(IDA1CN, 0xD7);                        // CURRENT MODE DAC1 CONTROL
+*** ERROR C141 IN LINE 108 OF C8051F350_DEFS.H: syntax error near '0xD7'
+ 109          SFR(PCA0CN, 0xD8);                        // PCA CONTROL
+C51 COMPILER V8.12   C8051F350_DEFS                                                        09/07/2026 09:16:19 PAGE 4   
+
+*** ERROR C141 IN LINE 109 OF C8051F350_DEFS.H: syntax error near '0xD8'
+ 110          SFR(PCA0MD, 0xD9);                        // PCA MODE
+*** ERROR C141 IN LINE 110 OF C8051F350_DEFS.H: syntax error near '0xD9'
+ 111          SFR(PCA0CPM0, 0xDA);                      // PCA MODULE 0 MODE
+*** ERROR C141 IN LINE 111 OF C8051F350_DEFS.H: syntax error near '0xDA'
+ 112          SFR(PCA0CPM1, 0xDB);                      // PCA MODULE 1 MODE
+*** ERROR C141 IN LINE 112 OF C8051F350_DEFS.H: syntax error near '0xDB'
+ 113          SFR(PCA0CPM2, 0xDC);                      // PCA MODULE 2 MODE
+*** ERROR C141 IN LINE 113 OF C8051F350_DEFS.H: syntax error near '0xDC'
+ 114          SFR(IDA1, 0xDD);                          // CURRENT MODE DAC1 LOW
+*** ERROR C141 IN LINE 114 OF C8051F350_DEFS.H: syntax error near '0xDD'
+ 115          SFR(ACC, 0xE0);                           // ACCUMULATOR
+*** ERROR C141 IN LINE 115 OF C8051F350_DEFS.H: syntax error near '0xE0'
+ 116          SFR(XBR0, 0xE1);                          // PORT I/O CROSSBAR CONTROL 0
+*** ERROR C141 IN LINE 116 OF C8051F350_DEFS.H: syntax error near '0xE1'
+ 117          SFR(XBR1, 0xE2);                          // PORT I/O CROSSBAR CONTROL 1
+*** ERROR C141 IN LINE 117 OF C8051F350_DEFS.H: syntax error near '0xE2'
+ 118          SFR(PFE0CN, 0xE3);                        // PREFETCH ENGINE CONTROL
+*** ERROR C141 IN LINE 118 OF C8051F350_DEFS.H: syntax error near '0xE3'
+ 119          SFR(IT01CF, 0xE4);                        // INT0/INT1 CONFIGURATION
+*** ERROR C141 IN LINE 119 OF C8051F350_DEFS.H: syntax error near '0xE4'
+ 120          SFR(EIE1, 0xE6);                          // EXTENDED INTERRUPT ENABLE 1
+*** ERROR C141 IN LINE 120 OF C8051F350_DEFS.H: syntax error near '0xE6'
+ 121          SFR(ADC0STA, 0xE8);                       // ADC0 STATUS
+*** ERROR C141 IN LINE 121 OF C8051F350_DEFS.H: syntax error near '0xE8'
+ 122          SFR(PCA0CPL0, 0xE9);                      // PCA CAPTURE 0 LOW
+*** ERROR C141 IN LINE 122 OF C8051F350_DEFS.H: syntax error near '0xE9'
+ 123          SFR(PCA0CPH0, 0xEA);                      // PCA CAPTURE 0 HIGH
+*** ERROR C141 IN LINE 123 OF C8051F350_DEFS.H: syntax error near '0xEA'
+ 124          SFR(PCA0CPL1, 0xEB);                      // PCA CAPTURE 1 LOW
+*** ERROR C141 IN LINE 124 OF C8051F350_DEFS.H: syntax error near '0xEB'
+ 125          SFR(PCA0CPH1, 0xEC);                      // PCA CAPTURE 1 HIGH
+*** ERROR C141 IN LINE 125 OF C8051F350_DEFS.H: syntax error near '0xEC'
+ 126          SFR(PCA0CPL2, 0xED);                      // PCA CAPTURE 2 LOW
+*** ERROR C141 IN LINE 126 OF C8051F350_DEFS.H: syntax error near '0xED'
+ 127          SFR(PCA0CPH2, 0xEE);                      // PCA CAPTURE 2 HIGH
+*** ERROR C141 IN LINE 127 OF C8051F350_DEFS.H: syntax error near '0xEE'
+ 128          SFR(RSTSRC, 0xEF);                        // RESET SOURCE CONFIGURATION/STATUS
+*** ERROR C141 IN LINE 128 OF C8051F350_DEFS.H: syntax error near '0xEF'
+ 129          SFR(B, 0xF0);                             // B REGISTER
+*** ERROR C141 IN LINE 129 OF C8051F350_DEFS.H: syntax error near '0xF0'
+ 130          SFR(P0MDIN, 0xF1);                        // PORT 0 INPUT MODE CONFIGURATION
+*** ERROR C141 IN LINE 130 OF C8051F350_DEFS.H: syntax error near '0xF1'
+ 131          SFR(P1MDIN, 0xF2);                        // PORT 1 INPUT MODE CONFIGURATION
+*** ERROR C141 IN LINE 131 OF C8051F350_DEFS.H: syntax error near '0xF2'
+ 132          SFR(ADC0MD, 0xF3);                        // ADC0 MODE
+*** ERROR C141 IN LINE 132 OF C8051F350_DEFS.H: syntax error near '0xF3'
+ 133          SFR(ADC0CN, 0xF4);                        // ADC0 CONTROL
+*** ERROR C141 IN LINE 133 OF C8051F350_DEFS.H: syntax error near '0xF4'
+ 134          SFR(EIP1, 0xF6);                          // EXTENDED INTERRUPT PRIORITY 1
+*** ERROR C141 IN LINE 134 OF C8051F350_DEFS.H: syntax error near '0xF6'
+ 135          SFR(ADC0CLK, 0xF7);                       // ADC0 CLOCK
+*** ERROR C141 IN LINE 135 OF C8051F350_DEFS.H: syntax error near '0xF7'
+ 136          SFR(SPI0CN, 0xF8);                        // SPI CONTROL
+*** ERROR C141 IN LINE 136 OF C8051F350_DEFS.H: syntax error near '0xF8'
+ 137          SFR(PCA0L, 0xF9);                         // PCA COUNTER LOW
+*** ERROR C141 IN LINE 137 OF C8051F350_DEFS.H: syntax error near '0xF9'
+ 138          SFR(PCA0H, 0xFA);                         // PCA COUNTER HIGH
+*** ERROR C141 IN LINE 138 OF C8051F350_DEFS.H: syntax error near '0xFA'
+ 139          SFR(ADC0CF, 0xFB);                        // ADC0 CONFIGURATION
+*** ERROR C141 IN LINE 139 OF C8051F350_DEFS.H: syntax error near '0xFB'
+ 140          SFR(ADC0FL, 0xFC);                        // ADC0 FAST FILTER OUTPUT LOW
+C51 COMPILER V8.12   C8051F350_DEFS                                                        09/07/2026 09:16:19 PAGE 5   
+
+*** ERROR C141 IN LINE 140 OF C8051F350_DEFS.H: syntax error near '0xFC'
+ 141          SFR(ADC0FM, 0xFD);                        // ADC0 FAST FILTER OUTPUT MIDDLE
+*** ERROR C141 IN LINE 141 OF C8051F350_DEFS.H: syntax error near '0xFD'
+ 142          SFR(ADC0FH, 0xFE);                        // ADC0 FAST FILTER OUTPUT HIGH
+*** ERROR C141 IN LINE 142 OF C8051F350_DEFS.H: syntax error near '0xFE'
+ 143          SFR(VDM0CN, 0xFF);                        // VDD MONITOR CONTROL
+*** ERROR C141 IN LINE 143 OF C8051F350_DEFS.H: syntax error near '0xFF'
+ 144          
+ 145          //-----------------------------------------------------------------------------
+ 146          // 16-bit Register Definitions (might not be supported by all compilers)
+ 147          //-----------------------------------------------------------------------------
+ 148          
+ 149          SFR16 (PCA0, 0xF9);                       // PCA0 Counter
+*** ERROR C141 IN LINE 149 OF C8051F350_DEFS.H: syntax error near '0xF9'
+ 150          SFR16 (PCA0CP0, 0xE9);                    // PCA0 Module 0 Capture/Compare
+*** ERROR C141 IN LINE 150 OF C8051F350_DEFS.H: syntax error near '0xE9'
+ 151          SFR16 (PCA0CP1, 0xEB);                    // PCA0 Module 1 Capture/Compare
+*** ERROR C141 IN LINE 151 OF C8051F350_DEFS.H: syntax error near '0xEB'
+ 152          SFR16 (PCA0CP2, 0xED);                    // PCA0 Module 2 Capture/Compare
+*** ERROR C141 IN LINE 152 OF C8051F350_DEFS.H: syntax error near '0xED'
+ 153          SFR16 (TMR2RL, 0xCA);                     // Timer 2 Reload
+*** ERROR C141 IN LINE 153 OF C8051F350_DEFS.H: syntax error near '0xCA'
+ 154          SFR16 (TMR2, 0xCC);                       // Timer 2 Counter
+*** ERROR C141 IN LINE 154 OF C8051F350_DEFS.H: syntax error near '0xCC'
+ 155          SFR16 (ADC0DEC, 0x9A);                    // ADC0 Decimation
+*** ERROR C141 IN LINE 155 OF C8051F350_DEFS.H: syntax error near '0x9A'
+ 156          SFR16 (TMR3RL, 0x92);                     // Timer 3 Reload
+*** ERROR C141 IN LINE 156 OF C8051F350_DEFS.H: syntax error near '0x92'
+ 157          SFR16 (TMR3, 0x94);                       // Timer 3 Counter
+*** ERROR C141 IN LINE 157 OF C8051F350_DEFS.H: syntax error near '0x94'
+ 158          SFR16 (DP, 0x82);                         // Data Pointer
+*** ERROR C141 IN LINE 158 OF C8051F350_DEFS.H: syntax error near '0x82'
+ 159          
+ 160          //-----------------------------------------------------------------------------
+ 161          // Address Definitions for Bit-addressable Registers
+ 162          //-----------------------------------------------------------------------------
+ 163          
+ 164          #define SFR_P0       0x80
+ 165          #define SFR_TCON     0x88
+ 166          #define SFR_P1       0x90
+ 167          #define SFR_SCON0    0x98
+ 168          #define SFR_P2       0xA0
+ 169          #define SFR_IE       0xA8
+ 170          #define SFR_IP       0xB8
+ 171          #define SFR_SMB0CN   0xC0
+ 172          #define SFR_TMR2CN   0xC8
+ 173          #define SFR_PSW      0xD0
+ 174          #define SFR_PCA0CN   0xD8
+ 175          #define SFR_ACC      0xE0
+ 176          #define SFR_ADC0STA  0xE8
+ 177          #define SFR_B        0xF0
+ 178          #define SFR_SPI0CN   0xF8
+ 179          
+ 180          
+ 181          //-----------------------------------------------------------------------------
+ 182          // Bit Definitions
+ 183          //-----------------------------------------------------------------------------
+ 184          
+ 185          // TCON 0x88
+ 186          SBIT (TF1, SFR_TCON, 7);                  // TIMER 1 OVERFLOW FLAG
+*** ERROR C141 IN LINE 186 OF C8051F350_DEFS.H: syntax error near '0x88'
+ 187          SBIT (TR1, SFR_TCON, 6);                  // TIMER 1 ON/OFF CONTROL
+C51 COMPILER V8.12   C8051F350_DEFS                                                        09/07/2026 09:16:19 PAGE 6   
+
+*** ERROR C141 IN LINE 187 OF C8051F350_DEFS.H: syntax error near '0x88'
+ 188          SBIT (TF0, SFR_TCON, 5);                  // TIMER 0 OVERFLOW FLAG
+*** ERROR C141 IN LINE 188 OF C8051F350_DEFS.H: syntax error near '0x88'
+ 189          SBIT (TR0, SFR_TCON, 4);                  // TIMER 0 ON/OFF CONTROL
+*** ERROR C141 IN LINE 189 OF C8051F350_DEFS.H: syntax error near '0x88'
+ 190          SBIT (IE1, SFR_TCON, 3);                  // EXT. INTERRUPT 1 EDGE FLAG
+*** ERROR C141 IN LINE 190 OF C8051F350_DEFS.H: syntax error near '0x88'
+ 191          SBIT (IT1, SFR_TCON, 2);                  // EXT. INTERRUPT 1 TYPE
+*** ERROR C141 IN LINE 191 OF C8051F350_DEFS.H: syntax error near '0x88'
+ 192          SBIT (IE0, SFR_TCON, 1);                  // EXT. INTERRUPT 0 EDGE FLAG
+*** ERROR C141 IN LINE 192 OF C8051F350_DEFS.H: syntax error near '0x88'
+ 193          SBIT (IT0, SFR_TCON, 0);                  // EXT. INTERRUPT 0 TYPE
+*** ERROR C141 IN LINE 193 OF C8051F350_DEFS.H: syntax error near '0x88'
+ 194          
+ 195          // SCON0 0x98
+ 196          SBIT (S0MODE, SFR_SCON0, 7);              // UART 0 MODE
+*** ERROR C141 IN LINE 196 OF C8051F350_DEFS.H: syntax error near '0x98'
+ 197                                                    // bit 6 not used
+ 198          SBIT (MCE0, SFR_SCON0, 5);                // UART 0 MCE
+*** ERROR C141 IN LINE 198 OF C8051F350_DEFS.H: syntax error near '0x98'
+ 199          SBIT (REN0, SFR_SCON0, 4);                // UART 0 RX ENABLE
+*** ERROR C141 IN LINE 199 OF C8051F350_DEFS.H: syntax error near '0x98'
+ 200          SBIT (TB80, SFR_SCON0, 3);                // UART 0 TX BIT 8
+*** ERROR C141 IN LINE 200 OF C8051F350_DEFS.H: syntax error near '0x98'
+ 201          SBIT (RB80, SFR_SCON0, 2);                // UART 0 RX BIT 8
+*** ERROR C141 IN LINE 201 OF C8051F350_DEFS.H: syntax error near '0x98'
+ 202          SBIT (TI0, SFR_SCON0, 1);                 // UART 0 TX INTERRUPT FLAG
+*** ERROR C141 IN LINE 202 OF C8051F350_DEFS.H: syntax error near '0x98'
+ 203          SBIT (RI0, SFR_SCON0, 0);                 // UART 0 RX INTERRUPT FLAG
+*** ERROR C141 IN LINE 203 OF C8051F350_DEFS.H: syntax error near '0x98'
+ 204          
+ 205          // IE 0xA8
+ 206          SBIT (EA, SFR_IE, 7);                     // GLOBAL INTERRUPT ENABLE
+*** ERROR C141 IN LINE 206 OF C8051F350_DEFS.H: syntax error near '0xA8'
+ 207          SBIT (ESPI0, SFR_IE, 6);                  // SPI0 INTERRUPT ENABLE
+*** ERROR C141 IN LINE 207 OF C8051F350_DEFS.H: syntax error near '0xA8'
+ 208          SBIT (ET2, SFR_IE, 5);                    // TIMER 2 INTERRUPT ENABLE
+*** ERROR C141 IN LINE 208 OF C8051F350_DEFS.H: syntax error near '0xA8'
+ 209          SBIT (ES0, SFR_IE, 4);                    // UART0 INTERRUPT ENABLE
+*** ERROR C141 IN LINE 209 OF C8051F350_DEFS.H: syntax error near '0xA8'
+ 210          SBIT (ET1, SFR_IE, 3);                    // TIMER 1 INTERRUPT ENABLE
+*** ERROR C141 IN LINE 210 OF C8051F350_DEFS.H: syntax error near '0xA8'
+ 211          SBIT (EX1, SFR_IE, 2);                    // EXTERNAL INTERRUPT 1 ENABLE
+*** ERROR C141 IN LINE 211 OF C8051F350_DEFS.H: syntax error near '0xA8'
+ 212          SBIT (ET0, SFR_IE, 1);                    // TIMER 0 INTERRUPT ENABLE
+*** ERROR C141 IN LINE 212 OF C8051F350_DEFS.H: syntax error near '0xA8'
+ 213          SBIT (EX0, SFR_IE, 0);                    // EXTERNAL INTERRUPT 0 ENABLE
+*** ERROR C141 IN LINE 213 OF C8051F350_DEFS.H: syntax error near '0xA8'
+ 214          
+ 215          // IP 0xB8
+ 216                                                    // bit 7 not used
+ 217          SBIT (PSPI0, SFR_IP, 6);                  // SPI0 PRIORITY
+*** ERROR C141 IN LINE 217 OF C8051F350_DEFS.H: syntax error near '0xB8'
+ 218          SBIT (PT2, SFR_IP, 5);                    // TIMER 2 PRIORITY
+*** ERROR C141 IN LINE 218 OF C8051F350_DEFS.H: syntax error near '0xB8'
+ 219          SBIT (PS0, SFR_IP, 4);                    // UART0 PRIORITY
+*** ERROR C141 IN LINE 219 OF C8051F350_DEFS.H: syntax error near '0xB8'
+ 220          SBIT (PT1, SFR_IP, 3);                    // TIMER 1 PRIORITY
+*** ERROR C141 IN LINE 220 OF C8051F350_DEFS.H: syntax error near '0xB8'
+ 221          SBIT (PX1, SFR_IP, 2);                    // EXTERNAL INTERRUPT 1 PRIORITY
+*** ERROR C141 IN LINE 221 OF C8051F350_DEFS.H: syntax error near '0xB8'
+ 222          SBIT (PT0, SFR_IP, 1);                    // TIMER 0 PRIORITY
+C51 COMPILER V8.12   C8051F350_DEFS                                                        09/07/2026 09:16:19 PAGE 7   
+
+*** ERROR C141 IN LINE 222 OF C8051F350_DEFS.H: syntax error near '0xB8'
+ 223          SBIT (PX0, SFR_IP, 0);                    // EXTERNAL INTERRUPT 0 PRIORITY
+*** ERROR C141 IN LINE 223 OF C8051F350_DEFS.H: syntax error near '0xB8'
+ 224          
+ 225          // SMB0CN 0xC0
+ 226          SBIT (MASTER, SFR_SMB0CN, 7);             // SMBUS 0 MASTER/SLAVE
+*** ERROR C141 IN LINE 226 OF C8051F350_DEFS.H: syntax error near '0xC0'
+ 227          SBIT (TXMODE, SFR_SMB0CN, 6);             // SMBUS 0 TRANSMIT MODE
+*** ERROR C141 IN LINE 227 OF C8051F350_DEFS.H: syntax error near '0xC0'
+ 228          SBIT (STA, SFR_SMB0CN, 5);                // SMBUS 0 START FLAG
+*** ERROR C141 IN LINE 228 OF C8051F350_DEFS.H: syntax error near '0xC0'
+ 229          SBIT (STO, SFR_SMB0CN, 4);                // SMBUS 0 STOP FLAG
+*** ERROR C141 IN LINE 229 OF C8051F350_DEFS.H: syntax error near '0xC0'
+ 230          SBIT (ACKRQ, SFR_SMB0CN, 3);              // SMBUS 0 ACKNOWLEDGE REQUEST
+*** ERROR C141 IN LINE 230 OF C8051F350_DEFS.H: syntax error near '0xC0'
+ 231          SBIT (ARBLOST, SFR_SMB0CN, 2);            // SMBUS 0 ARBITRATION LOST
+*** ERROR C141 IN LINE 231 OF C8051F350_DEFS.H: syntax error near '0xC0'
+ 232          SBIT (ACK, SFR_SMB0CN, 1);                // SMBUS 0 ACKNOWLEDGE FLAG
+*** ERROR C141 IN LINE 232 OF C8051F350_DEFS.H: syntax error near '0xC0'
+ 233          SBIT (SI, SFR_SMB0CN, 0);                 // SMBUS 0 INTERRUPT PENDING FLAG
+*** ERROR C141 IN LINE 233 OF C8051F350_DEFS.H: syntax error near '0xC0'
+ 234          
+ 235          // TMR2CN 0xC8
+ 236          SBIT (TF2H, SFR_TMR2CN, 7);               // TIMER 2 HIGH BYTE OVERFLOW FLAG
+*** ERROR C141 IN LINE 236 OF C8051F350_DEFS.H: syntax error near '0xC8'
+ 237          SBIT (TF2L, SFR_TMR2CN, 6);               // TIMER 2 LOW BYTE OVERFLOW FLAG
+*** ERROR C141 IN LINE 237 OF C8051F350_DEFS.H: syntax error near '0xC8'
+ 238          SBIT (TF2LEN, SFR_TMR2CN, 5);             // TIMER 2 LOW BYTE INTERRUPT ENABLE
+*** ERROR C141 IN LINE 238 OF C8051F350_DEFS.H: syntax error near '0xC8'
+ 239                                                    // bit 4 not used
+ 240          SBIT (T2SPLIT, SFR_TMR2CN, 3);            // TIMER 2 SPLIT MODE ENABLE
+*** ERROR C141 IN LINE 240 OF C8051F350_DEFS.H: syntax error near '0xC8'
+ 241          SBIT (TR2, SFR_TMR2CN, 2);                // TIMER 2 ON/OFF CONTROL
+*** ERROR C141 IN LINE 241 OF C8051F350_DEFS.H: syntax error near '0xC8'
+ 242                                                    // bit 1 not used
+ 243          SBIT (T2XCLK, SFR_TMR2CN, 0);             // TIMER 2 EXTERNAL CLOCK SELECT
+*** ERROR C141 IN LINE 243 OF C8051F350_DEFS.H: syntax error near '0xC8'
+ 244          
+ 245          // PSW 0xD0
+ 246          SBIT(CY, SFR_PSW, 7);                     // CARRY FLAG
+*** ERROR C141 IN LINE 246 OF C8051F350_DEFS.H: syntax error near '0xD0'
+ 247          SBIT(AC, SFR_PSW, 6);                     // AUXILIARY CARRY FLAG
+*** ERROR C141 IN LINE 247 OF C8051F350_DEFS.H: syntax error near '0xD0'
+ 248          SBIT(F0, SFR_PSW, 5);                     // USER FLAG 0
+*** ERROR C141 IN LINE 248 OF C8051F350_DEFS.H: syntax error near '0xD0'
+ 249          SBIT(RS1, SFR_PSW, 4);                    // REGISTER BANK SELECT 1
+*** ERROR C141 IN LINE 249 OF C8051F350_DEFS.H: syntax error near '0xD0'
+ 250          SBIT(RS0, SFR_PSW, 3);                    // REGISTER BANK SELECT 0
+*** ERROR C141 IN LINE 250 OF C8051F350_DEFS.H: syntax error near '0xD0'
+ 251          SBIT(OV, SFR_PSW, 2);                     // OVERFLOW FLAG
+*** ERROR C141 IN LINE 251 OF C8051F350_DEFS.H: syntax error near '0xD0'
+ 252          SBIT(F1, SFR_PSW, 1);                     // USER FLAG 1
+*** ERROR C141 IN LINE 252 OF C8051F350_DEFS.H: syntax error near '0xD0'
+ 253          SBIT(P, SFR_PSW, 0);                      // ACCUMULATOR PARITY FLAG
+*** ERROR C141 IN LINE 253 OF C8051F350_DEFS.H: syntax error near '0xD0'
+ 254          
+ 255          // PCA0CN 0xD8
+ 256          SBIT (CF, SFR_PCA0CN, 7);                 // PCA 0 COUNTER OVERFLOW FLAG
+*** ERROR C141 IN LINE 256 OF C8051F350_DEFS.H: syntax error near '0xD8'
+ 257          SBIT (CR, SFR_PCA0CN, 6);                 // PCA 0 COUNTER RUN CONTROL BIT
+*** ERROR C141 IN LINE 257 OF C8051F350_DEFS.H: syntax error near '0xD8'
+ 258                                                    // bit 5 not used
+C51 COMPILER V8.12   C8051F350_DEFS                                                        09/07/2026 09:16:19 PAGE 8   
+
+ 259                                                    // bit 4 not used
+ 260                                                    // bit 3 not used
+ 261          SBIT (CCF2, SFR_PCA0CN, 2);               // PCA 0 MODULE 2 INTERRUPT FLAG
+*** ERROR C141 IN LINE 261 OF C8051F350_DEFS.H: syntax error near '0xD8'
+ 262          SBIT (CCF1, SFR_PCA0CN, 1);               // PCA 0 MODULE 1 INTERRUPT FLAG
+*** ERROR C141 IN LINE 262 OF C8051F350_DEFS.H: syntax error near '0xD8'
+ 263          SBIT (CCF0, SFR_PCA0CN, 0);               // PCA 0 MODULE 0 INTERRUPT FLAG
+*** ERROR C141 IN LINE 263 OF C8051F350_DEFS.H: syntax error near '0xD8'
+ 264          
+ 265          // ADC0STA 0xE8
+ 266          SBIT (AD0BUSY, SFR_ADC0STA, 7);           // ADC 0 CONVERSION IN PROGRESS FLAG
+*** ERROR C141 IN LINE 266 OF C8051F350_DEFS.H: syntax error near '0xE8'
+ 267          SBIT (AD0CBSY, SFR_ADC0STA, 6);           // ADC 0 CALIBRATION IN PROGRESS FLAG
+*** ERROR C141 IN LINE 267 OF C8051F350_DEFS.H: syntax error near '0xE8'
+ 268          SBIT (AD0INT, SFR_ADC0STA, 5);            // ADC 0 CONVERSION COMPLETE FLAG
+*** ERROR C141 IN LINE 268 OF C8051F350_DEFS.H: syntax error near '0xE8'
+ 269          SBIT (AD0S3C, SFR_ADC0STA, 4);            // ADC 0 SINC3 FILTER ERROR FLAG
+*** ERROR C141 IN LINE 269 OF C8051F350_DEFS.H: syntax error near '0xE8'
+ 270          SBIT (AD0FFC, SFR_ADC0STA, 3);            // ADC 0 FAST FILTER ERROR FLAG
+*** ERROR C141 IN LINE 270 OF C8051F350_DEFS.H: syntax error near '0xE8'
+ 271          SBIT (AD0CALC, SFR_ADC0STA, 2);           // ADC 0 CALIBRATION COMPLETE FLAG
+*** ERROR C141 IN LINE 271 OF C8051F350_DEFS.H: syntax error near '0xE8'
+ 272          SBIT (AD0ERR, SFR_ADC0STA, 1);            // ADC 0 ERROR FLAG
+*** ERROR C141 IN LINE 272 OF C8051F350_DEFS.H: syntax error near '0xE8'
+ 273          SBIT (AD0OVR, SFR_ADC0STA, 0);            // ADC 0 OVERRUN FLAG
+*** ERROR C141 IN LINE 273 OF C8051F350_DEFS.H: syntax error near '0xE8'
+ 274          
+ 275          // SPI0CN 0xF8
+ 276          SBIT (SPIF, SFR_SPI0CN, 7);               // SPI 0 INTERRUPT FLAG
+*** ERROR C141 IN LINE 276 OF C8051F350_DEFS.H: syntax error near '0xF8'
+ 277          SBIT (WCOL, SFR_SPI0CN, 6);               // SPI 0 WRITE COLLISION FLAG
+*** ERROR C141 IN LINE 277 OF C8051F350_DEFS.H: syntax error near '0xF8'
+ 278          SBIT (MODF, SFR_SPI0CN, 5);               // SPI 0 MODE FAULT FLAG
+*** ERROR C141 IN LINE 278 OF C8051F350_DEFS.H: syntax error near '0xF8'
+ 279          SBIT (RXOVRN, SFR_SPI0CN, 4);             // SPI 0 RX OVERRUN FLAG
+*** ERROR C141 IN LINE 279 OF C8051F350_DEFS.H: syntax error near '0xF8'
+ 280          SBIT (NSSMD1, SFR_SPI0CN, 3);             // SPI 0 SLAVE SELECT MODE 1
+*** ERROR C141 IN LINE 280 OF C8051F350_DEFS.H: syntax error near '0xF8'
+ 281          SBIT (NSSMD0, SFR_SPI0CN, 2);             // SPI 0 SLAVE SELECT MODE 0
+*** ERROR C141 IN LINE 281 OF C8051F350_DEFS.H: syntax error near '0xF8'
+ 282          SBIT (TXBMT, SFR_SPI0CN, 1);              // SPI 0 TX BUFFER EMPTY FLAG
+*** ERROR C141 IN LINE 282 OF C8051F350_DEFS.H: syntax error near '0xF8'
+ 283          SBIT (SPIEN, SFR_SPI0CN, 0);              // SPI 0 SPI ENABLE
+*** ERROR C141 IN LINE 283 OF C8051F350_DEFS.H: syntax error near '0xF8'
+ 284          
+ 285          //-----------------------------------------------------------------------------
+ 286          // Interrupt Priorities
+ 287          //-----------------------------------------------------------------------------
+ 288          
+ 289          #define INTERRUPT_INT0                 0  // External Interrupt 0
+ 290          #define INTERRUPT_TIMER0               1  // Timer0 Overflow
+ 291          #define INTERRUPT_INT1                 2  // External Interrupt 1
+ 292          #define INTERRUPT_TIMER1               3  // Timer1 Overflow
+ 293          #define INTERRUPT_UART0                4  // Serial Port 0
+ 294          #define INTERRUPT_TIMER2               5  // Timer2 Overflow
+ 295          #define INTERRUPT_SPI0                 6  // Serial Peripheral Interface 0
+ 296          #define INTERRUPT_SMB0                 7  // SMB0 Interrupt
+ 297                                                    // 8 reserved
+ 298                                                    // 9 reserved
+ 299          #define INTERRUPT_ADC0                10  // ADC0 Interrupt
+ 300          #define INTERRUPT_PCA0                11  // PCA0 Peripheral
+ 301          #define INTERRUPT_COMPARATOR0         12  // Comparator
+C51 COMPILER V8.12   C8051F350_DEFS                                                        09/07/2026 09:16:19 PAGE 9   
+
+ 302                                                    // 13 reserved
+ 303          #define INTERRUPT_TIMER3              14  // Timer3 Overflow
+ 304          
+ 305          //-----------------------------------------------------------------------------
+ 306          // Header File PreProcessor Directive
+ 307          //-----------------------------------------------------------------------------
+ 308          
+ 309          #endif                                    // #define C8051F350_DEFS_H
+ 310          
+ 311          //-----------------------------------------------------------------------------
+ 312          // End Of File
+ 313          //-----------------------------------------------------------------------------
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  188 ERROR(S)

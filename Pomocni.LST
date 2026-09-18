@@ -1,0 +1,375 @@
+C51 COMPILER V8.12   POMOCNI                                                               09/07/2026 08:39:25 PAGE 1   
+
+
+C51 COMPILER V8.12, COMPILATION OF MODULE POMOCNI
+OBJECT MODULE PLACED IN Pomocni.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.exe Pomocni.c DB OE BR INCDIR(C:\SiLabs\MCU\Inc) LARGE
+
+line level    source
+
+   1          #define SYSCLK    24500000          /* SYSCLK frequency (Hz) */
+   2          #define BAUDRATE  115200            /* UART0 Baudrate (bps) */
+   3          #define MDCLK     2457600           /* Modulator Clock (Hz) */
+   4          #define OWR       10                /* desired Output Word Rate in Hz */
+   5          
+   6          sbit                C1 = P0 ^ 0;    /* LED='1' means ON */
+*** ERROR C202 IN LINE 6 OF POMOCNI.C: 'P0': undefined identifier
+   7          sbit                C2 = P0 ^ 1;    /* LED='1' means ON */
+*** ERROR C202 IN LINE 7 OF POMOCNI.C: 'P0': undefined identifier
+   8          sbit                C3 = P0 ^ 7;    /* LED='1' means ON */
+*** ERROR C202 IN LINE 8 OF POMOCNI.C: 'P0': undefined identifier
+   9          
+  10          code char           bcd27s[13] =
+  11          {
+  12          
+  13                  /* numbers dp g f e d c b a */
+  14                  0x3f, /* 0 */
+  15                  0x06, /* 1 */
+  16                  0x5b, /* 2 */
+  17                  0x4f, /* 3 10 01 20 */
+  18                  0x66, /* 4 1+e+g 01+08+82 */
+  19                  0x6d, /* 5 -20 02-10 */
+  20                  0x7c, /* 6 5+d-f +10-04 */
+  21                  0x07, /* 7 */
+  22                  0x7f, /* 8 -20 */
+  23                  0x6f, /* 9 4+f 04 */
+  24          
+  25                  /* special */
+  26                  0x80, /* '.' */
+  27                  0x00, /* ' ' */
+  28                  0x40, /* '-' */
+  29          
+  30                  
+  31          };
+  32          
+  33          
+  34          /*
+  35          ==========================================================================================================
+             -=============
+  36          PORT_Init ;
+  37          * Configure the Crossbar and GPIO ports. ;
+  38          P0.4 - TX0 (push-pull) ;
+  39          P0.5 - RX0 ;
+  40          P0.6 - dir (push-pull) ;
+  41          ==========================================================================================================
+             -=============
+  42          */
+  43          void PORT_Init(void){
+  44   1              XBR0 = 0x01;  /* UART0 Selected */
+*** ERROR C202 IN LINE 44 OF POMOCNI.C: 'XBR0': undefined identifier
+  45   1              XBR1 = 0x40;  /* Enable crossbar and weak pull-ups */
+*** ERROR C202 IN LINE 45 OF POMOCNI.C: 'XBR1': undefined identifier
+  46   1      
+  47   1              P0MDOUT = 0x50;
+*** ERROR C202 IN LINE 47 OF POMOCNI.C: 'P0MDOUT': undefined identifier
+C51 COMPILER V8.12   POMOCNI                                                               09/07/2026 08:39:25 PAGE 2   
+
+  48   1      }
+  49          
+  50          /*
+  51          ==========================================================================================================
+             -=============
+  52          SYSCLK_Init ;
+  53          * This routine initializes the system clock to use the internal 24.5MHz ;
+  54          oscillator as its clock source, with x 2 multiply for ;
+  55          49 MHz operation. Also enables missing clock detector reset. ;
+  56          ==========================================================================================================
+             -=============
+  57          */
+  58          void SYSCLK_Init(void){
+  59   1              unsigned  i;
+  60   1      
+  61   1              OSCICN = 0x80;    /* enable intosc */
+*** ERROR C202 IN LINE 61 OF POMOCNI.C: 'OSCICN': undefined identifier
+  62   1              CLKSEL = 0x00;    /* select intosc as sysclk source */
+*** ERROR C202 IN LINE 62 OF POMOCNI.C: 'CLKSEL': undefined identifier
+  63   1      
+  64   1              /* INTOSC configure */
+  65   1              OSCICN = 0x83;
+*** ERROR C202 IN LINE 65 OF POMOCNI.C: 'OSCICN': undefined identifier
+  66   1      
+  67   1              /* PLL configure */
+  68   1              CLKMUL = 0x00;    /* Reset Clock Multiplier */
+*** ERROR C202 IN LINE 68 OF POMOCNI.C: 'CLKMUL': undefined identifier
+  69   1      
+  70   1              CLKMUL &= ~0x03;  /* select INTOSC / 2 as PLL source */
+*** ERROR C202 IN LINE 70 OF POMOCNI.C: 'CLKMUL': undefined identifier
+  71   1      
+  72   1              CLKMUL |= 0x80;   /* Enable 4x Multipler (MULEN = 1) */
+*** ERROR C202 IN LINE 72 OF POMOCNI.C: 'CLKMUL': undefined identifier
+  73   1      
+  74   1              for(i = 0; i < 125; i++);
+  75   1      
+  76   1              /* Delay for at least 5us */
+  77   1      
+  78   1              CLKMUL |= 0xC0;   /* Initialize Multiplier */
+*** ERROR C202 IN LINE 78 OF POMOCNI.C: 'CLKMUL': undefined identifier
+  79   1      
+  80   1              while(!(CLKMUL & 0x20));
+*** ERROR C202 IN LINE 80 OF POMOCNI.C: 'CLKMUL': undefined identifier
+  81   1      
+  82   1              /* Poll for Multiply Ready */
+  83   1      
+  84   1              /* SYSCLK configure */
+  85   1              VDM0CN = 0x80;    /* enable VDD monitor */
+*** ERROR C202 IN LINE 85 OF POMOCNI.C: 'VDM0CN': undefined identifier
+  86   1              RSTSRC = 0x06;    /* enable missing clock detector */
+*** ERROR C202 IN LINE 86 OF POMOCNI.C: 'RSTSRC': undefined identifier
+  87   1      
+  88   1              /* and VDD monitor reset sources */
+  89   1              CLKSEL = 0x02;    /* select PLL as clock source */
+*** ERROR C202 IN LINE 89 OF POMOCNI.C: 'CLKSEL': undefined identifier
+  90   1      }
+  91          
+  92          
+  93          
+  94          /*
+  95          ==========================================================================================================
+             -=============
+C51 COMPILER V8.12   POMOCNI                                                               09/07/2026 08:39:25 PAGE 3   
+
+  96          UART0_Init ;
+  97          * Configure the UART0 using Timer1, for <BAUDRATE> and 8-N-1. ;
+  98          ==========================================================================================================
+             -=============
+  99          */
+ 100          //#define SYSCLK    49000000          /* SYSCLK frequency (Hz) */
+ 101          //#define BAUDRATE  115200            /* UART0 Baudrate (bps) */
+ 102          
+ 103          void UART0_Init(void){
+ 104   1              SCON0 = 0x10;     /* 8-bit variable bit rate */
+*** ERROR C202 IN LINE 104 OF POMOCNI.C: 'SCON0': undefined identifier
+ 105   1      
+ 106   1              /*
+ 107   1              * level of STOP bit is ignored ;
+ 108   1              * RX enabled ;
+ 109   1              * ninth bits are zeros ;
+ 110   1              * clear RI0 and TI0 bits
+ 111   1              */
+ 112   1      
+ 113   1              if(SYSCLK / BAUDRATE / 2 / 256 < 1)  {
+ 114   2      
+ 115   2                      TH1 = -(SYSCLK / BAUDRATE / 2);
+*** ERROR C202 IN LINE 115 OF POMOCNI.C: 'TH1': undefined identifier
+ 116   2                      CKCON |= 0x08;  /* T1M
+*** ERROR C202 IN LINE 116 OF POMOCNI.C: 'CKCON': undefined identifier
+ 117   2                      * 1;
+ 118   2                      * SCA1:0 = xx */
+ 119   2              }
+ 120   1      
+ 121   1              else if(SYSCLK / BAUDRATE / 2 / 256 < 4)  {
+ 122   2      
+ 123   2                      TH1 = -(SYSCLK / BAUDRATE / 2 / 4);
+*** ERROR C202 IN LINE 123 OF POMOCNI.C: 'TH1': undefined identifier
+ 124   2                      CKCON &= ~0x0B; /* T1M
+*** ERROR C202 IN LINE 124 OF POMOCNI.C: 'CKCON': undefined identifier
+ 125   2                      * 0;
+ 126   2                      * SCA1:0 = 01 */
+ 127   2                      CKCON |= 0x01;
+*** ERROR C202 IN LINE 127 OF POMOCNI.C: 'CKCON': undefined identifier
+ 128   2              }
+ 129   1              else if(SYSCLK / BAUDRATE / 2 / 256 < 12)  {
+ 130   2                      TH1 = -(SYSCLK / BAUDRATE / 2 / 12);
+*** ERROR C202 IN LINE 130 OF POMOCNI.C: 'TH1': undefined identifier
+ 131   2                      CKCON &= ~0x0B; /* T1M
+*** ERROR C202 IN LINE 131 OF POMOCNI.C: 'CKCON': undefined identifier
+ 132   2                      * 0;
+ 133   2                      * SCA1:0 = 00 */
+ 134   2              }
+ 135   1              else
+ 136   1                  {
+ 137   2                      TH1 = -(SYSCLK / BAUDRATE / 2 / 48);
+*** ERROR C202 IN LINE 137 OF POMOCNI.C: 'TH1': undefined identifier
+ 138   2                      CKCON &= ~0x0B; /* T1M
+*** ERROR C202 IN LINE 138 OF POMOCNI.C: 'CKCON': undefined identifier
+ 139   2                      * 0;
+ 140   2                      * SCA1:0 = 10 */
+ 141   2                      CKCON |= 0x02;
+*** ERROR C202 IN LINE 141 OF POMOCNI.C: 'CKCON': undefined identifier
+ 142   2              }
+ 143   1      
+ 144   1              TL1 = TH1;        /* init Timer1 */
+*** ERROR C202 IN LINE 144 OF POMOCNI.C: 'TL1': undefined identifier
+C51 COMPILER V8.12   POMOCNI                                                               09/07/2026 08:39:25 PAGE 4   
+
+ 145   1              TMOD &= ~0xf0;    /* TMOD: timer 1 in 8-bit autoreload */
+*** ERROR C202 IN LINE 145 OF POMOCNI.C: 'TMOD': undefined identifier
+ 146   1              TMOD |= 0x20;
+*** ERROR C202 IN LINE 146 OF POMOCNI.C: 'TMOD': undefined identifier
+ 147   1              TR1 = 1;          /* START Timer1 */
+*** ERROR C202 IN LINE 147 OF POMOCNI.C: 'TR1': undefined identifier
+ 148   1              TI0 = 1;          /* Indicate TX0 ready */
+*** ERROR C202 IN LINE 148 OF POMOCNI.C: 'TI0': undefined identifier
+ 149   1      
+ 150   1              //   TX_Ready = 1;                       // Flag showing that UART can transmit
+ 151   1              //   IP |= 0x10;                         // Make UART high priority
+ 152   1              ES0 = 1;                            // Enable UART0 interrupts
+*** ERROR C202 IN LINE 152 OF POMOCNI.C: 'ES0': undefined identifier
+ 153   1      
+ 154   1      
+ 155   1      }
+ 156          
+ 157          /*
+ 158          ==========================================================================================================
+             -=========
+ 159          Timer2_Init ;
+ 160          * Configure Timer2 to 16-bit auto-reload and generate an interrupt at ;
+ 161          interval specified by <counts> using SYSCLK/48 as its time base. ;
+ 162          ==========================================================================================================
+             -=========
+ 163          */
+ 164          void Timer2_Init(int counts)    {
+ 165   1              TMR2CN = 0x00;    /* Stop
+*** ERROR C202 IN LINE 165 OF POMOCNI.C: 'TMR2CN': undefined identifier
+ 166   1              * Timer2;
+ 167   1              * Clear
+ 168   1              * TF2;
+ 169   1              * */
+ 170   1      
+ 171   1              /* use SYSCLK/12 as timebase */
+ 172   1              CKCON &= ~0x60;   /* Timer2 clocked based on
+*** ERROR C202 IN LINE 172 OF POMOCNI.C: 'CKCON': undefined identifier
+ 173   1              * T2XCLK;
+ 174   1              * */
+ 175   1      
+ 176   1              TMR2RL = -counts; /* Init reload values */
+*** ERROR C202 IN LINE 176 OF POMOCNI.C: 'TMR2RL': undefined identifier
+ 177   1              TMR2 = 0xffff;    /* set to reload immediately */
+*** ERROR C202 IN LINE 177 OF POMOCNI.C: 'TMR2': undefined identifier
+ 178   1              ET2 = 1;          /* enable Timer2 interrupts */
+*** ERROR C202 IN LINE 178 OF POMOCNI.C: 'ET2': undefined identifier
+ 179   1              TR2 = 1;          /* start Timer2 */
+*** ERROR C202 IN LINE 179 OF POMOCNI.C: 'TR2': undefined identifier
+ 180   1      }
+ 181          
+ 182          //-----------------------------------------------------------------------------
+ 183          
+ 184          
+ 185          /*
+ 186          * Timer2_ISR ;
+ 187          * This routine changes the state of the LED whenever Timer2 overflows. ;
+ 188          */
+ 189          void Timer2_ISR (void) interrupt 5
+ 190          {
+ 191   1      
+ 192   1              TF2H = 0;         /* clear Timer2 interrupt flag */
+*** ERROR C202 IN LINE 192 OF POMOCNI.C: 'TF2H': undefined identifier
+C51 COMPILER V8.12   POMOCNI                                                               09/07/2026 08:39:25 PAGE 5   
+
+ 193   1      
+ 194   1              P1=0x00;
+*** ERROR C202 IN LINE 194 OF POMOCNI.C: 'P1': undefined identifier
+ 195   1      
+ 196   1              C1 = 1;
+*** ERROR C202 IN LINE 196 OF POMOCNI.C: 'C1': undefined identifier
+ 197   1              C2 = 1;
+*** ERROR C202 IN LINE 197 OF POMOCNI.C: 'C2': undefined identifier
+ 198   1              C3 = 1;
+*** ERROR C202 IN LINE 198 OF POMOCNI.C: 'C3': undefined identifier
+ 199   1      
+ 200   1              if(ci < 2)    ci++;
+*** ERROR C202 IN LINE 200 OF POMOCNI.C: 'ci': undefined identifier
+*** ERROR C202 IN LINE 200 OF POMOCNI.C: 'ci': undefined identifier
+ 201   1              else
+ 202   1                  ci = 0;
+*** ERROR C202 IN LINE 202 OF POMOCNI.C: 'ci': undefined identifier
+ 203   1      
+ 204   1      if(zfl)
+*** ERROR C202 IN LINE 204 OF POMOCNI.C: 'zfl': undefined identifier
+ 205   1              P1 = ~(bcd27s[numbers[ci]]|0x80);
+*** ERROR C202 IN LINE 205 OF POMOCNI.C: 'P1': undefined identifier
+ 206   1              else 
+ 207   1              P1 = ~(bcd27s[numbers[ci]]);
+*** ERROR C202 IN LINE 207 OF POMOCNI.C: 'P1': undefined identifier
+ 208   1      
+ 209   1      
+ 210   1              if(ci == 0)  {
+*** ERROR C202 IN LINE 210 OF POMOCNI.C: 'ci': undefined identifier
+ 211   2                      C1 = 0;
+*** ERROR C202 IN LINE 211 OF POMOCNI.C: 'C1': undefined identifier
+ 212   2                      C2 = 1;
+*** ERROR C202 IN LINE 212 OF POMOCNI.C: 'C2': undefined identifier
+ 213   2                      C3 = 1;
+*** ERROR C202 IN LINE 213 OF POMOCNI.C: 'C3': undefined identifier
+ 214   2              }
+ 215   1              else if(ci == 1)  {
+*** ERROR C202 IN LINE 215 OF POMOCNI.C: 'ci': undefined identifier
+ 216   2                      C1 = 1;
+*** ERROR C202 IN LINE 216 OF POMOCNI.C: 'C1': undefined identifier
+ 217   2                      C2 = 0;
+*** ERROR C202 IN LINE 217 OF POMOCNI.C: 'C2': undefined identifier
+ 218   2                      C3 = 1;
+*** ERROR C202 IN LINE 218 OF POMOCNI.C: 'C3': undefined identifier
+ 219   2              }
+ 220   1              else if(ci == 2)  {
+*** ERROR C202 IN LINE 220 OF POMOCNI.C: 'ci': undefined identifier
+ 221   2                      C1 = 1;
+*** ERROR C202 IN LINE 221 OF POMOCNI.C: 'C1': undefined identifier
+ 222   2                      C2 = 1;
+*** ERROR C202 IN LINE 222 OF POMOCNI.C: 'C2': undefined identifier
+ 223   2                      C3 = 0;
+*** ERROR C202 IN LINE 223 OF POMOCNI.C: 'C3': undefined identifier
+ 224   2              }
+ 225   1      }
+ 226          
+ 227          
+ 228          /*------------------------------------------------------------------------
+ 229          Procedure:     convert ID:1
+ 230          Purpose:       string to integer
+ 231          Input:
+ 232          Output:
+C51 COMPILER V8.12   POMOCNI                                                               09/07/2026 08:39:25 PAGE 6   
+
+ 233          Errors:
+ 234          ------------------------------------------------------------------------*/
+ 235          long convert(void) {
+ 236   1              long val;
+ 237   1      
+ 238   1              val = 0L;
+ 239   1              val = val + (long) command[3];
+*** ERROR C202 IN LINE 239 OF POMOCNI.C: 'command': undefined identifier
+ 240   1              val = val * 256L + (long) command[4];
+*** ERROR C202 IN LINE 240 OF POMOCNI.C: 'command': undefined identifier
+ 241   1              val = val * 256L + (long) command[5];
+*** ERROR C202 IN LINE 241 OF POMOCNI.C: 'command': undefined identifier
+ 242   1              val = val * 256L + (long) command[6];
+*** ERROR C202 IN LINE 242 OF POMOCNI.C: 'command': undefined identifier
+ 243   1      
+ 244   1              return(val);
+ 245   1      }
+ 246          
+ 247          //-----------------------------------------------------------------------------
+ 248          /*
+ 249          ==========================================================================================================
+             -=============
+ 250          MAIN Routine ;
+ 251          ==========================================================================================================
+             -=============
+ 252          */
+ 253          
+ 254          
+ 255          void main(void){
+ 256   1      
+ 257   1              /* disable watchdog timer */
+ 258   1              PCA0MD &= ~0x40;  /* WDTE = 0 (clear watchdog timer */
+*** ERROR C202 IN LINE 258 OF POMOCNI.C: 'PCA0MD': undefined identifier
+ 259   1      
+ 260   1              /* enable) */
+ 261   1              SYSCLK_Init();    /* Initialize system clock to 49 MHz */
+ 262   1      
+ 263   1              PORT_Init();      /* Initialize crossbar and GPIO */
+ 264   1      
+ 265   1      
+ 266   1              UART0_Init();     /* Initialize UART0 */
+ 267   1      
+ 268   1              Timer2_Init(SYSCLK / 12 / 400); /* Init Timer2 to generate */
+ 269   1      
+ 270   1      
+ 271   1              EA = 1;           /* enable global interrupts */
+*** ERROR C202 IN LINE 271 OF POMOCNI.C: 'EA': undefined identifier
+ 272   1      
+ 273   1              //... ///
+ 274   1      
+ 275   1      }
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  69 ERROR(S)

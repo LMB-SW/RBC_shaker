@@ -1,0 +1,143 @@
+#include "CPU_setup.h"
+
+
+void OscInit(void){
+int  i;
+
+	OSCICN = 0x80;    // interni osc -> 24.5MHz
+	CLKSEL = 0x00;    
+	OSCICN = 0x83;	  // max SYSCLK
+		CLKMUL = 0x00;    
+		CLKMUL |= 0x80;   // multiple sa 2
+		for(i = 0; i < 200; i++);
+		CLKMUL |= 0xC0; 
+		while(!(CLKMUL & 0x20));
+	VDM0CN = 0x80;    
+	RSTSRC = 0x06;    
+	CLKSEL = 0x00;	
+}
+
+void DisableWDT(void)
+{
+		/* disable watchdog timer */
+	PCA0MD &= ~0x40;  /* WDTE = 0 (clear watchdog timer */
+}
+
+void PortsInit(void){
+	
+	//P0MDOUT = 0x50;	//ranije je bilo P0MDOUT= 0xFF;  
+	P0MDOUT = 0x58;		//zbog konfigurisanja P0.3 pina kao izlaznog u ulozi "softverskog" Tx-a ka motornom kontroleru
+
+	//P1MDOUT= 0xFF; // push pull 
+	P1MDOUT= 0x00;	// open drain 		
+
+
+
+	XBR0      = 0x01;	                    
+	XBR1      = 0x40;
+}
+
+void ADC0_Init (char bip)	// bip= 1 => bipolar mode
+{
+	if (bip) ADC0CN = 0x17;      // PGA 128, ADC Burnout onemogucen	
+	else ADC0CN= 0x07;
+	
+		REF0CN |= 0x01; /* (enable if using internal vref) */
+		 
+	ADC0CF = 0x00;	//0x04;		// SINC3, Interni VREF (2.5V)		
+	   
+	ADC0CLK = 19;		// MDCLK = SYSCLK / (ADC0CLK + 1) i za ADC Conversion clock = 2.45 MHz na 49MHz SYSCLK => ADC0CLK = 19
+	ADC0MUX = 0x10;		// diferencijalni
+
+	ADC0DECL= 20; //32;		//20=minimum
+	ADC0DECH= 0;
+	                            
+	ADC0MD = 0x80;	//0x82;		//	ADC0 enable u single mode- u	// AKO STOJI "ADC0MD=0x82" ONDA "ADC0STA" POSTANE "0X32" IZ NEKOG RAZLOGA		
+	
+	//AD0INT = 1;
+	//ADC0STA &= ~0x20;	// JA SAM OVO OSTAVIO ZA PROBU				
+
+//	EIE1 |= 0x08;	//Enable ADC0 interrupt - JA SAM OVO AKTIVIRAO, ZA PROBU	
+	
+}
+
+void Timer2_Init(void) 
+{
+	TMR2CN = 0;	//ovrflw- 0;  Stop timer; Auto-Reload sa 16 bita
+	CKCON = 0;	// 
+
+	TMR2RLH = 0xF8;	//0xF0; // 1ms
+	TMR2RLL = 0x07;	//0x0C; 
+
+	TMR2CN |= 0x04; // startujes
+
+	IE |= 0x20;	//EIE1 |= 0x80;
+	////EA = 1;	
+}
+
+/*
+void Timer3_Init(void) 
+{
+	TMR3CN = 0;	//ovrflw- 0;  Stop timer; Auto-Reload sa 16 bita
+	CKCON = 0;	// 
+
+	TMR3RLH = 0xF0;	//0xF8; // 1ms
+	TMR3RLL = 0x0C;	//0x07; 
+
+	TMR3CN |= 0x04; // startujes
+
+	EIE1 |= 0x80;
+	////EA = 1;	
+}
+*/
+void UARTInit (long bdr){
+
+   SCON0 = 0x10;                       // SCON0: 8-bit variable bit rate
+                                       //        level of STOP bit is ignored
+                                       //        RX enabled
+                                       //        ninth bits are zeros
+                                       //        clear RI0 and TI0 bits
+   if (SYSTEMCLOCK/bdr/2/256 < 1) {
+      TH1 = -(SYSTEMCLOCK/bdr/2);
+      CKCON &= ~0x0B;                  // T1M = 1; SCA1:0 = xx
+      CKCON |=  0x08;
+   } else if (SYSTEMCLOCK/bdr/2/256 < 4) {
+      TH1 = -(SYSTEMCLOCK/bdr/2/4);
+      CKCON &= ~0x0B;                  // T1M = 0; SCA1:0 = 01
+      CKCON |=  0x01;
+   } else if (SYSTEMCLOCK/bdr/2/256 < 12) {
+      TH1 = -(SYSTEMCLOCK/bdr/2/12);
+      CKCON &= ~0x0B;                  // T1M = 0; SCA1:0 = 00
+   } else {
+      TH1 = -(SYSTEMCLOCK/bdr/2/48);
+      CKCON &= ~0x0B;                  // T1M = 0; SCA1:0 = 10
+      CKCON |=  0x02;
+   }
+
+   TL1 = TH1;                          // init Timer1
+   TMOD &= ~0xf0;                      // TMOD: timer 1 in 8-bit autoreload
+   TMOD |=  0x20;
+   TR1 = 1;                            // START Timer1
+  
+   ES0 = 1;                            // Enable UART0 interrupts
+}
+/*
+void EnUart0Int(void)
+{
+  ES0= 1;
+}
+
+void DisUart0Int(void)
+{
+  ES0= 0;
+}
+*/
+void CPUInit(char bip){
+ 
+   OscInit();
+   PortsInit();
+   Timer2_Init();
+   ADC0_Init (bip);
+   UARTInit (115200);
+}
+

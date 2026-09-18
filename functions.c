@@ -1,0 +1,111 @@
+//#include <c8051f350.h>
+#include <intrins.h>
+#include "CPU_setup.h"
+
+
+extern unsigned char sendByteDelay;
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+/*void Delay_us(unsigned int us)
+{
+	unsigned int i,k;
+	
+	k = us * 1;	
+
+	for (i = 1; i <= k; i++) { }
+
+//	i++;		
+}*/
+
+void Delay_us(unsigned int us)
+{
+	EA = 0;		// disable all interrupts
+    while (us--)
+    {
+	    _nop_();
+		_nop_();
+		_nop_();
+		_nop_();
+		_nop_();
+		_nop_();
+		_nop_();
+		_nop_();
+		_nop_();	
+    }
+	EA = 1;		// enable all interrupts
+}
+
+void Delay_ms(unsigned int ms)
+{
+	unsigned int i;	
+
+	for (i = 1; i <= ms; i++)  
+		Delay_us(1000);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+void putc0(unsigned char dat)
+{		
+  	SBUF0= dat;
+	sendByteDelay = 2;
+  	while ((SCON0&0x02)==0  && sendByteDelay){}
+  	SCON0 &= 0xfd; 	
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+unsigned char SetBoardAddress(void)
+{
+	if(Jumper == 0)		//postoji jumper na plocici, spaja pin na GND
+		return 0x34;
+	else				//ne postoji jumper na plocici, spaja pin na Vmcu
+		return 0x33;	
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//----------------------------------------------------------------------------------------------
+// Funkcija za slanje komande motornoj ploci preko softverskog UART-a (Tx = P0.3)
+// duty_cycle	-	sadrzi podatak o brzini, odnosno procenat "duty cycle"-a;
+//
+// STx 			- 	"softverski" Tx - pin procesora (PORT0-pin3)
+//----------------------------------------------------------------------------------------------
+
+void SendMotorSpeed(unsigned char duty_cycle)
+{
+	unsigned char SBUF;						// Buffer koji sadrzi bajt kojeg treba poslati	
+	unsigned char i;
+//	unsigned char k;
+	bit b=0;
+
+
+		SBUF = duty_cycle;					// Bajt (procenat brzine) se smesta u buffer za slanje
+
+		EA = 0;	//EIE2 &= ~1;				// Zabrana interapta			(// Zabrana interapta Timer-a br.3, da ne bi se narusilo slanje)
+		
+		STx = 0;							// Pocetak slanja - formiranje START bita
+		Delay_us(7);		///Delay_us(55);	
+
+	
+		for (i=0; i<8; i++)					// Slanje bitova ponaosob
+		{
+			if ((SBUF & 0x01) == 0x01)		// Izdvajanje LSB-a, koji ce biti poslat u ovoj iteraciji 
+				b = 1; 						// b = vrednost LSB-a
+			else 
+				b = 0;
+
+			SBUF = SBUF >> 1;				// Priprema za izdvajanje sledeceg LSB-a za slanje
+	
+			STx = b;						// Slanje prethodno izdvojenog bita
+			Delay_us(7);	
+		}
+
+		STx = 1;							// Zavrsetak slanje - formiranje STOP bita
+		Delay_us(20);		
+
+		EA = 1; //EIE2 |= 1;				// Vracanje dozvole inerapta		(// Vracanje dozvole inerapta od Timer-a br.3)
+
+
+}
+

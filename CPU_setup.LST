@@ -1,0 +1,42 @@
+C51 COMPILER V8.12   CPU_SETUP                                                             09/16/2026 10:49:20 PAGE 1   
+
+
+C51 COMPILER V8.12, COMPILATION OF MODULE CPU_SETUP
+OBJECT MODULE PLACED IN CPU_setup.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.exe CPU_setup.h DB OE BR INCDIR(C:\SiLabs\MCU\Inc) LARGE
+
+line level    source
+
+   1          #include <c8051f350.h>
+   2          
+   3          #define Seg7  P1 
+   4          
+   5          #define SYSTEMCLOCK     49000000  
+   6          #define MDCLK                   2457600   
+   7          #define OWR                     10            /* desired Output Word Rate in Hz */
+   8          
+   9          sbit DS1        = P0^0;
+  10          sbit DS2        = P0^1;
+  11          sbit DS3        = P0^7;
+  12          sbit ComDir     = P0^6;
+  13          
+  14          sbit Jumper = P0^2;     //za odredjivanje adrese na osnovu jumper-a JP1 na plocici
+  15          sbit STx        = P0^3; //za slanje komande motornoj plocici
+  16          
+  17          
+  18          void CPUInit(char bip);
+  19          void DisableWDT(void);
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   ----    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

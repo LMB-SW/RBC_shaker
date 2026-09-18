@@ -1,0 +1,139 @@
+C51 COMPILER V8.12   FUNCTIONS                                                             09/18/2026 15:10:50 PAGE 1   
+
+
+C51 COMPILER V8.12, COMPILATION OF MODULE FUNCTIONS
+OBJECT MODULE PLACED IN functions.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.exe functions.c DB OE BR INCDIR(C:\SiLabs\MCU\Inc) LARGE
+
+line level    source
+
+   1          //#include <c8051f350.h>
+   2          #include <intrins.h>
+   3          #include "CPU_setup.h"
+   4          
+   5          
+   6          extern unsigned char sendByteDelay;
+   7          
+   8          
+   9          ///////////////////////////////////////////////////////////////////////////////////////////////////
+  10          /*void Delay_us(unsigned int us)
+  11          {
+  12                  unsigned int i,k;
+  13                  
+  14                  k = us * 1;     
+  15          
+  16                  for (i = 1; i <= k; i++) { }
+  17          
+  18          //      i++;            
+  19          }*/
+  20          
+  21          void Delay_us(unsigned int us)
+  22          {
+  23   1              EA = 0;         // disable all interrupts
+  24   1          while (us--)
+  25   1          {
+  26   2                  _nop_();
+  27   2                      _nop_();
+  28   2                      _nop_();
+  29   2                      _nop_();
+  30   2                      _nop_();
+  31   2                      _nop_();
+  32   2                      _nop_();
+  33   2                      _nop_();
+  34   2                      _nop_();        
+  35   2          }
+  36   1              EA = 1;         // enable all interrupts
+  37   1      }
+  38          
+  39          void Delay_ms(unsigned int ms)
+  40          {
+  41   1              unsigned int i; 
+  42   1      
+  43   1              for (i = 1; i <= ms; i++)  
+  44   1                      Delay_us(1000);
+  45   1      }
+  46          
+  47          ///////////////////////////////////////////////////////////////////////////////////////////////////
+  48          
+  49          void putc0(unsigned char dat)
+  50          {               
+  51   1              SBUF0= dat;
+  52   1              sendByteDelay = 2;
+  53   1              while ((SCON0&0x02)==0  && sendByteDelay){}
+  54   1              SCON0 &= 0xfd;  
+  55   1      }
+C51 COMPILER V8.12   FUNCTIONS                                                             09/18/2026 15:10:50 PAGE 2   
+
+  56          
+  57          ///////////////////////////////////////////////////////////////////////////////////////////////////
+  58          
+  59          unsigned char SetBoardAddress(void)
+  60          {
+  61   1              if(Jumper == 0)         //postoji jumper na plocici, spaja pin na GND
+  62   1                      return 0x34;
+  63   1              else                            //ne postoji jumper na plocici, spaja pin na Vmcu
+  64   1                      return 0x33;    
+  65   1      }
+  66          
+  67          ///////////////////////////////////////////////////////////////////////////////////////////////////
+  68          //----------------------------------------------------------------------------------------------
+  69          // Funkcija za slanje komande motornoj ploci preko softverskog UART-a (Tx = P0.3)
+  70          // duty_cycle   -       sadrzi podatak o brzini, odnosno procenat "duty cycle"-a;
+  71          //
+  72          // STx                  -       "softverski" Tx - pin procesora (PORT0-pin3)
+  73          //----------------------------------------------------------------------------------------------
+  74          
+  75          void SendMotorSpeed(unsigned char duty_cycle)
+  76          {
+  77   1              unsigned char SBUF;                                             // Buffer koji sadrzi bajt kojeg treba poslati  
+  78   1              unsigned char i;
+  79   1      //      unsigned char k;
+  80   1              bit b=0;
+  81   1      
+  82   1      
+  83   1                      SBUF = duty_cycle;                                      // Bajt (procenat brzine) se smesta u buffer za slanje
+  84   1      
+  85   1                      EA = 0; //EIE2 &= ~1;                           // Zabrana interapta                    (// Zabrana interapta Timer-a br.3, da ne bi se narusilo
+             - slanje)
+  86   1                      
+  87   1                      STx = 0;                                                        // Pocetak slanja - formiranje START bita
+  88   1                      Delay_us(7);            ///Delay_us(55);        
+  89   1      
+  90   1              
+  91   1                      for (i=0; i<8; i++)                                     // Slanje bitova ponaosob
+  92   1                      {
+  93   2                              if ((SBUF & 0x01) == 0x01)              // Izdvajanje LSB-a, koji ce biti poslat u ovoj iteraciji 
+  94   2                                      b = 1;                                          // b = vrednost LSB-a
+  95   2                              else 
+  96   2                                      b = 0;
+  97   2      
+  98   2                              SBUF = SBUF >> 1;                               // Priprema za izdvajanje sledeceg LSB-a za slanje
+  99   2              
+ 100   2                              STx = b;                                                // Slanje prethodno izdvojenog bita
+ 101   2                              Delay_us(7);    
+ 102   2                      }
+ 103   1      
+ 104   1                      STx = 1;                                                        // Zavrsetak slanje - formiranje STOP bita
+ 105   1                      Delay_us(20);           
+ 106   1      
+ 107   1                      EA = 1; //EIE2 |= 1;                            // Vracanje dozvole inerapta            (// Vracanje dozvole inerapta od Timer-a br.3)
+ 108   1      
+ 109   1      
+ 110   1      }
+ 111          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    144    ----
+   CONSTANT SIZE    =   ----    ----
+C51 COMPILER V8.12   FUNCTIONS                                                             09/18/2026 15:10:50 PAGE 3   
+
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

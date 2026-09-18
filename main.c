@@ -1,0 +1,77 @@
+#include "ADC.h"
+#include "CPU_setup.h"
+#include "display.h"
+#include "functions.h"
+#include "communication.h"
+
+
+//	bit intO=0, intG=0, intOG=0, scO=0, scG=0, acO=0, acG=0;		// pomocni flagovi za test samo
+//		int i;
+
+//		extern unsigned long X0, X1;
+
+extern char ADC_canrun;
+extern unsigned char BoardAddress;
+
+//unsigned char speed = 0x64;
+
+
+int main(void)
+{
+
+//			unsigned long SumaX;
+
+	/* disable watchdog timer */
+//	PCA0MD &= ~0x40;  /* WDTE = 0 (clear watchdog timer */
+
+	DisableWDT();
+
+  #ifdef BIPOLAR 
+  	CPUInit(1);
+  #else  
+    CPUInit(0);
+  #endif
+
+	BoardAddress = SetBoardAddress();
+
+	DisplayInit();
+	
+
+	EA = 1;
+
+//			SendMotorSpeed(speed);
+//			Delay_ms(100);
+
+		STx = 1;
+
+  while(1)
+  {
+
+//	STx = ~STx;
+
+//	SendMotorSpeed(0x0a);
+//	Delay_ms(1000);
+
+/*	SendMotorSpeed(0x23);
+	Delay_ms(1000);
+	SendMotorSpeed(0x32);
+	Delay_ms(1000);
+	SendMotorSpeed(0x64);
+	Delay_ms(1000);
+*/	
+
+//	STx = ~STx;
+//	Delay_us(10);
+
+	STx = ~STx;
+	Delay_ms(5000);
+	
+
+//	DisplayLoop();
+//  ADCLoop();
+	//CommLup();
+
+  }
+
+}
+

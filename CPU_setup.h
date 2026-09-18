@@ -1,0 +1,19 @@
+#include <c8051f350.h>
+
+#define Seg7  P1 
+
+#define SYSTEMCLOCK   	49000000  
+#define MDCLK     		2457600   
+#define OWR       		10            /* desired Output Word Rate in Hz */
+
+sbit DS1	= P0^0;
+sbit DS2	= P0^1;
+sbit DS3	= P0^7;
+sbit ComDir	= P0^6;
+
+sbit Jumper = P0^2;	//za odredjivanje adrese na osnovu jumper-a JP1 na plocici
+sbit STx 	= P0^3;	//za slanje komande motornoj plocici
+
+
+void CPUInit(char bip);
+void DisableWDT(void);

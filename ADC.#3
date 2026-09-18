@@ -1,0 +1,268 @@
+#include <c8051f350.h>
+#include "ADC.h"
+#include "display.h"
+								// za sad ideja da ga pokrece PC posto je poslao kalibracione podatke (ako se ide na tu opciju tj ne na flash)
+char ADC_canrun= 0; 			// kako za system calib registre (offs i gain), tako i za aplikacione calib (X0 i X1) i tada postaviti ADC_canrun= 1 i ADC_Loop_Start= 1
+	 ADC_Loop_Start= 0;			// startuje prvu ADC konverziju
+
+int  sampCnt= 0;
+unsigned long  ADC_samps[MAXSAMPS];
+unsigned long Wght= 0;
+unsigned long X0, X1;			// za nulu i za 500 gr, dobijeni komunikacijom
+
+	unsigned int unit = 500; //50000;		///Privremeno
+
+	unsigned char FiltDivisor = 8;
+
+	int Gres=0;
+
+union{ 
+	unsigned long  ul;
+	unsigned char  uch[4];
+}ULONG;
+
+extern Dspstruct  dspvar;
+
+long ADC2Blong(void){		    // bipolarna verzija
+long poml;
+
+  ULONG.uch[3]= ADC0L; 	//ULONG.uch[3]= 0;
+  ULONG.uch[2]= ADC0M;	//ULONG.uch[2]= ADC0H;
+  ULONG.uch[1]= ADC0H;	//ULONG.uch[1]= ADC0M;
+  ULONG.uch[0]= 0;		//ULONG.uch[0]= ADC0L;
+
+  if (ULONG.ul & 0x00800000){
+	poml= 0- (0x01000000- ULONG.ul);
+  }
+  else poml= ULONG.ul;
+
+  return poml >> CUT;
+}
+
+unsigned long ADC2Ulong(void){	// unipolarna verzija
+
+  ULONG.uch[3]= ADC0L; 	//ULONG.uch[3]= 0;
+  ULONG.uch[2]= ADC0M;	//ULONG.uch[2]= ADC0H;
+  ULONG.uch[1]= ADC0H;	//ULONG.uch[1]= ADC0M;
+  ULONG.uch[0]= 0;		//ULONG.uch[0]= ADC0L;
+
+  return ULONG.ul >> CUT;
+}
+
+/////////////////////////////////////////////////////////////////////
+
+long ADC_Filter(long new_value)
+{
+    static long filtered = 0;
+    static bit first = 1;
+
+    if (first)
+    {
+        filtered = new_value;
+        first = 0;
+    }
+    else
+    {
+        filtered = filtered + (new_value - filtered) / FiltDivisor;	// delilac je bio 8
+    }
+
+    return filtered;
+}
+
+/////////////////////////////////////////////////////////////////////
+void InternCalibO(void)
+{
+	ADC0MD= 0x80;  // idle
+
+	ADC0MD= 0x84;  // startuj intern offs
+	while (!AD0INT) {}
+
+	ADC0STA &= ~0x20;	//ADC0STA |= ~0x20;
+
+}
+/////////////////////////////////////////////////////////////////////
+
+void InternCalibG(void)
+{
+	ADC0MD= 0x80;  // idle
+
+	ADC0MD= 0x85;  // startuj intern offs
+	while (!AD0INT) {}
+
+	ADC0STA &= ~0x20;	//ADC0STA |= ~0x20;
+
+}
+/////////////////////////////////////////////////////////////////////
+
+
+void SysCalibO(void){			// inicira ga serijska komunikacija 
+
+  ADC0MD= 0x80;  // idle
+
+//  	ADC0STA = 0x00;			//ZA PROBU
+  
+  ADC0MD= 0x86;  // startuj sys offs
+  while (!AD0INT) {}
+   
+  //ADC0MD= 0x80; vratice se automatski posle calib
+
+  ADC0STA &= ~0x20;	//ADC0STA |= ~0x20;
+
+  ULONG.uch[3]= ADC0COL; 	//ULONG.uch[3]= 0;
+  ULONG.uch[2]= ADC0COM;	//ULONG.uch[2]= ADC0COH;
+  ULONG.uch[1]= ADC0COH;	//ULONG.uch[1]= ADC0COM;
+  ULONG.uch[0]= 0;			//ULONG.uch[0]= ADC0COL;
+
+  //save ULONG.ul u flash ili salji na UART, ali verovatno u flash uz kontrolne karaktere (npr CS) 
+}
+
+void SysCalibG(void){					//19.52mV za PGA= 128
+
+  ADC0MD= 0x80;  // idle
+
+//  	ADC0STA = 0x00;			//ZA PROBU
+  
+  ADC0MD= 0x87;  // startuj sys gain
+  while (!AD0INT) {}
+   
+  //ADC0MD= 0x80; vratice se automatski posle calib 
+
+  ADC0STA &= ~0x20;	//ADC0STA |= ~0x20;
+
+  ULONG.uch[3]= ADC0CGL; 	//ULONG.uch[3]= 0;
+  ULONG.uch[2]= ADC0CGM;	//ULONG.uch[2]= ADC0CGH;
+  ULONG.uch[1]= ADC0CGH;	//ULONG.uch[1]= ADC0CGM;
+  ULONG.uch[0]= 0;			//ULONG.uch[0]= ADC0CGL;
+
+  //save ULONG.ul u flash ili salji na UART, ali verovatno u flash uz kontrolne karaktere (npr CS)
+}
+
+void AppCalibO(void){			// inicira ga serijska komunikacija  - daje X0
+long pomL;
+ 
+  ADC0MD= 0x80;  // idle
+
+//  	ADC0STA = 0x00;			//ZA PROBU
+  
+  ADC0MD= 0x82;  // start conv
+  while (!AD0INT) {}
+   
+  //ADC0MD= 0x80; vratice se automatski posle cit
+
+  ADC0STA &= ~0x20;	//ADC0STA |= ~0x20;
+  
+  ULONG.uch[3]= ADC0L; 	//ULONG.uch[3]= 0;
+  ULONG.uch[2]= ADC0M;	//ULONG.uch[2]= ADC0H;
+  ULONG.uch[1]= ADC0H;	//ULONG.uch[1]= ADC0M;
+  ULONG.uch[0]= 0;		//ULONG.uch[0]= ADC0L;
+
+  #ifdef BIPOLAR  
+	  if (ULONG.ul & 0x00800000){
+		pomL= 0- (0x01000000- ULONG.ul);
+	  }
+	  else pomL= ULONG.ul;
+  #else	
+  	  pomL= ULONG.ul;		// mozda moze i sa 3 bita da prodje
+  #endif
+
+  pomL= pomL >> CUT;
+  //save pomL u flash ili salji na UART kao X0
+
+  	  	  	X0 = pomL;	// OVO SAMO RADI TESTA - KASNIJE TO TREBA DA SE SALJE APP-U
+
+}
+
+void AppCalibG(void){			// - daje X1
+unsigned long adrd;
+ 
+  ADC0MD= 0x80;  // idle
+
+//  	ADC0STA = 0x00;			//ZA PROBU
+  
+  ADC0MD= 0x82;  // start conv
+  while (!AD0INT) {}
+   
+  //ADC0MD= 0x80; vratice se automatski posle cit
+
+  ADC0STA &= ~0x20;	//ADC0STA |= ~0x20;
+  
+  ULONG.uch[3]= ADC0L; 	//ULONG.uch[3]= 0;
+  ULONG.uch[2]= ADC0M;	//ULONG.uch[2]= ADC0H;
+  ULONG.uch[1]= ADC0H;	//ULONG.uch[1]= ADC0M;
+  ULONG.uch[0]= 0;		//ULONG.uch[0]= ADC0L;
+  	
+  adrd= ULONG.ul >> CUT;
+
+  //save u flash ili salji na UART kao X1
+
+  		X1 = adrd;	// OVO SAMO RADI TESTA - KASNIJE TO TREBA DA SE SALJE APP-U
+}
+
+
+void ADCLoop(void){
+unsigned long suma;
+int i;
+unsigned long ADC_avg;	///unsigned int ADC_avg;	//ZA TEST
+
+  
+  if (!ADC_canrun) return;
+
+  if (ADC_Loop_Start){
+     ADC_Loop_Start= 0;
+ 	 ADC0MD= 0x80;  // idle 
+  	 ADC0MD= 0x82;  // start conv  //verovatno moze samo jedna cmd ili mozda Delay izmedju (ispitati)
+	 return;
+  }
+
+//  		if(AD0BUSY || AD0CBSY || AD0ERR)
+//			Gres = 1;
+
+  if (!AD0INT) return;
+  else {
+	    ADC0STA &= ~0x20;	//ADC0STA |= ~0x20;
+
+		#ifdef  BIPOLAR
+			ADC_samps[sampCnt++]= ADC2Blong();
+		#else
+			ADC_samps[sampCnt++]= ADC2Ulong();
+		#endif
+
+		if (sampCnt == MAXSAMPS){
+			sampCnt= 0;
+			suma= 0;
+			for (i= 0; i< MAXSAMPS; i++){
+			   #ifdef BIPOLAR
+			     suma+= (long)ADC_samps[i];
+			   #else 
+			     suma+= ADC_samps[i];
+			   #endif
+			}
+			ADC_avg= suma/MAXSAMPS;
+			//Wght= (unit * (ADC_avg- X0)) / (X1-X0); // u 0.01 gramima			///Wght= (50000 * (ADC_avg- X0)) / (X1-X0); // u 0.01 gramima
+		
+			ADC_avg = ADC_Filter(ADC_avg);	// Dodatno filtriranje ADC vrednosti
+					
+				if(ADC_avg <= X0)
+					Wght=0;			
+				else
+					Wght= (unit * (ADC_avg- X0)) / (X1-X0);
+				
+/*
+				if(Wght>10000)
+					Wght = Wght/100;	//Wght = Wght >> 8;
+				else if(Wght<10000 && Wght>1000)
+					Wght = Wght/10;		//Wght = Wght >> 4;
+				else if(Wght<1000 && Wght>100)
+					Wght = Wght;
+				else if(Wght<100 && Wght>10)
+					Wght = Wght/1000;	//Wght = Wght >> 12;
+*/
+
+			dspvar.newweight= Wght;
+		}
+
+//		ADC0MD= 0x80;   /// PRIVREMENO - ZA TEST
+//		ADC0MD= 0x82;  
+  }
+}
+

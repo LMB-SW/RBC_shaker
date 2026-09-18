@@ -1,0 +1,111 @@
+#include <math.h>
+#include "CPU_setup.h"
+#include "display.h"
+
+Dspstruct  dspvar;
+
+unsigned char digit=0;
+
+unsigned char DispOffset=2;
+
+code char	bcd27s[13] =
+{
+
+	/* numbers dp g f e d c b a */
+	0x3f, /* 0 */
+	0x06, /* 1 */
+	0x5b, /* 2 */
+	0x4f, /* 3 10 01 20 */
+	0x66, /* 4 1+e+g 01+08+82 */
+	0x6d, /* 5 -20 02-10 */
+	0x7c, /* 6 5+d-f +10-04 */
+	0x07, /* 7 */
+	0x7f, /* 8 -20 */
+	0x6f, /* 9 4+f 04 */
+
+	/* special */
+	0x80, /* '.' */
+	0x00, /* ' ' */
+	0x40, /* '-' */
+
+	
+};
+
+extern bit disp_show_flag;
+
+
+void DisplayInit(void)
+{
+  dspvar.oldweight= 0xFFFF; //inicira pocetni ispis
+  dspvar.newweight= 0;
+}
+
+void DisplayLoop(void)
+{
+
+ 		 // pogledati da li je postavljen flag u timer3 na 3ms i ako nije => return.
+
+	if(!disp_show_flag)
+  		return;
+	
+
+  	if (abs(dspvar.newweight - dspvar.oldweight) > DispOffset/*dspvar.newweight  != dspvar.oldweight*/){		// mozda treba dati neki offset !!!
+		dspvar.oldweight= dspvar.newweight;
+		//sracunaj 3 cifre i decimalne point- e (videti Kakobija.txt)
+		//i postavi dspvar.Cif i dspvar.Dsp 
+
+		//izdvajanje cifara
+		dspvar.Cif[0] = dspvar.oldweight % 10;
+		dspvar.Cif[1] = (dspvar.oldweight / 10) % 10;
+		dspvar.Cif[2] = (dspvar.oldweight / 100) % 10;
+		
+	}
+
+  		//prikaz na osnovu dspvar.Cif i dspvar.Dsp 
+
+
+
+	///Prikaz cifara na displej 
+	P1=0x00;
+
+	DS1 = 1;
+	DS2 = 1;
+	DS3 = 1;
+
+
+	if(digit < 2)    
+		digit++;
+	else
+	    digit = 0;
+
+//	if(zfl)
+//		P1 = ~(bcd27s[dspvar.Cif[0]]|0x80);
+//	else 
+		P1 = ~(bcd27s[dspvar.Cif[digit]]);
+
+
+	if(digit == 0)
+	{
+		DS1 = 0;
+		DS2 = 1;
+		DS3 = 1;
+	}
+	else if(digit == 1) 
+	{
+		DS1 = 1;
+		DS2 = 0;
+		DS3 = 1;
+	}
+	else if(digit == 2) 
+	{
+		DS1 = 1;
+		DS2 = 1;
+		DS3 = 0;
+	}
+
+
+
+	disp_show_flag = 0;		//reset flaga iz ISR od Tim3
+
+}
+
