@@ -3,6 +3,9 @@
 #include "CPU_setup.h"
 
 
+extern unsigned char sendByteDelay;
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 /*void Delay_us(unsigned int us)
 {
@@ -41,9 +44,10 @@ void Delay_ms(unsigned int ms)
 		Delay_us(1000);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
 void putc0(unsigned char dat)
-{
-		
+{		
   	SBUF0= dat;
 	sendByteDelay = 2;
   	while ((SCON0&0x02)==0  && sendByteDelay){}

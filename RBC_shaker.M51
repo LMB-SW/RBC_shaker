@@ -1,43 +1,44 @@
-BL51 BANKED LINKER/LOCATER V6.05              09/18/2026  15:10:51  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.05              09/24/2026  14:54:30  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.05, INVOKED BY:
-C:\KEIL\C51\BIN\BL51.EXE D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026
->> -resen_SUART_ubacivanje_com_protokola\ADC.obj, D:\12.RBC shaker\Projekat\RB
->> C_shaker_project-17092026-resen_SUART_ubacivanje_com_protokola\CPU_stup.obj
->> , D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026-resen_SUART_ubaciva
->> nje_com_protokola\display.obj, D:\12.RBC shaker\Projekat\RBC_shaker_project
->> -17092026-resen_SUART_ubacivanje_com_protokola\interrupts.obj, D:\12.RBC sh
->> aker\Projekat\RBC_shaker_project-17092026-resen_SUART_ubacivanje_com_protok
->> ola\main.obj, D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026-resen_S
->> UART_ubacivanje_com_protokola\functions.obj, D:\12.RBC shaker\Projekat\RBC_
->> shaker_project-17092026-resen_SUART_ubacivanje_com_protokola\Communication.
->> obj, D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026-resen_SUART_ubac
->> ivanje_com_protokola\STARTUP.obj TO D:\12.RBC shaker\Projekat\RBC_shaker_pr
->> oject-17092026-resen_SUART_ubacivanje_com_protokola\RBC_shaker RS (256) PL 
->> (68) PW (78)
+C:\KEIL\C51\BIN\BL51.EXE D:\12.RBC shaker\Projekat\RBC_shaker_project-24092026
+>> -izrada_konacne_app\ADC.obj, D:\12.RBC shaker\Projekat\RBC_shaker_project-2
+>> 4092026-izrada_konacne_app\CPU_stup.obj, D:\12.RBC shaker\Projekat\RBC_shak
+>> er_project-24092026-izrada_konacne_app\display.obj, D:\12.RBC shaker\Projek
+>> at\RBC_shaker_project-24092026-izrada_konacne_app\interrupts.obj, D:\12.RBC
+>>  shaker\Projekat\RBC_shaker_project-24092026-izrada_konacne_app\main.obj, D
+>> :\12.RBC shaker\Projekat\RBC_shaker_project-24092026-izrada_konacne_app\fun
+>> ctions.obj, D:\12.RBC shaker\Projekat\RBC_shaker_project-24092026-izrada_ko
+>> nacne_app\Communication.obj, D:\12.RBC shaker\Projekat\RBC_shaker_project-2
+>> 4092026-izrada_konacne_app\STARTUP.obj, D:\12.RBC shaker\Projekat\RBC_shake
+>> r_project-24092026-izrada_konacne_app\shaker.obj TO D:\12.RBC shaker\Projek
+>> at\RBC_shaker_project-24092026-izrada_konacne_app\RBC_shaker RS (256) PL (6
+>> 8) PW (78)
 
 
 MEMORY MODEL: LARGE
 
 
 INPUT MODULES INCLUDED:
-  D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026-resen_SUART_ubacivanje
->> _com_protokola\ADC.obj (ADC)
-  D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026-resen_SUART_ubacivanje
->> _com_protokola\CPU_stup.obj (CPU_STUP)
-  D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026-resen_SUART_ubacivanje
->> _com_protokola\display.obj (DISPLAY)
-  D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026-resen_SUART_ubacivanje
->> _com_protokola\interrupts.obj (INTERRUPTS)
-  D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026-resen_SUART_ubacivanje
->> _com_protokola\main.obj (MAIN)
-  D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026-resen_SUART_ubacivanje
->> _com_protokola\functions.obj (FUNCTIONS)
-  D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026-resen_SUART_ubacivanje
->> _com_protokola\Communication.obj (COMMUNICATION)
-  D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026-resen_SUART_ubacivanje
->> _com_protokola\STARTUP.obj (?C_STARTUP)
+  D:\12.RBC shaker\Projekat\RBC_shaker_project-24092026-izrada_konacne_app\ADC
+>> .obj (ADC)
+  D:\12.RBC shaker\Projekat\RBC_shaker_project-24092026-izrada_konacne_app\CPU
+>> _stup.obj (CPU_STUP)
+  D:\12.RBC shaker\Projekat\RBC_shaker_project-24092026-izrada_konacne_app\dis
+>> play.obj (DISPLAY)
+  D:\12.RBC shaker\Projekat\RBC_shaker_project-24092026-izrada_konacne_app\int
+>> errupts.obj (INTERRUPTS)
+  D:\12.RBC shaker\Projekat\RBC_shaker_project-24092026-izrada_konacne_app\mai
+>> n.obj (MAIN)
+  D:\12.RBC shaker\Projekat\RBC_shaker_project-24092026-izrada_konacne_app\fun
+>> ctions.obj (FUNCTIONS)
+  D:\12.RBC shaker\Projekat\RBC_shaker_project-24092026-izrada_konacne_app\Com
+>> munication.obj (COMMUNICATION)
+  D:\12.RBC shaker\Projekat\RBC_shaker_project-24092026-izrada_konacne_app\STA
+>> RTUP.obj (?C_STARTUP)
+  D:\12.RBC shaker\Projekat\RBC_shaker_project-24092026-izrada_konacne_app\sha
+>> ker.obj (SHAKER)
   C:\KEIL\C51\LIB\C51L.LIB (?C_INIT)
   C:\KEIL\C51\LIB\C51L.LIB (?C?CLDOPTR)
   C:\KEIL\C51\LIB\C51L.LIB (?C?ILDIX)
@@ -45,7 +46,6 @@ INPUT MODULES INCLUDED:
   C:\KEIL\C51\LIB\C51L.LIB (?C?ULDIV)
   C:\KEIL\C51\LIB\C51L.LIB (?C?SLDIV)
   C:\KEIL\C51\LIB\C51L.LIB (?C?LNEG)
-  C:\KEIL\C51\LIB\C51L.LIB (?C?SLCMP)
   C:\KEIL\C51\LIB\C51L.LIB (?C?ULCMP)
   C:\KEIL\C51\LIB\C51L.LIB (?C?ULSHR)
   C:\KEIL\C51\LIB\C51L.LIB (?C?SLSHR)
@@ -54,8 +54,8 @@ INPUT MODULES INCLUDED:
   C:\KEIL\C51\LIB\C51L.LIB (ABS)
 
 
-LINK MAP OF MODULE:  D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026-res
->> en_SUART_ubacivanje_com_protokola\RBC_shaker (ADC)
+LINK MAP OF MODULE:  D:\12.RBC shaker\Projekat\RBC_shaker_project-24092026-izr
+>> ada_konacne_app\RBC_shaker (ADC)
 
 
             TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
@@ -64,97 +64,88 @@ LINK MAP OF MODULE:  D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026-res
             * * * * * * *   D A T A   M E M O R Y   * * * * * * *
             REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
                     0008H     0018H                  *** GAP ***
-            BIT     0020H.0   0000H.2   UNIT         ?BI?COMMUNICATION
-            BIT     0020H.2   0000H.1   UNIT         ?BI?ADC
-            BIT     0020H.3   0000H.1   UNIT         ?BI?INTERRUPTS
-BL51 BANKED LINKER/LOCATER V6.05            09/18/2026  15:10:51  PAGE 2
+            BIT     0020H.0   0000H.6   UNIT         ?BI?ADC
+            BIT     0020H.6   0000H.3   UNIT         ?BI?DISPLAY
+            BIT     0021H.1   0000H.2   UNIT         ?BI?COMMUNICATION
+BL51 BANKED LINKER/LOCATER V6.05            09/24/2026  14:54:30  PAGE 2
 
 
-            BIT     0020H.4   0000H.1   UNIT         ?BI?_SENDMOTORSPEED?FUNCT
+            BIT     0021H.3   0000H.1   UNIT         ?BI?INTERRUPTS
+            BIT     0021H.4   0000H.1   UNIT         ?BI?MAIN
+            BIT     0021H.5   0000H.1   UNIT         ?BI?_SENDMOTORSPEED?FUNCT
 >> IONS
-                    0020H.5   0000H.3                *** GAP ***
-            IDATA   0021H     0001H     UNIT         ?STACK
+            BIT     0021H.6   0000H.1   UNIT         ?BI?SHAKER
+                    0021H.7   0000H.1                *** GAP ***
+            IDATA   0022H     0001H     UNIT         ?STACK
 
             * * * * * * *  X D A T A   M E M O R Y  * * * * * * *
-            XDATA   0000H     00A4H     UNIT         ?XD?ADC
-            XDATA   00A4H     0015H     UNIT         ?XD?INTERRUPTS
-            XDATA   00B9H     0014H     UNIT         ?XD?COMMUNICATION
-            XDATA   00CDH     0010H     UNIT         ?XD?DISPLAY
-            XDATA   00DDH     0007H     UNIT         ?XD?_CONVERTBYTESTOLONG?C
->> OMMUNICATION
-            XDATA   00E4H     0006H     UNIT         ?XD?ADCLOOP?ADC
-            XDATA   00EAH     0005H     UNIT         ?XD?_SENDMESSAGE?COMMUNIC
->> ATION
-            XDATA   00EFH     0004H     UNIT         ?XD?ADC2BLONG?ADC
-            XDATA   00F3H     0004H     UNIT         ?XD?_ADC_FILTER?ADC
-            XDATA   00F7H     0004H     UNIT         ?XD?APPCALIBO?ADC
-            XDATA   00FBH     0004H     UNIT         _XDATA_GROUP_
-            XDATA   00FFH     0003H     UNIT         ?XD?_CALCCHECKSUM?COMMUNI
->> CATION
-            XDATA   0102H     0003H     UNIT         ?XD?_ANALYZERECEIVEDMESSA
->> GE?COMMUNICATION
+            XDATA   0000H     00A3H     UNIT         ?XD?ADC
+            XDATA   00A3H     0015H     UNIT         ?XD?INTERRUPTS
+            XDATA   00B8H     0014H     UNIT         ?XD?COMMUNICATION
+            XDATA   00CCH     0012H     UNIT         ?XD?DISPLAY
+            XDATA   00DEH     0012H     UNIT         _XDATA_GROUP_
+            XDATA   00F0H     0001H     UNIT         ?XD?SHAKER
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
             CODE    0000H     0003H     ABSOLUTE     
             CODE    0003H     0020H     UNIT         ?PR?_ADC0_INIT?CPU_STUP
             CODE    0023H     0003H     ABSOLUTE     
-            CODE    0026H     0004H     UNIT         ?PR?DISABLEWDT?CPU_STUP
-                    002AH     0001H                  *** GAP ***
+                    0026H     0005H                  *** GAP ***
             CODE    002BH     0003H     ABSOLUTE     
-            CODE    002EH     01F9H     UNIT         ?C?LIB_CODE
-            CODE    0227H     01D5H     UNIT         ?PR?ADCLOOP?ADC
-            CODE    03FCH     017AH     UNIT         ?PR?_UARTINIT?CPU_STUP
-            CODE    0576H     0154H     UNIT         ?PR?_CONVERTBYTESTOLONG?C
->> OMMUNICATION
-            CODE    06CAH     0105H     UNIT         ?PR?DISPLAYLOOP?DISPLAY
-            CODE    07CFH     00C7H     UNIT         ?PR?_ANALYZERECEIVEDMESSA
+            CODE    002EH     0226H     UNIT         ?PR?_ANALYZERECEIVEDMESSA
 >> GE?COMMUNICATION
-            CODE    0896H     00ABH     UNIT         ?PR?_SENDMESSAGE?COMMUNIC
+            CODE    0254H     01E3H     UNIT         ?C?LIB_CODE
+            CODE    0437H     01E0H     UNIT         ?PR?ADCLOOP?ADC
+            CODE    0617H     018AH     UNIT         ?PR?DISPLAYLOOP?DISPLAY
+            CODE    07A1H     0154H     UNIT         ?PR?_CONVERTBYTESTOLONG?C
+>> OMMUNICATION
+            CODE    08F5H     00B5H     UNIT         ?PR?APPCALIBO?ADC
+            CODE    09AAH     00B3H     UNIT         ?PR?_SENDMESSAGE?COMMUNIC
 >> ATION
-            CODE    0941H     0092H     UNIT         ?PR?APPCALIBO?ADC
-            CODE    09D3H     008CH     UNIT         ?C_C51STARTUP
-            CODE    0A5FH     0089H     UNIT         ?PR?_ADC_FILTER?ADC
-            CODE    0AE8H     0079H     UNIT         ?PR?TIMER2_ISR?INTERRUPTS
+            CODE    0A5DH     008FH     UNIT         ?C_C51STARTUP
+            CODE    0AECH     008EH     UNIT         ?PR?TIMER2_ISR?INTERRUPTS
 >> 
-            CODE    0B61H     006DH     UNIT         ?PR?ADC2BLONG?ADC
-            CODE    0BCEH     0061H     UNIT         ?PR?UART0_ISR?INTERRUPTS
-            CODE    0C2FH     0059H     UNIT         ?C_INITSEG
-            CODE    0C88H     0044H     UNIT         ?C?LDIV
-            CODE    0CCCH     003BH     UNIT         ?PR?_SENDMOTORSPEED?FUNCT
+            CODE    0B7AH     008BH     UNIT         ?PR?UART0_ISR?INTERRUPTS
+            CODE    0C05H     0089H     UNIT         ?PR?_ADC_FILTER?ADC
+            CODE    0C8EH     007DH     UNIT         ?PR?MAIN?MAIN
+            CODE    0D0BH     007BH     UNIT         ?C_INITSEG
+            CODE    0D86H     006DH     UNIT         ?PR?ADC2BLONG?ADC
+            CODE    0DF3H     006CH     UNIT         ?PR?APPCALIBG?ADC
+            CODE    0E5FH     0044H     UNIT         ?C?LDIV
+            CODE    0EA3H     003EH     UNIT         ?PR?SHAKERLOOP?SHAKER
+            CODE    0EE1H     003BH     UNIT         ?PR?_SENDMOTORSPEED?FUNCT
 >> IONS
-            CODE    0D07H     0039H     UNIT         ?PR?APPCALIBG?ADC
-            CODE    0D40H     002EH     UNIT         ?PR?COMMUNICATIONLOOP?COM
+            CODE    0F1CH     002EH     UNIT         ?PR?COMMUNICATIONLOOP?COM
 >> MUNICATION
-            CODE    0D6EH     002DH     UNIT         ?PR?OSCINIT?CPU_STUP
-            CODE    0D9BH     0029H     UNIT         ?PR?_CALCCHECKSUM?COMMUNI
+            CODE    0F4AH     002DH     UNIT         ?PR?OSCINIT?CPU_STUP
+            CODE    0F77H     0029H     UNIT         ?PR?_CALCCHECKSUM?COMMUNI
 >> CATION
-            CODE    0DC4H     0028H     UNIT         ?PR?ADC2ULONG?ADC
-            CODE    0DECH     0024H     UNIT         ?PR?SYSCALIBO?ADC
-            CODE    0E10H     0024H     UNIT         ?PR?SYSCALIBG?ADC
-            CODE    0E34H     0022H     UNIT         ?PR?MAIN?MAIN
-            CODE    0E56H     001BH     UNIT         ?PR?_CPUINIT?CPU_STUP
-            CODE    0E71H     001BH     UNIT         ?PR?_DELAY_MS?FUNCTIONS
-            CODE    0E8CH     001AH     UNIT         ?PR?_DELAY_US?FUNCTIONS
-BL51 BANKED LINKER/LOCATER V6.05            09/18/2026  15:10:51  PAGE 3
-
-
-            CODE    0EA6H     0017H     UNIT         ?PR?_PUTC0?FUNCTIONS
-            CODE    0EBDH     0016H     UNIT         ?PR?GENCHECKSUM?COMMUNICA
+            CODE    0FA0H     0028H     UNIT         ?PR?ADC2ULONG?ADC
+            CODE    0FC8H     0024H     UNIT         ?PR?SYSCALIBO?ADC
+            CODE    0FECH     0024H     UNIT         ?PR?SYSCALIBG?ADC
+            CODE    1010H     001BH     UNIT         ?PR?_DELAY_MS?FUNCTIONS
+            CODE    102BH     001BH     UNIT         ?PR?_PUTC0?FUNCTIONS
+            CODE    1046H     001AH     UNIT         ?PR?_DELAY_US?FUNCTIONS
+            CODE    1060H     0017H     UNIT         ?PR?UART_INIT?CPU_STUP
+            CODE    1077H     0016H     UNIT         ?PR?GENCHECKSUM?COMMUNICA
 >> TION
-            CODE    0ED3H     0015H     UNIT         ?PR?DISPLAYINIT?DISPLAY
-            CODE    0EE8H     0012H     UNIT         ?PR?TIMER2_INIT?CPU_STUP
-            CODE    0EFAH     000DH     UNIT         ?PR?INTERNCALIBO?ADC
-            CODE    0F07H     000DH     UNIT         ?PR?INTERNCALIBG?ADC
-            CODE    0F14H     000DH     UNIT         ?PR?PORTSINIT?CPU_STUP
-            CODE    0F21H     000DH     UNIT         ?CO?DISPLAY
-            CODE    0F2EH     000CH     UNIT         ?PR?_ABS?ABS
-            CODE    0F3AH     0009H     UNIT         ?PR?SETBOARDADDRESS?FUNCT
+            CODE    108DH     0015H     UNIT         ?PR?DISPLAYINIT?DISPLAY
+            CODE    10A2H     0013H     UNIT         ?PR?_CPUINIT?CPU_STUP
+            CODE    10B5H     0012H     UNIT         ?PR?TIMER2_INIT?CPU_STUP
+            CODE    10C7H     000DH     UNIT         ?PR?INTERNCALIBFULL?ADC
+            CODE    10D4H     000DH     UNIT         ?PR?PORTSINIT?CPU_STUP
+            CODE    10E1H     000DH     UNIT         ?CO?DISPLAY
+BL51 BANKED LINKER/LOCATER V6.05            09/24/2026  14:54:30  PAGE 3
+
+
+            CODE    10EEH     000CH     UNIT         ?PR?_ABS?ABS
+            CODE    10FAH     0009H     UNIT         ?PR?SETBOARDADDRESS?FUNCT
 >> IONS
 
 
 
-OVERLAY MAP OF MODULE:   D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026
->> -resen_SUART_ubacivanje_com_protokola\RBC_shaker (ADC)
+OVERLAY MAP OF MODULE:   D:\12.RBC shaker\Projekat\RBC_shaker_project-24092026
+>> -izrada_konacne_app\RBC_shaker (ADC)
 
 
 SEGMENT                                            XDATA_GROUP
@@ -165,236 +156,299 @@ SEGMENT                                            XDATA_GROUP
   +--> ?C_INITSEG
 
 ?PR?MAIN?MAIN                                    -----    -----
-  +--> ?PR?DISABLEWDT?CPU_STUP
   +--> ?PR?_CPUINIT?CPU_STUP
   +--> ?PR?SETBOARDADDRESS?FUNCTIONS
   +--> ?PR?DISPLAYINIT?DISPLAY
+  +--> ?PR?INTERNCALIBFULL?ADC
   +--> ?PR?_DELAY_MS?FUNCTIONS
+  +--> ?PR?DISPLAYLOOP?DISPLAY
+  +--> ?PR?ADCLOOP?ADC
+  +--> ?PR?SHAKERLOOP?SHAKER
+  +--> ?PR?COMMUNICATIONLOOP?COMMUNICATION
 
 ?PR?_CPUINIT?CPU_STUP                            -----    -----
   +--> ?PR?OSCINIT?CPU_STUP
   +--> ?PR?PORTSINIT?CPU_STUP
   +--> ?PR?TIMER2_INIT?CPU_STUP
   +--> ?PR?_ADC0_INIT?CPU_STUP
-  +--> ?PR?_UARTINIT?CPU_STUP
-
-?PR?_UARTINIT?CPU_STUP                           00FBH    0004H
+  +--> ?PR?UART_INIT?CPU_STUP
 
 ?PR?_DELAY_MS?FUNCTIONS                          -----    -----
   +--> ?PR?_DELAY_US?FUNCTIONS
 
+?PR?DISPLAYLOOP?DISPLAY                          -----    -----
+  +--> ?PR?_ABS?ABS
+  +--> ?CO?DISPLAY
+
+?PR?ADCLOOP?ADC                                  00DEH    0006H
+  +--> ?PR?ADC2BLONG?ADC
+  +--> ?PR?_ADC_FILTER?ADC
+
+?PR?ADC2BLONG?ADC                                00E4H    0004H
+
+?PR?_ADC_FILTER?ADC                              00E4H    0004H
+
+?PR?COMMUNICATIONLOOP?COMMUNICATION              -----    -----
+  +--> ?PR?_ANALYZERECEIVEDMESSAGE?COMMUNICA...
+
+?PR?_ANALYZERECEIVEDMESSAGE?COMMUNICA...         00DEH    000BH
+  +--> ?PR?_CALCCHECKSUM?COMMUNICATION
+  +--> ?PR?APPCALIBO?ADC
+  +--> ?PR?_CONVERTBYTESTOLONG?COMMUNICATION
+  +--> ?PR?APPCALIBG?ADC
+  +--> ?PR?_SENDMESSAGE?COMMUNICATION
+
+?PR?_CALCCHECKSUM?COMMUNICATION                  00E9H    0003H
+
+?PR?APPCALIBO?ADC                                00E9H    0004H
+
+?PR?_CONVERTBYTESTOLONG?COMMUNICATION            00E9H    0007H
+BL51 BANKED LINKER/LOCATER V6.05            09/24/2026  14:54:30  PAGE 4
 
 
-SYMBOL TABLE OF MODULE:  D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026
->> -resen_SUART_ubacivanje_com_protokola\RBC_shaker (ADC)
+
+?PR?_SENDMESSAGE?COMMUNICATION                   00E9H    0005H
+  +--> ?PR?GENCHECKSUM?COMMUNICATION
+  +--> ?PR?_PUTC0?FUNCTIONS
+
+
+
+SYMBOL TABLE OF MODULE:  D:\12.RBC shaker\Projekat\RBC_shaker_project-24092026
+>> -izrada_konacne_app\RBC_shaker (ADC)
 
   VALUE           TYPE          NAME
   ----------------------------------
 
   -------         MODULE        ADC
   C:0000H         SYMBOL        _ICE_DUMMY_
-  C:0DC4H         PUBLIC        ADC2Ulong
+  C:0FA0H         PUBLIC        ADC2Ulong
   X:0004H         PUBLIC        ULONG
   X:0008H         PUBLIC        X0
   X:000CH         PUBLIC        X1
   D:00F3H         PUBLIC        ADC0MD
-  C:0A5FH         PUBLIC        _ADC_Filter
-  C:0F07H         PUBLIC        InternCalibG
+  B:0020H.1       PUBLIC        Gres
+  C:0C05H         PUBLIC        _ADC_Filter
   X:0010H         PUBLIC        Wght
-  C:0EFAH         PUBLIC        InternCalibO
+  B:00E8H.1       PUBLIC        AD0ERR
   B:00E8H.5       PUBLIC        AD0INT
-BL51 BANKED LINKER/LOCATER V6.05            09/18/2026  15:10:51  PAGE 4
-
-
   X:0014H         PUBLIC        ADC_canrun
   X:0015H         PUBLIC        ADC_Loop_Start
+  B:0020H.2       PUBLIC        InternCalib_Done
   D:00C5H         PUBLIC        ADC0H
-  X:0017H         PUBLIC        unit
+  X:0016H         PUBLIC        unit
   D:00C3H         PUBLIC        ADC0L
   D:00C4H         PUBLIC        ADC0M
-  C:0D07H         PUBLIC        AppCalibG
+  C:0DF3H         PUBLIC        AppCalibG
   D:00ADH         PUBLIC        ADC0CGH
-  X:0019H         PUBLIC        ADC_samps
-  C:0941H         PUBLIC        AppCalibO
+  B:0020H.3       PUBLIC        filtriraj
+  X:0018H         PUBLIC        ADC_samps
+  C:08F5H         PUBLIC        AppCalibO
   D:00ABH         PUBLIC        ADC0CGL
   D:00ACH         PUBLIC        ADC0CGM
   D:00BCH         PUBLIC        ADC0COH
+  B:0020H.4       PUBLIC        AppCalibOffset_Done
   D:00BAH         PUBLIC        ADC0COL
   D:00BBH         PUBLIC        ADC0COM
-  X:0099H         PUBLIC        sampCnt
-  X:009BH         PUBLIC        REF_value
+  X:0098H         PUBLIC        sampCnt
+  X:009AH         PUBLIC        REF_value
   D:00E8H         PUBLIC        ADC0STA
-  C:0227H         PUBLIC        ADCLoop
-  C:0E10H         PUBLIC        SysCalibG
-  X:009FH         PUBLIC        ADC_avg
-  C:0DECH         PUBLIC        SysCalibO
-  C:0B61H         PUBLIC        ADC2Blong
-  X:00A3H         PUBLIC        FiltDivisor
+  C:0437H         PUBLIC        ADCLoop
+  C:0FECH         PUBLIC        SysCalibG
+  X:009EH         PUBLIC        ADC_avg
+  C:10C7H         PUBLIC        InternCalibFull
+  B:0020H.5       PUBLIC        AppCalibGain_Done
+  C:0FC8H         PUBLIC        SysCalibO
+  C:0D86H         PUBLIC        ADC2Blong
+  X:00A2H         PUBLIC        FiltDivisor
   -------         PROC          ADC2BLONG
   -------         DO            
-  X:00EFH         SYMBOL        poml
+  X:00E4H         SYMBOL        poml
   -------         ENDDO         
-  C:0B61H         LINE#         28
-  C:0B61H         LINE#         31
-  C:0B67H         LINE#         32
-  C:0B6DH         LINE#         33
-  C:0B73H         LINE#         34
-  C:0B78H         LINE#         36
-  C:0B85H         LINE#         37
-  C:0BA7H         LINE#         38
-  C:0BA9H         LINE#         39
-  C:0BBAH         LINE#         41
-  C:0BCDH         LINE#         42
+  C:0D86H         LINE#         35
+  C:0D86H         LINE#         38
+  C:0D8CH         LINE#         39
+  C:0D92H         LINE#         40
+  C:0D98H         LINE#         41
+  C:0D9DH         LINE#         43
+  C:0DAAH         LINE#         44
+BL51 BANKED LINKER/LOCATER V6.05            09/24/2026  14:54:30  PAGE 5
+
+
+  C:0DCCH         LINE#         45
+  C:0DCEH         LINE#         46
+  C:0DDFH         LINE#         48
+  C:0DF2H         LINE#         49
   -------         ENDPROC       ADC2BLONG
   -------         PROC          ADC2ULONG
-  C:0DC4H         LINE#         44
-  C:0DC4H         LINE#         46
-  C:0DCAH         LINE#         47
-  C:0DD0H         LINE#         48
-  C:0DD6H         LINE#         49
-  C:0DDBH         LINE#         51
-  C:0DEBH         LINE#         52
+  C:0FA0H         LINE#         51
+  C:0FA0H         LINE#         53
+  C:0FA6H         LINE#         54
+  C:0FACH         LINE#         55
+  C:0FB2H         LINE#         56
+  C:0FB7H         LINE#         58
+  C:0FC7H         LINE#         59
   -------         ENDPROC       ADC2ULONG
   -------         PROC          _ADC_FILTER
-  X:00F3H         SYMBOL        new_value
+  X:00E4H         SYMBOL        new_value
   -------         DO            
   X:0000H         SYMBOL        filtered
-  B:0020H.2       SYMBOL        first
+  B:0020H.0       SYMBOL        first
   -------         ENDDO         
-  C:0A5FH         LINE#         56
-  C:0A65H         LINE#         57
-  C:0A65H         LINE#         61
-  C:0A68H         LINE#         62
-  C:0A68H         LINE#         63
-  C:0A7CH         LINE#         64
-  C:0A7EH         LINE#         65
-  C:0A80H         LINE#         67
-  C:0A80H         LINE#         68
-  C:0AD9H         LINE#         69
-BL51 BANKED LINKER/LOCATER V6.05            09/18/2026  15:10:51  PAGE 5
-
-
-  C:0AD9H         LINE#         71
-  C:0AE7H         LINE#         72
+  C:0C05H         LINE#         63
+  C:0C0BH         LINE#         64
+  C:0C0BH         LINE#         68
+  C:0C0EH         LINE#         69
+  C:0C0EH         LINE#         70
+  C:0C22H         LINE#         71
+  C:0C24H         LINE#         72
+  C:0C26H         LINE#         74
+  C:0C26H         LINE#         75
+  C:0C7FH         LINE#         76
+  C:0C7FH         LINE#         78
+  C:0C8DH         LINE#         79
   -------         ENDPROC       _ADC_FILTER
-  -------         PROC          INTERNCALIBO
-  C:0EFAH         LINE#         75
-  C:0EFAH         LINE#         76
-  C:0EFAH         LINE#         77
-  C:0EFDH         LINE#         79
-  C:0F00H         LINE#         80
-  C:0F03H         LINE#         82
-  C:0F06H         LINE#         84
-  -------         ENDPROC       INTERNCALIBO
-  -------         PROC          INTERNCALIBG
-  C:0F07H         LINE#         87
-  C:0F07H         LINE#         88
-  C:0F07H         LINE#         89
-  C:0F0AH         LINE#         91
-  C:0F0DH         LINE#         92
-  C:0F10H         LINE#         94
-  C:0F13H         LINE#         96
-  -------         ENDPROC       INTERNCALIBG
+  -------         PROC          INTERNCALIBFULL
+  C:10C7H         LINE#         82
+  C:10C7H         LINE#         83
+  C:10C7H         LINE#         84
+  C:10CAH         LINE#         86
+  C:10CDH         LINE#         87
+  C:10D0H         LINE#         89
+  C:10D3H         LINE#         90
+  -------         ENDPROC       INTERNCALIBFULL
   -------         PROC          SYSCALIBO
-  C:0DECH         LINE#         100
-  C:0DECH         LINE#         102
-  C:0DEFH         LINE#         106
-  C:0DF2H         LINE#         107
-  C:0DF5H         LINE#         111
-  C:0DF8H         LINE#         113
-  C:0DFEH         LINE#         114
-  C:0E04H         LINE#         115
-  C:0E0AH         LINE#         116
-  C:0E0FH         LINE#         119
+  C:0FC8H         LINE#         117
+  C:0FC8H         LINE#         119
+  C:0FCBH         LINE#         123
+  C:0FCEH         LINE#         124
+  C:0FD1H         LINE#         128
+  C:0FD4H         LINE#         130
+  C:0FDAH         LINE#         131
+  C:0FE0H         LINE#         132
+  C:0FE6H         LINE#         133
+  C:0FEBH         LINE#         136
   -------         ENDPROC       SYSCALIBO
   -------         PROC          SYSCALIBG
-  C:0E10H         LINE#         121
-  C:0E10H         LINE#         123
-  C:0E13H         LINE#         127
-  C:0E16H         LINE#         128
-  C:0E19H         LINE#         132
-  C:0E1CH         LINE#         134
-  C:0E22H         LINE#         135
-  C:0E28H         LINE#         136
-  C:0E2EH         LINE#         137
-  C:0E33H         LINE#         140
+  C:0FECH         LINE#         138
+  C:0FECH         LINE#         140
+  C:0FEFH         LINE#         144
+  C:0FF2H         LINE#         145
+  C:0FF5H         LINE#         149
+  C:0FF8H         LINE#         151
+  C:0FFEH         LINE#         152
+  C:1004H         LINE#         153
+  C:100AH         LINE#         154
+  C:100FH         LINE#         157
+BL51 BANKED LINKER/LOCATER V6.05            09/24/2026  14:54:30  PAGE 6
+
+
   -------         ENDPROC       SYSCALIBG
   -------         PROC          APPCALIBO
   -------         DO            
-  X:00F7H         SYMBOL        pomL
+  X:00E9H         SYMBOL        pomL
   -------         ENDDO         
-  C:0941H         LINE#         142
-  C:0941H         LINE#         145
-  C:0944H         LINE#         149
-  C:0947H         LINE#         150
-  C:094AH         LINE#         154
-  C:094DH         LINE#         156
-  C:0953H         LINE#         157
-  C:0959H         LINE#         158
-  C:095FH         LINE#         159
-  C:0964H         LINE#         162
-  C:0971H         LINE#         163
-  C:0993H         LINE#         164
-  C:0995H         LINE#         165
-  C:09A6H         LINE#         170
-  C:09BFH         LINE#         173
+  C:08F5H         LINE#         159
+  C:08F5H         LINE#         162
+  C:08F8H         LINE#         166
+  C:08FBH         LINE#         167
+  C:08FEH         LINE#         171
+  C:0901H         LINE#         173
+  C:0907H         LINE#         174
+  C:090DH         LINE#         175
+  C:0913H         LINE#         176
+  C:0918H         LINE#         179
+  C:0925H         LINE#         180
+  C:0947H         LINE#         181
+  C:0949H         LINE#         182
+  C:095AH         LINE#         187
+  C:0973H         LINE#         190
+  C:0987H         LINE#         192
+  C:09A0H         LINE#         193
+  C:09A0H         LINE#         194
+  C:09A2H         LINE#         195
+  C:09A5H         LINE#         196
+  C:09A5H         LINE#         198
+  C:09A5H         LINE#         199
+  C:09A7H         LINE#         200
+  C:09A9H         LINE#         201
+  C:09A9H         LINE#         203
   -------         ENDPROC       APPCALIBO
-BL51 BANKED LINKER/LOCATER V6.05            09/18/2026  15:10:51  PAGE 6
-
-
   -------         PROC          APPCALIBG
   -------         DO            
   D:0004H         SYMBOL        adrd
   -------         ENDDO         
-  C:0D07H         LINE#         177
-  C:0D07H         LINE#         180
-  C:0D0AH         LINE#         184
-  C:0D0DH         LINE#         185
-  C:0D10H         LINE#         189
-  C:0D13H         LINE#         191
-  C:0D19H         LINE#         192
-  C:0D1FH         LINE#         193
-  C:0D25H         LINE#         194
-  C:0D2AH         LINE#         196
-  C:0D3AH         LINE#         200
+  C:0DF3H         LINE#         205
+  C:0DF3H         LINE#         208
+  C:0DF6H         LINE#         212
+  C:0DF9H         LINE#         213
+  C:0DFCH         LINE#         217
+  C:0DFFH         LINE#         219
+  C:0E05H         LINE#         220
+  C:0E0BH         LINE#         221
+  C:0E11H         LINE#         222
+  C:0E16H         LINE#         224
+  C:0E26H         LINE#         228
+  C:0E2CH         LINE#         230
+  C:0E4CH         LINE#         231
+  C:0E4CH         LINE#         232
+  C:0E4EH         LINE#         233
+  C:0E54H         LINE#         234
+  C:0E56H         LINE#         235
+  C:0E56H         LINE#         237
+  C:0E56H         LINE#         238
+  C:0E58H         LINE#         239
+  C:0E5DH         LINE#         240
+  C:0E5EH         LINE#         241
+  C:0E5EH         LINE#         242
   -------         ENDPROC       APPCALIBG
   -------         PROC          ADCLOOP
   -------         DO            
-  X:00E4H         SYMBOL        suma
-  X:00E8H         SYMBOL        i
+  X:00DEH         SYMBOL        suma
+  X:00E2H         SYMBOL        i
   -------         ENDDO         
-  C:0227H         LINE#         204
-  C:0227H         LINE#         210
-  C:0230H         LINE#         212
-  C:023AH         LINE#         213
-  C:0241H         LINE#         214
-  C:0244H         LINE#         215
-  C:0248H         LINE#         217
-  C:0248H         LINE#         222
-  C:024EH         LINE#         223
-  C:024EH         LINE#         224
-  C:0251H         LINE#         227
-  C:0286H         LINE#         232
-  C:0295H         LINE#         233
-  C:029BH         LINE#         234
-  C:02A5H         LINE#         235
-  C:02ACH         LINE#         237
-  C:02FCH         LINE#         241
-  C:0316H         LINE#         242
-  C:0333H         LINE#         245
-  C:034AH         LINE#         247
-  C:036CH         LINE#         248
-  C:0378H         LINE#         250
-  C:03E7H         LINE#         263
-  C:03FBH         LINE#         264
-  C:03FBH         LINE#         268
-  C:03FBH         LINE#         269
+  C:0437H         LINE#         245
+BL51 BANKED LINKER/LOCATER V6.05            09/24/2026  14:54:30  PAGE 7
+
+
+  C:0437H         LINE#         251
+  C:0440H         LINE#         253
+  C:0446H         LINE#         254
+  C:0448H         LINE#         255
+  C:044BH         LINE#         256
+  C:044FH         LINE#         258
+  C:044FH         LINE#         260
+  C:0452H         LINE#         261
+  C:0454H         LINE#         263
+  C:045AH         LINE#         264
+  C:045AH         LINE#         265
+  C:045DH         LINE#         268
+  C:0492H         LINE#         273
+  C:04A1H         LINE#         274
+  C:04A7H         LINE#         275
+  C:04B1H         LINE#         276
+  C:04B8H         LINE#         278
+  C:0508H         LINE#         282
+  C:0522H         LINE#         283
+  C:053FH         LINE#         286
+  C:0542H         LINE#         287
+  C:0559H         LINE#         289
+  C:057BH         LINE#         290
+  C:057BH         LINE#         291
+  C:0585H         LINE#         293
+  C:058AH         LINE#         294
+  C:058CH         LINE#         295
+  C:058EH         LINE#         296
+  C:0590H         LINE#         298
+  C:0602H         LINE#         311
+  C:0616H         LINE#         312
+  C:0616H         LINE#         316
+  C:0616H         LINE#         317
   -------         ENDPROC       ADCLOOP
   -------         ENDMOD        ADC
 
   -------         MODULE        CPU_STUP
   C:0000H         SYMBOL        _ICE_DUMMY_
-  C:0E56H         PUBLIC        _CPUInit
+  C:10A2H         PUBLIC        _CPUInit
   D:0080H         PUBLIC        P0
   D:00FBH         PUBLIC        ADC0CF
   D:00F4H         PUBLIC        ADC0CN
@@ -406,27 +460,25 @@ SYMBOL TABLE OF MODULE:  D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026
   D:009BH         PUBLIC        ADC0DECH
   D:00CAH         PUBLIC        TMR2RLL
   D:009AH         PUBLIC        ADC0DECL
-  D:00D9H         PUBLIC        PCA0MD
-BL51 BANKED LINKER/LOCATER V6.05            09/18/2026  15:10:51  PAGE 7
-
-
   D:00E1H         PUBLIC        XBR0
   D:00E2H         PUBLIC        XBR1
   D:00D1H         PUBLIC        REF0CN
-  C:0026H         PUBLIC        DisableWDT
   D:00FFH         PUBLIC        VDM0CN
-  C:0EE8H         PUBLIC        Timer2_Init
-  C:0F14H         PUBLIC        PortsInit
+  C:10B5H         PUBLIC        Timer2_Init
+  C:10D4H         PUBLIC        PortsInit
+  C:1060H         PUBLIC        UART_Init
   D:0089H         PUBLIC        TMOD
   D:00C8H         PUBLIC        TMR2CN
-  C:0D6EH         PUBLIC        OscInit
+  C:0F4AH         PUBLIC        OscInit
   D:00A9H         PUBLIC        CLKSEL
   D:00B2H         PUBLIC        OSCICN
   B:00A8H.4       PUBLIC        ES0
   D:00BEH         PUBLIC        CLKMUL
   D:008DH         PUBLIC        TH1
+BL51 BANKED LINKER/LOCATER V6.05            09/24/2026  14:54:30  PAGE 8
+
+
   D:008BH         PUBLIC        TL1
-  C:03FCH         PUBLIC        _UARTInit
   D:00F7H         PUBLIC        ADC0CLK
   B:0088H.6       PUBLIC        TR1
   D:00EFH         PUBLIC        RSTSRC
@@ -438,33 +490,27 @@ SYMBOL TABLE OF MODULE:  D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026
   -------         DO            
   D:0006H         SYMBOL        i
   -------         ENDDO         
-  C:0D6EH         LINE#         4
-  C:0D6EH         LINE#         7
-  C:0D71H         LINE#         8
-  C:0D74H         LINE#         9
-  C:0D77H         LINE#         10
-  C:0D79H         LINE#         11
-  C:0D7CH         LINE#         12
-  C:0D89H         LINE#         13
-  C:0D8CH         LINE#         14
-  C:0D91H         LINE#         15
-  C:0D94H         LINE#         16
-  C:0D97H         LINE#         17
-  C:0D9AH         LINE#         18
+  C:0F4AH         LINE#         4
+  C:0F4AH         LINE#         7
+  C:0F4DH         LINE#         8
+  C:0F50H         LINE#         9
+  C:0F53H         LINE#         10
+  C:0F55H         LINE#         11
+  C:0F58H         LINE#         12
+  C:0F65H         LINE#         13
+  C:0F68H         LINE#         14
+  C:0F6DH         LINE#         15
+  C:0F70H         LINE#         16
+  C:0F73H         LINE#         17
+  C:0F76H         LINE#         18
   -------         ENDPROC       OSCINIT
-  -------         PROC          DISABLEWDT
-  C:0026H         LINE#         20
-  C:0026H         LINE#         21
-  C:0026H         LINE#         23
-  C:0029H         LINE#         24
-  -------         ENDPROC       DISABLEWDT
   -------         PROC          PORTSINIT
-  C:0F14H         LINE#         26
-  C:0F14H         LINE#         29
-  C:0F17H         LINE#         32
-  C:0F1AH         LINE#         36
-  C:0F1DH         LINE#         37
-  C:0F20H         LINE#         38
+  C:10D4H         LINE#         26
+  C:10D4H         LINE#         29
+  C:10D7H         LINE#         32
+  C:10DAH         LINE#         36
+  C:10DDH         LINE#         37
+  C:10E0H         LINE#         38
   -------         ENDPROC       PORTSINIT
   -------         PROC          _ADC0_INIT
   D:0007H         SYMBOL        bip
@@ -475,9 +521,6 @@ SYMBOL TABLE OF MODULE:  D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026
   C:000EH         LINE#         45
   C:0011H         LINE#         47
   C:0014H         LINE#         49
-BL51 BANKED LINKER/LOCATER V6.05            09/18/2026  15:10:51  PAGE 8
-
-
   C:0017H         LINE#         50
   C:001AH         LINE#         52
   C:001DH         LINE#         53
@@ -485,51 +528,40 @@ SYMBOL TABLE OF MODULE:  D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026
   C:0022H         LINE#         62
   -------         ENDPROC       _ADC0_INIT
   -------         PROC          TIMER2_INIT
-  C:0EE8H         LINE#         64
-  C:0EE8H         LINE#         65
-  C:0EE8H         LINE#         66
-  C:0EEBH         LINE#         67
-  C:0EEDH         LINE#         69
-  C:0EF0H         LINE#         70
-  C:0EF3H         LINE#         72
-  C:0EF6H         LINE#         74
-  C:0EF9H         LINE#         76
+  C:10B5H         LINE#         64
+  C:10B5H         LINE#         65
+  C:10B5H         LINE#         66
+  C:10B8H         LINE#         67
+  C:10BAH         LINE#         69
+  C:10BDH         LINE#         70
+  C:10C0H         LINE#         72
+  C:10C3H         LINE#         74
+  C:10C6H         LINE#         76
   -------         ENDPROC       TIMER2_INIT
-  -------         PROC          _UARTINIT
-  X:00FBH         SYMBOL        bdr
-  C:03FCH         LINE#         93
-  C:0402H         LINE#         95
-  C:0405H         LINE#         100
-  C:043CH         LINE#         101
-  C:0463H         LINE#         102
-  C:0466H         LINE#         103
-  C:0469H         LINE#         104
-  C:04A3H         LINE#         105
-  C:04D3H         LINE#         106
-  C:04D6H         LINE#         107
-  C:04D9H         LINE#         108
-  C:0529H         LINE#         109
-  C:0543H         LINE#         110
-  C:0546H         LINE#         111
-  C:0548H         LINE#         112
-  C:0562H         LINE#         113
-  C:0565H         LINE#         114
-  C:0568H         LINE#         115
-  C:0568H         LINE#         117
-  C:056BH         LINE#         118
-  C:056EH         LINE#         119
-  C:0571H         LINE#         120
-  C:0573H         LINE#         122
-  C:0575H         LINE#         123
-  -------         ENDPROC       _UARTINIT
+  -------         PROC          UART_INIT
+  C:1060H         LINE#         154
+  C:1060H         LINE#         155
+  C:1060H         LINE#         160
+  C:1063H         LINE#         168
+BL51 BANKED LINKER/LOCATER V6.05            09/24/2026  14:54:30  PAGE 9
+
+
+  C:1066H         LINE#         169
+  C:1069H         LINE#         171
+  C:106CH         LINE#         176
+  C:106FH         LINE#         177
+  C:1072H         LINE#         182
+  C:1074H         LINE#         184
+  C:1076H         LINE#         186
+  -------         ENDPROC       UART_INIT
   -------         PROC          _CPUINIT
   D:0005H         SYMBOL        bip
-  C:0E56H         LINE#         135
-  C:0E58H         LINE#         137
-  C:0E5BH         LINE#         138
-  C:0E5EH         LINE#         139
-  C:0E61H         LINE#         140
-  C:0E66H         LINE#         141
+  C:10A2H         LINE#         200
+  C:10A4H         LINE#         202
+  C:10A7H         LINE#         203
+  C:10AAH         LINE#         204
+  C:10ADH         LINE#         205
+  C:10B2H         LINE#         207
   -------         ENDPROC       _CPUINIT
   -------         ENDMOD        CPU_STUP
 
@@ -537,161 +569,227 @@ SYMBOL TABLE OF MODULE:  D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026
   C:0000H         SYMBOL        _ICE_DUMMY_
   D:0080H         PUBLIC        P0
   D:0090H         PUBLIC        P1
-  C:0F21H         PUBLIC        bcd27s
-  X:00CDH         PUBLIC        digit
-  X:00CEH         PUBLIC        dspvar
+  C:10E1H         PUBLIC        bcd27s
+  X:00CCH         PUBLIC        digit
+  X:00CDH         PUBLIC        dspvar
+  B:0020H.6       PUBLIC        Show_Time
   B:0080H.0       PUBLIC        DS1
   B:0080H.1       PUBLIC        DS2
   B:0080H.7       PUBLIC        DS3
-BL51 BANKED LINKER/LOCATER V6.05            09/18/2026  15:10:51  PAGE 9
-
-
-  C:0ED3H         PUBLIC        DisplayInit
-  C:06CAH         PUBLIC        DisplayLoop
-  X:00DCH         PUBLIC        DispOffset
+  B:0020H.7       PUBLIC        DPoint
+  B:0021H.0       PUBLIC        Show_Weight
+  C:108DH         PUBLIC        DisplayInit
+  C:0617H         PUBLIC        DisplayLoop
+  X:00DDH         PUBLIC        DispOffset
   -------         PROC          DISPLAYINIT
-  C:0ED3H         LINE#         37
-  C:0ED3H         LINE#         38
-  C:0ED3H         LINE#         39
-  C:0EDDH         LINE#         40
-  C:0EE7H         LINE#         41
+  C:108DH         LINE#         47
+  C:108DH         LINE#         48
+  C:108DH         LINE#         49
+  C:1097H         LINE#         50
+  C:10A1H         LINE#         51
   -------         ENDPROC       DISPLAYINIT
   -------         PROC          DISPLAYLOOP
-  C:06CAH         LINE#         43
-  C:06CAH         LINE#         44
-  C:06CAH         LINE#         48
-  C:06D0H         LINE#         52
-  C:06FBH         LINE#         53
-  C:070FH         LINE#         58
-  C:072BH         LINE#         59
-  C:0750H         LINE#         60
-  C:0775H         LINE#         62
-  C:0775H         LINE#         69
-  C:0778H         LINE#         71
-  C:077AH         LINE#         72
-  C:077CH         LINE#         73
-  C:077EH         LINE#         76
-  C:0787H         LINE#         77
-  C:078CH         LINE#         79
-  C:0791H         LINE#         84
-  C:07A7H         LINE#         87
-  C:07AAH         LINE#         88
-  C:07AAH         LINE#         89
-  C:07ACH         LINE#         90
-  C:07AEH         LINE#         91
-  C:07B0H         LINE#         92
-  C:07B2H         LINE#         93
-  C:07BAH         LINE#         94
-  C:07BAH         LINE#         95
-  C:07BCH         LINE#         96
-  C:07BEH         LINE#         97
-  C:07C0H         LINE#         98
-  C:07C2H         LINE#         99
-  C:07C6H         LINE#         100
-  C:07C6H         LINE#         101
-  C:07C8H         LINE#         102
-  C:07CAH         LINE#         103
-  C:07CCH         LINE#         104
-  C:07CCH         LINE#         108
-  C:07CEH         LINE#         110
+  C:0617H         LINE#         53
+  C:0617H         LINE#         54
+  C:0617H         LINE#         58
+  C:061DH         LINE#         62
+  C:0623H         LINE#         63
+  C:0623H         LINE#         64
+  C:0626H         LINE#         65
+  C:0626H         LINE#         66
+  C:062BH         LINE#         67
+  C:062BH         LINE#         68
+  C:062BH         LINE#         69
+  C:062DH         LINE#         71
+  C:0633H         LINE#         72
+  C:0633H         LINE#         73
+  C:0639H         LINE#         74
+  C:063BH         LINE#         75
+  C:063DH         LINE#         76
+  C:0640H         LINE#         78
+  C:066EH         LINE#         79
+  C:066EH         LINE#         80
+  C:0682H         LINE#         85
+  C:069EH         LINE#         86
+BL51 BANKED LINKER/LOCATER V6.05            09/24/2026  14:54:30  PAGE 10
+
+
+  C:06C3H         LINE#         87
+  C:06E8H         LINE#         88
+  C:06E8H         LINE#         89
+  C:06EAH         LINE#         90
+  C:06EDH         LINE#         91
+  C:06EDH         LINE#         92
+  C:06F6H         LINE#         94
+  C:0701H         LINE#         95
+  C:0701H         LINE#         96
+  C:0707H         LINE#         99
+  C:0711H         LINE#         100
+  C:0723H         LINE#         101
+  C:0735H         LINE#         102
+  C:0735H         LINE#         103
+  C:0735H         LINE#         109
+  C:0738H         LINE#         111
+  C:073AH         LINE#         112
+  C:073CH         LINE#         113
+  C:073EH         LINE#         116
+  C:0747H         LINE#         117
+  C:074CH         LINE#         119
+  C:0751H         LINE#         121
+  C:075AH         LINE#         122
+  C:076AH         LINE#         124
+  C:0779H         LINE#         127
+  C:0780H         LINE#         128
+  C:0780H         LINE#         129
+  C:0782H         LINE#         130
+  C:0784H         LINE#         131
+  C:0786H         LINE#         132
+  C:0788H         LINE#         133
+  C:078CH         LINE#         134
+  C:078CH         LINE#         135
+  C:078EH         LINE#         136
+  C:0790H         LINE#         137
+  C:0792H         LINE#         138
+  C:0794H         LINE#         139
+  C:0798H         LINE#         140
+  C:0798H         LINE#         141
+  C:079AH         LINE#         142
+  C:079CH         LINE#         143
+  C:079EH         LINE#         144
+  C:079EH         LINE#         148
+  C:07A0H         LINE#         150
   -------         ENDPROC       DISPLAYLOOP
   -------         ENDMOD        DISPLAY
 
   -------         MODULE        INTERRUPTS
   C:0000H         SYMBOL        _ICE_DUMMY_
   D:0080H         PUBLIC        P0
-  X:00A4H         PUBLIC        ADCsemp
-  X:00A5H         PUBLIC        CntRX0
-  X:00A7H         PUBLIC        OneSecond
-  C:0AE8H         PUBLIC        Timer2_ISR
-  X:00A9H         PUBLIC        ADCcnt
-  X:00AAH         PUBLIC        Hundred_ms
+  X:00A3H         PUBLIC        ADCsemp
+  X:00A4H         PUBLIC        CntRX0
+  X:00A6H         PUBLIC        OneSecond
+  C:0AECH         PUBLIC        Timer2_ISR
+  X:00A8H         PUBLIC        ADCcnt
+  X:00A9H         PUBLIC        Hundred_ms
   B:00C8H.7       PUBLIC        TF2H
-  X:00ABH         PUBLIC        ComData
-  C:0BCEH         PUBLIC        Uart0_ISR
-  X:00B5H         PUBLIC        sendByteDelay
-  X:00B6H         PUBLIC        OneMin
-BL51 BANKED LINKER/LOCATER V6.05            09/18/2026  15:10:51  PAGE 10
-
-
+  X:00AAH         PUBLIC        ComData
+  C:0B7AH         PUBLIC        Uart0_ISR
+  X:00B3H         PUBLIC        sendByteDelay
+  X:00B4H         PUBLIC        OneMin
   B:0098H.0       PUBLIC        RI0
   B:0098H.1       PUBLIC        TI0
-  B:0020H.3       PUBLIC        disp_show_flag
-  X:00B8H         PUBLIC        disp_cnt
+  B:0021H.3       PUBLIC        disp_show_flag
+  X:00B6H         PUBLIC        disp_cnt
+BL51 BANKED LINKER/LOCATER V6.05            09/24/2026  14:54:30  PAGE 11
+
+
+  X:00B7H         PUBLIC        ShakingTime
   D:0099H         PUBLIC        SBUF0
   -------         PROC          TIMER2_ISR
-  C:0AE8H         LINE#         33
-  C:0AF0H         LINE#         36
-  C:0AF2H         LINE#         40
-  C:0AF8H         LINE#         41
-  C:0AFCH         LINE#         43
-  C:0AFCH         LINE#         44
-  C:0B02H         LINE#         46
-  C:0B08H         LINE#         47
-  C:0B0AH         LINE#         53
-  C:0B0AH         LINE#         57
-  C:0B14H         LINE#         58
-  C:0B24H         LINE#         60
-  C:0B24H         LINE#         61
-  C:0B2EH         LINE#         65
-  C:0B2EH         LINE#         69
-  C:0B34H         LINE#         70
-  C:0B38H         LINE#         72
-  C:0B38H         LINE#         73
-  C:0B3EH         LINE#         75
-  C:0B40H         LINE#         77
-  C:0B40H         LINE#         79
-  C:0B46H         LINE#         80
-  C:0B4AH         LINE#         82
-  C:0B4AH         LINE#         83
-  C:0B52H         LINE#         84
-  C:0B58H         LINE#         85
-  C:0B58H         LINE#         87
+  C:0AECH         LINE#         39
+  C:0AF4H         LINE#         42
+  C:0AF6H         LINE#         47
+  C:0AFCH         LINE#         48
+  C:0B00H         LINE#         50
+  C:0B00H         LINE#         51
+  C:0B06H         LINE#         53
+  C:0B08H         LINE#         55
+  C:0B08H         LINE#         57
+  C:0B0EH         LINE#         58
+  C:0B12H         LINE#         60
+  C:0B12H         LINE#         61
+  C:0B1AH         LINE#         62
+  C:0B20H         LINE#         63
+  C:0B20H         LINE#         68
+  C:0B26H         LINE#         69
+  C:0B2AH         LINE#         71
+  C:0B2AH         LINE#         72
+  C:0B30H         LINE#         74
+  C:0B36H         LINE#         75
+  C:0B38H         LINE#         81
+  C:0B38H         LINE#         86
+  C:0B42H         LINE#         87
+  C:0B52H         LINE#         89
+  C:0B52H         LINE#         90
+  C:0B5CH         LINE#         94
+  C:0B69H         LINE#         95
+  C:0B69H         LINE#         96
+  C:0B6FH         LINE#         97
+  C:0B71H         LINE#         98
+  C:0B71H         LINE#         100
+  C:0B71H         LINE#         104
   -------         ENDPROC       TIMER2_ISR
   -------         PROC          UART0_ISR
-  C:0BCEH         LINE#         89
-  C:0BD6H         LINE#         91
-  C:0BDCH         LINE#         92
-  C:0BDCH         LINE#         93
-  C:0BEDH         LINE#         97
-  C:0BFBH         LINE#         99
-  C:0C07H         LINE#         101
-  C:0C09H         LINE#         102
-  C:0C10H         LINE#         104
-  C:0C18H         LINE#         105
-  C:0C1FH         LINE#         109
-  C:0C1FH         LINE#         111
-  C:0C21H         LINE#         114
-  C:0C24H         LINE#         115
-  C:0C24H         LINE#         117
-  C:0C26H         LINE#         118
-  C:0C26H         LINE#         120
+  C:0B7AH         LINE#         106
+  C:0B8BH         LINE#         108
+  C:0B91H         LINE#         109
+  C:0B91H         LINE#         110
+  C:0BA6H         LINE#         112
+  C:0BC1H         LINE#         113
+  C:0BC1H         LINE#         114
+  C:0BC8H         LINE#         115
+  C:0BCCH         LINE#         117
+  C:0BCCH         LINE#         119
+  C:0BDAH         LINE#         121
+  C:0BE9H         LINE#         122
+  C:0BE9H         LINE#         123
+  C:0BEBH         LINE#         124
+  C:0BEFH         LINE#         125
+  C:0BEFH         LINE#         130
+  C:0BEFH         LINE#         132
+  C:0BF1H         LINE#         135
+  C:0BF4H         LINE#         136
+  C:0BF4H         LINE#         138
+  C:0BF6H         LINE#         139
+  C:0BF6H         LINE#         141
   -------         ENDPROC       UART0_ISR
   -------         ENDMOD        INTERRUPTS
 
   -------         MODULE        MAIN
   C:0000H         SYMBOL        _ICE_DUMMY_
   D:0080H         PUBLIC        P0
+BL51 BANKED LINKER/LOCATER V6.05            09/24/2026  14:54:30  PAGE 12
+
+
   B:00A8H.7       PUBLIC        EA
+  B:0021H.4       PUBLIC        intO
   B:0080H.3       PUBLIC        STx
-  C:0E34H         PUBLIC        main
+  C:0C8EH         PUBLIC        main
+  B:0080H.6       PUBLIC        ComDir
   -------         PROC          MAIN
-  C:0E34H         LINE#         19
-  C:0E34H         LINE#         20
-  C:0E34H         LINE#         27
-BL51 BANKED LINKER/LOCATER V6.05            09/18/2026  15:10:51  PAGE 11
-
-
-  C:0E37H         LINE#         30
-  C:0E3CH         LINE#         35
-  C:0E44H         LINE#         37
-  C:0E47H         LINE#         40
-  C:0E49H         LINE#         45
-  C:0E4BH         LINE#         47
-  C:0E4BH         LINE#         48
-  C:0E4BH         LINE#         66
-  C:0E4DH         LINE#         67
-  C:0E54H         LINE#         74
+  C:0C8EH         LINE#         26
+  C:0C8EH         LINE#         27
+  C:0C8EH         LINE#         32
+  C:0C93H         LINE#         37
+  C:0C9BH         LINE#         39
+  C:0C9EH         LINE#         42
+  C:0CA4H         LINE#         43
+  C:0CA6H         LINE#         44
+  C:0CA8H         LINE#         46
+  C:0CADH         LINE#         58
+  C:0CB0H         LINE#         59
+  C:0CB7H         LINE#         60
+  C:0CB9H         LINE#         62
+  C:0CC3H         LINE#         63
+  C:0CCDH         LINE#         64
+  C:0CD7H         LINE#         65
+  C:0CE1H         LINE#         68
+  C:0CE3H         LINE#         70
+  C:0CE5H         LINE#         72
+  C:0CE7H         LINE#         73
+  C:0CE9H         LINE#         76
+  C:0CEBH         LINE#         79
+  C:0CEBH         LINE#         80
+  C:0CEBH         LINE#         86
+  C:0CF1H         LINE#         87
+  C:0CF1H         LINE#         88
+  C:0CF4H         LINE#         89
+  C:0CFBH         LINE#         90
+  C:0CFDH         LINE#         100
+  C:0CFDH         LINE#         118
+  C:0D00H         LINE#         119
+  C:0D03H         LINE#         120
+  C:0D06H         LINE#         121
+  C:0D09H         LINE#         123
   -------         ENDPROC       MAIN
   -------         ENDMOD        MAIN
 
@@ -699,248 +797,316 @@ SYMBOL TABLE OF MODULE:  D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026
   C:0000H         SYMBOL        _ICE_DUMMY_
   D:0080H         PUBLIC        P0
   B:00A8H.7       PUBLIC        EA
-  C:0CCCH         PUBLIC        _SendMotorSpeed
+  C:0EE1H         PUBLIC        _SendMotorSpeed
   B:0080H.3       PUBLIC        STx
-  C:0E71H         PUBLIC        _Delay_ms
-  C:0E8CH         PUBLIC        _Delay_us
+  C:1010H         PUBLIC        _Delay_ms
+  C:1046H         PUBLIC        _Delay_us
   D:0099H         PUBLIC        SBUF0
-  C:0F3AH         PUBLIC        SetBoardAddress
+  C:10FAH         PUBLIC        SetBoardAddress
   D:0098H         PUBLIC        SCON0
-  C:0EA6H         PUBLIC        _putc0
+  C:102BH         PUBLIC        _putc0
   B:0080H.2       PUBLIC        Jumper
   -------         PROC          _DELAY_US
   D:0006H         SYMBOL        us
-  C:0E8CH         LINE#         21
-  C:0E8CH         LINE#         22
-  C:0E8CH         LINE#         23
-  C:0E8EH         LINE#         24
-  C:0E98H         LINE#         25
-  C:0E98H         LINE#         26
-  C:0E99H         LINE#         27
-  C:0E9AH         LINE#         28
-  C:0E9BH         LINE#         29
-  C:0E9CH         LINE#         30
-  C:0E9DH         LINE#         31
-  C:0E9EH         LINE#         32
-  C:0E9FH         LINE#         33
-  C:0EA0H         LINE#         34
-  C:0EA1H         LINE#         35
-  C:0EA3H         LINE#         36
-  C:0EA5H         LINE#         37
+  C:1046H         LINE#         21
+  C:1046H         LINE#         22
+  C:1046H         LINE#         23
+  C:1048H         LINE#         24
+  C:1052H         LINE#         25
+  C:1052H         LINE#         26
+  C:1053H         LINE#         27
+BL51 BANKED LINKER/LOCATER V6.05            09/24/2026  14:54:30  PAGE 13
+
+
+  C:1054H         LINE#         28
+  C:1055H         LINE#         29
+  C:1056H         LINE#         30
+  C:1057H         LINE#         31
+  C:1058H         LINE#         32
+  C:1059H         LINE#         33
+  C:105AH         LINE#         34
+  C:105BH         LINE#         35
+  C:105DH         LINE#         36
+  C:105FH         LINE#         37
   -------         ENDPROC       _DELAY_US
   -------         PROC          _DELAY_MS
   D:0002H         SYMBOL        ms
   -------         DO            
   D:0082H         SYMBOL        i
   -------         ENDDO         
-  C:0E71H         LINE#         39
-  C:0E75H         LINE#         40
-  C:0E75H         LINE#         43
-  C:0E81H         LINE#         44
-  C:0E8BH         LINE#         45
+  C:1010H         LINE#         39
+  C:1014H         LINE#         40
+  C:1014H         LINE#         43
+  C:1020H         LINE#         44
+  C:102AH         LINE#         45
   -------         ENDPROC       _DELAY_MS
   -------         PROC          _PUTC0
   D:0007H         SYMBOL        dat
-  C:0EA6H         LINE#         49
-  C:0EA6H         LINE#         50
-  C:0EA6H         LINE#         51
-  C:0EA8H         LINE#         52
-  C:0EAEH         LINE#         53
-  C:0EB9H         LINE#         54
-BL51 BANKED LINKER/LOCATER V6.05            09/18/2026  15:10:51  PAGE 12
-
-
-  C:0EBCH         LINE#         55
+  C:102BH         LINE#         49
+  C:102BH         LINE#         50
+  C:102BH         LINE#         51
+  C:102DH         LINE#         52
+  C:102FH         LINE#         53
+  C:1035H         LINE#         54
+  C:1040H         LINE#         55
+  C:1043H         LINE#         56
+  C:1045H         LINE#         57
   -------         ENDPROC       _PUTC0
   -------         PROC          SETBOARDADDRESS
-  C:0F3AH         LINE#         59
-  C:0F3AH         LINE#         60
-  C:0F3AH         LINE#         61
-  C:0F3DH         LINE#         62
-  C:0F40H         LINE#         64
-  C:0F42H         LINE#         65
+  C:10FAH         LINE#         61
+  C:10FAH         LINE#         62
+  C:10FAH         LINE#         63
+  C:10FDH         LINE#         64
+  C:1100H         LINE#         66
+  C:1102H         LINE#         67
   -------         ENDPROC       SETBOARDADDRESS
   -------         PROC          _SENDMOTORSPEED
   D:0007H         SYMBOL        duty_cycle
   -------         DO            
   D:0005H         SYMBOL        SBUF
   D:0003H         SYMBOL        i
-  B:0020H.4       SYMBOL        b
+  B:0021H.5       SYMBOL        b
   -------         ENDDO         
-  C:0CCCH         LINE#         75
-  C:0CCCH         LINE#         76
-  C:0CCCH         LINE#         80
-  C:0CCEH         LINE#         83
-  C:0CD0H         LINE#         85
-  C:0CD2H         LINE#         87
-  C:0CD4H         LINE#         88
-  C:0CDBH         LINE#         91
-  C:0CDDH         LINE#         92
-  C:0CDDH         LINE#         93
-  C:0CE1H         LINE#         94
-  C:0CE5H         LINE#         96
-  C:0CE7H         LINE#         98
-  C:0CEBH         LINE#         100
-  C:0CEFH         LINE#         101
-  C:0CF6H         LINE#         102
-  C:0CFBH         LINE#         104
-  C:0CFDH         LINE#         105
-  C:0D04H         LINE#         107
-  C:0D06H         LINE#         110
+  C:0EE1H         LINE#         77
+  C:0EE1H         LINE#         78
+  C:0EE1H         LINE#         82
+  C:0EE3H         LINE#         85
+  C:0EE5H         LINE#         87
+  C:0EE7H         LINE#         89
+  C:0EE9H         LINE#         90
+  C:0EF0H         LINE#         93
+  C:0EF2H         LINE#         94
+  C:0EF2H         LINE#         95
+  C:0EF6H         LINE#         96
+  C:0EFAH         LINE#         98
+  C:0EFCH         LINE#         100
+  C:0F00H         LINE#         102
+  C:0F04H         LINE#         103
+  C:0F0BH         LINE#         104
+BL51 BANKED LINKER/LOCATER V6.05            09/24/2026  14:54:30  PAGE 14
+
+
+  C:0F10H         LINE#         106
+  C:0F12H         LINE#         107
+  C:0F19H         LINE#         109
+  C:0F1BH         LINE#         112
   -------         ENDPROC       _SENDMOTORSPEED
   -------         ENDMOD        FUNCTIONS
 
   -------         MODULE        COMMUNICATION
   C:0000H         SYMBOL        _ICE_DUMMY_
-  C:0D9BH         PUBLIC        _CalcCheckSum
-  X:00B9H         PUBLIC        bufR
-  X:00C2H         PUBLIC        bufT
-  B:0020H.0       PUBLIC        MessageSending
-  C:0EBDH         PUBLIC        GenCheckSum
-  X:00CBH         PUBLIC        BoardAddress
-  X:00CCH         PUBLIC        Command
-  C:0581H         PUBLIC        _ConvertBytesToLong
+  D:0080H         PUBLIC        P0
+  C:0F77H         PUBLIC        _CalcCheckSum
+  X:00B8H         PUBLIC        bufR
+  X:00C1H         PUBLIC        bufT
+  B:0021H.1       PUBLIC        MessageSending
+  C:1077H         PUBLIC        GenCheckSum
+  X:00CAH         PUBLIC        BoardAddress
+  B:0080H.6       PUBLIC        ComDir
+  X:00CBH         PUBLIC        Command
+  C:07ACH         PUBLIC        _ConvertBytesToLong
   B:00A8H.4       PUBLIC        ES0
-  C:07CFH         PUBLIC        _AnalyzeReceivedMessage
-  C:0896H         PUBLIC        _SendMessage
-  B:0020H.1       PUBLIC        MessageReceived
-  C:0D40H         PUBLIC        CommunicationLoop
+  C:002EH         PUBLIC        _AnalyzeReceivedMessage
+  C:09AAH         PUBLIC        _SendMessage
+  B:0021H.2       PUBLIC        MessageReceived
+  C:0F1CH         PUBLIC        CommunicationLoop
   -------         PROC          _SENDMESSAGE
-  X:00EAH         SYMBOL        Data
+  X:00E9H         SYMBOL        Data
   -------         DO            
-  X:00EEH         SYMBOL        cnt
+  X:00EDH         SYMBOL        cnt
   -------         ENDDO         
-  C:0896H         LINE#         23
-  C:089CH         LINE#         24
-  C:089CH         LINE#         27
-  C:08A2H         LINE#         28
-  C:08AAH         LINE#         29
-BL51 BANKED LINKER/LOCATER V6.05            09/18/2026  15:10:51  PAGE 13
-
-
-  C:08B2H         LINE#         31
-  C:08C9H         LINE#         32
-  C:08E0H         LINE#         33
-  C:08F7H         LINE#         34
-  C:090AH         LINE#         36
-  C:090EH         LINE#         37
-  C:0912H         LINE#         40
-  C:0914H         LINE#         41
-  C:0916H         LINE#         43
-  C:0925H         LINE#         44
-  C:093CH         LINE#         46
-  C:093EH         LINE#         47
-  C:0940H         LINE#         49
+  C:09AAH         LINE#         28
+  C:09B0H         LINE#         29
+  C:09B0H         LINE#         32
+  C:09B6H         LINE#         33
+  C:09BEH         LINE#         34
+  C:09C6H         LINE#         36
+  C:09DDH         LINE#         37
+  C:09F4H         LINE#         38
+  C:0A0BH         LINE#         39
+  C:0A1EH         LINE#         41
+  C:0A22H         LINE#         42
+  C:0A2AH         LINE#         45
+  C:0A2CH         LINE#         46
+  C:0A2EH         LINE#         47
+  C:0A30H         LINE#         49
+  C:0A3FH         LINE#         50
+  C:0A56H         LINE#         52
+  C:0A58H         LINE#         53
+  C:0A5AH         LINE#         54
+  C:0A5CH         LINE#         56
   -------         ENDPROC       _SENDMESSAGE
   -------         PROC          GENCHECKSUM
   -------         DO            
   D:0006H         SYMBOL        cnt
   D:0007H         SYMBOL        chck
   -------         ENDDO         
-  C:0EBDH         LINE#         51
-  C:0EBDH         LINE#         52
-  C:0EBDH         LINE#         53
-  C:0EBFH         LINE#         55
-  C:0EC0H         LINE#         56
-  C:0ED2H         LINE#         58
-  C:0ED2H         LINE#         59
+  C:1077H         LINE#         58
+  C:1077H         LINE#         59
+  C:1077H         LINE#         60
+  C:1079H         LINE#         62
+  C:107AH         LINE#         63
+  C:108CH         LINE#         65
+  C:108CH         LINE#         66
   -------         ENDPROC       GENCHECKSUM
   -------         PROC          _CALCCHECKSUM
-  X:00FFH         SYMBOL        buf
+  X:00E9H         SYMBOL        buf
+BL51 BANKED LINKER/LOCATER V6.05            09/24/2026  14:54:30  PAGE 15
+
+
   -------         DO            
   D:0006H         SYMBOL        cnt
   D:0007H         SYMBOL        chck
   -------         ENDDO         
-  C:0D9BH         LINE#         62
-  C:0DA6H         LINE#         63
-  C:0DA6H         LINE#         64
-  C:0DA8H         LINE#         66
-  C:0DA9H         LINE#         67
-  C:0DC3H         LINE#         69
-  C:0DC3H         LINE#         70
+  C:0F77H         LINE#         69
+  C:0F82H         LINE#         70
+  C:0F82H         LINE#         71
+  C:0F84H         LINE#         73
+  C:0F85H         LINE#         74
+  C:0F9FH         LINE#         76
+  C:0F9FH         LINE#         77
   -------         ENDPROC       _CALCCHECKSUM
-  C:0576H         SYMBOL        L?0038
-  -------         PROC          L?0037
-  -------         ENDPROC       L?0037
-  C:0576H         SYMBOL        L?0038
+  C:07A1H         SYMBOL        L?0066
+  -------         PROC          L?0065
+  -------         ENDPROC       L?0065
+  C:07A1H         SYMBOL        L?0066
   -------         PROC          _CONVERTBYTESTOLONG
-  X:00DDH         SYMBOL        command
+  X:00E9H         SYMBOL        command
   -------         DO            
-  X:00E0H         SYMBOL        val
+  X:00ECH         SYMBOL        val
   -------         ENDDO         
-  C:0581H         LINE#         73
-  C:058CH         LINE#         74
-  C:058CH         LINE#         75
-  C:0594H         LINE#         77
-  C:05DAH         LINE#         78
-  C:0625H         LINE#         79
-  C:0670H         LINE#         80
-  C:06BBH         LINE#         82
-  C:06C9H         LINE#         83
+  C:07ACH         LINE#         80
+  C:07B7H         LINE#         81
+  C:07B7H         LINE#         82
+  C:07BFH         LINE#         84
+  C:0805H         LINE#         85
+  C:0850H         LINE#         86
+  C:089BH         LINE#         87
+  C:08E6H         LINE#         89
+  C:08F4H         LINE#         90
   -------         ENDPROC       _CONVERTBYTESTOLONG
   -------         PROC          _ANALYZERECEIVEDMESSAGE
-  X:0102H         SYMBOL        message
-  C:07CFH         LINE#         86
-  C:07DAH         LINE#         87
-  C:07DAH         LINE#         91
-BL51 BANKED LINKER/LOCATER V6.05            09/18/2026  15:10:51  PAGE 14
+  X:00DEH         SYMBOL        message
+  -------         DO            
+  X:00E1H         SYMBOL        X0_temp
+  X:00E5H         SYMBOL        X1_temp
+  -------         ENDDO         
+  C:002EH         LINE#         93
+  C:0039H         LINE#         94
+  C:0039H         LINE#         95
+  C:004BH         LINE#         97
+  C:0064H         LINE#         98
+  C:0067H         LINE#         100
+  C:007EH         LINE#         101
+  C:0081H         LINE#         104
+  C:008BH         LINE#         107
+  C:00CAH         LINE#         108
+  C:00CAH         LINE#         109
+  C:00CAH         LINE#         111
+  C:00CAH         LINE#         112
+  C:00CDH         LINE#         115
+  C:00CDH         LINE#         117
+  C:00D0H         LINE#         118
+  C:00D2H         LINE#         120
+  C:00D2H         LINE#         122
+  C:00D5H         LINE#         123
+  C:00D7H         LINE#         125
+  C:00D7H         LINE#         127
+  C:00DAH         LINE#         128
+  C:00DCH         LINE#         130
+  C:00DCH         LINE#         132
+  C:00EAH         LINE#         133
+  C:00EDH         LINE#         135
+  C:00EDH         LINE#         137
+  C:00F3H         LINE#         138
+BL51 BANKED LINKER/LOCATER V6.05            09/24/2026  14:54:30  PAGE 16
 
 
-  C:07F3H         LINE#         92
-  C:07F6H         LINE#         94
-  C:080DH         LINE#         95
-  C:0810H         LINE#         98
-  C:081AH         LINE#         101
-  C:084DH         LINE#         102
-  C:084DH         LINE#         103
-  C:084DH         LINE#         105
-  C:0850H         LINE#         106
-  C:0852H         LINE#         108
-  C:0852H         LINE#         110
-  C:0855H         LINE#         111
-  C:0857H         LINE#         113
-  C:0857H         LINE#         115
-  C:085AH         LINE#         116
-  C:085CH         LINE#         118
-  C:085CH         LINE#         120
-  C:086DH         LINE#         121
-  C:086FH         LINE#         123
-  C:086FH         LINE#         125
-  C:0872H         LINE#         126
-  C:0874H         LINE#         128
-  C:0874H         LINE#         130
-  C:087DH         LINE#         131
-  C:0880H         LINE#         132
-  C:0882H         LINE#         134
-  C:0882H         LINE#         136
-  C:0888H         LINE#         137
-  C:088AH         LINE#         139
-  C:088AH         LINE#         141
-  C:0893H         LINE#         142
-  C:0893H         LINE#         143
-  C:0893H         LINE#         145
-  C:0895H         LINE#         147
+  C:00F7H         LINE#         140
+  C:00FFH         LINE#         142
+  C:0102H         LINE#         144
+  C:0102H         LINE#         146
+  C:0105H         LINE#         147
+  C:0110H         LINE#         149
+  C:0110H         LINE#         150
+  C:0119H         LINE#         152
+  C:011FH         LINE#         153
+  C:0123H         LINE#         155
+  C:012BH         LINE#         156
+  C:012BH         LINE#         158
+  C:012EH         LINE#         160
+  C:012EH         LINE#         162
+  C:0137H         LINE#         164
+  C:0164H         LINE#         165
+  C:0164H         LINE#         166
+  C:0178H         LINE#         167
+  C:017AH         LINE#         168
+  C:0182H         LINE#         169
+  C:0185H         LINE#         171
+  C:0185H         LINE#         172
+  C:0187H         LINE#         173
+  C:018FH         LINE#         174
+  C:018FH         LINE#         176
+  C:0192H         LINE#         178
+  C:0192H         LINE#         180
+  C:019BH         LINE#         182
+  C:019EH         LINE#         183
+  C:019EH         LINE#         184
+  C:01A3H         LINE#         185
+  C:01A5H         LINE#         186
+  C:01AAH         LINE#         187
+  C:01ADH         LINE#         188
+  C:01E3H         LINE#         189
+  C:01E3H         LINE#         190
+  C:01F7H         LINE#         191
+  C:01FDH         LINE#         192
+  C:01FFH         LINE#         193
+  C:0206H         LINE#         194
+  C:0208H         LINE#         196
+  C:0208H         LINE#         197
+  C:020DH         LINE#         198
+  C:020FH         LINE#         199
+  C:0214H         LINE#         200
+  C:0214H         LINE#         202
+  C:0216H         LINE#         204
+  C:0216H         LINE#         208
+  C:0233H         LINE#         209
+  C:0233H         LINE#         210
+  C:0238H         LINE#         211
+  C:023AH         LINE#         212
+  C:0242H         LINE#         213
+  C:0244H         LINE#         215
+  C:0244H         LINE#         216
+  C:0246H         LINE#         217
+  C:0251H         LINE#         218
+  C:0251H         LINE#         219
+  C:0251H         LINE#         220
+  C:0251H         LINE#         222
+  C:0253H         LINE#         224
   -------         ENDPROC       _ANALYZERECEIVEDMESSAGE
   -------         PROC          COMMUNICATIONLOOP
   -------         DO            
   D:0007H         SYMBOL        i
+BL51 BANKED LINKER/LOCATER V6.05            09/24/2026  14:54:30  PAGE 17
+
+
   -------         ENDDO         
-  C:0D40H         LINE#         151
-  C:0D40H         LINE#         152
-  C:0D40H         LINE#         155
-  C:0D43H         LINE#         156
-  C:0D43H         LINE#         157
-  C:0D45H         LINE#         158
-  C:0D62H         LINE#         160
-  C:0D6BH         LINE#         162
-  C:0D6DH         LINE#         163
-  C:0D6DH         LINE#         165
+  C:0F1CH         LINE#         228
+  C:0F1CH         LINE#         229
+  C:0F1CH         LINE#         232
+  C:0F1FH         LINE#         233
+  C:0F1FH         LINE#         234
+  C:0F21H         LINE#         235
+  C:0F3EH         LINE#         237
+  C:0F47H         LINE#         239
+  C:0F49H         LINE#         240
+  C:0F49H         LINE#         242
   -------         ENDPROC       COMMUNICATIONLOOP
   -------         ENDMOD        COMMUNICATION
 
   -------         MODULE        ?C_STARTUP
-  C:09D3H         SEGMENT       ?C_C51STARTUP
-  I:0021H         SEGMENT       ?STACK
+  C:0A5DH         SEGMENT       ?C_C51STARTUP
+  I:0022H         SEGMENT       ?STACK
   C:0000H         PUBLIC        ?C_STARTUP
   D:00E0H         SYMBOL        ACC
   D:00F0H         SYMBOL        B
@@ -949,11 +1115,8 @@ SYMBOL TABLE OF MODULE:  D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026
   N:0000H         SYMBOL        IBPSTACK
   N:0100H         SYMBOL        IBPSTACKTOP
   N:0080H         SYMBOL        IDATALEN
-  C:09D6H         SYMBOL        IDATALOOP
+  C:0A63H         SYMBOL        IDATALOOP
   N:0000H         SYMBOL        PBPSTACK
-BL51 BANKED LINKER/LOCATER V6.05            09/18/2026  15:10:51  PAGE 15
-
-
   N:0100H         SYMBOL        PBPSTACKTOP
   N:0000H         SYMBOL        PDATALEN
   N:0000H         SYMBOL        PDATASTART
@@ -961,83 +1124,110 @@ SYMBOL TABLE OF MODULE:  D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026
   N:0000H         SYMBOL        PPAGEENABLE
   D:00A0H         SYMBOL        PPAGE_SFR
   D:0081H         SYMBOL        SP
-  C:09D3H         SYMBOL        STARTUP1
+  C:0A5DH         SYMBOL        STARTUP1
   N:0000H         SYMBOL        XBPSTACK
   N:0000H         SYMBOL        XBPSTACKTOP
   N:0000H         SYMBOL        XDATALEN
   N:0000H         SYMBOL        XDATASTART
   C:0000H         LINE#         126
-  C:09D3H         LINE#         133
-  C:09D5H         LINE#         134
-  C:09D6H         LINE#         135
-  C:09D7H         LINE#         136
-  C:09D9H         LINE#         185
-  C:09DCH         LINE#         196
+  C:0A5DH         LINE#         133
+  C:0A60H         LINE#         137
+  C:0A62H         LINE#         138
+  C:0A63H         LINE#         139
+  C:0A64H         LINE#         140
+  C:0A66H         LINE#         189
+  C:0A69H         LINE#         200
   -------         ENDMOD        ?C_STARTUP
 
+  -------         MODULE        SHAKER
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:0EA3H         PUBLIC        ShakerLoop
+  D:0080H         PUBLIC        P0
+  B:0080H.3       PUBLIC        STx
+  X:00F0H         PUBLIC        ShakerStatus
+  B:0021H.6       PUBLIC        Shaker_Run
+  -------         PROC          SHAKERLOOP
+  C:0EA3H         LINE#         13
+  C:0EA3H         LINE#         14
+  C:0EA3H         LINE#         15
+  C:0EADH         LINE#         16
+  C:0EADH         LINE#         17
+  C:0EAFH         LINE#         18
+  C:0EB1H         LINE#         19
+  C:0EB3H         LINE#         20
+BL51 BANKED LINKER/LOCATER V6.05            09/24/2026  14:54:30  PAGE 18
+
+
+  C:0EB5H         LINE#         21
+  C:0EB7H         LINE#         22
+  C:0EB8H         LINE#         23
+  C:0EC2H         LINE#         24
+  C:0EC2H         LINE#         25
+  C:0EC4H         LINE#         26
+  C:0EC6H         LINE#         27
+  C:0EC8H         LINE#         28
+  C:0ECEH         LINE#         29
+  C:0ECFH         LINE#         30
+  C:0EDCH         LINE#         31
+  C:0EDCH         LINE#         33
+  C:0EE0H         LINE#         34
+  C:0EE0H         LINE#         57
+  -------         ENDPROC       SHAKERLOOP
+  -------         ENDMOD        SHAKER
+
   -------         MODULE        ?C?CLDOPTR
-  C:002EH         PUBLIC        ?C?CLDOPTR
+  C:0254H         PUBLIC        ?C?CLDOPTR
   -------         ENDMOD        ?C?CLDOPTR
 
   -------         MODULE        ?C?ILDIX
-  C:005BH         PUBLIC        ?C?ILDIX
+  C:0281H         PUBLIC        ?C?ILDIX
   -------         ENDMOD        ?C?ILDIX
 
   -------         MODULE        ?C?LMUL
-  C:0071H         PUBLIC        ?C?LMUL
+  C:0297H         PUBLIC        ?C?LMUL
   -------         ENDMOD        ?C?LMUL
 
   -------         MODULE        ?C?ULDIV
-  C:00FCH         PUBLIC        ?C?ULDIV
+  C:0322H         PUBLIC        ?C?ULDIV
   -------         ENDMOD        ?C?ULDIV
 
   -------         MODULE        ?C?SLDIV
-  C:0C88H         PUBLIC        ?C?SLDIV
+  C:0E5FH         PUBLIC        ?C?SLDIV
   -------         ENDMOD        ?C?SLDIV
 
   -------         MODULE        ?C?LNEG
-  C:018EH         PUBLIC        ?C?LNEG
+  C:03B4H         PUBLIC        ?C?LNEG
   -------         ENDMOD        ?C?LNEG
 
-  -------         MODULE        ?C?SLCMP
-  C:019CH         PUBLIC        ?C?SLCMP
-  -------         ENDMOD        ?C?SLCMP
-
   -------         MODULE        ?C?ULCMP
-  C:01B2H         PUBLIC        ?C?ULCMP
+  C:03C2H         PUBLIC        ?C?ULCMP
   -------         ENDMOD        ?C?ULCMP
 
   -------         MODULE        ?C?ULSHR
-  C:01C3H         PUBLIC        ?C?ULSHR
+  C:03D3H         PUBLIC        ?C?ULSHR
   -------         ENDMOD        ?C?ULSHR
 
   -------         MODULE        ?C?SLSHR
-  C:01D6H         PUBLIC        ?C?SLSHR
+  C:03E6H         PUBLIC        ?C?SLSHR
   -------         ENDMOD        ?C?SLSHR
 
   -------         MODULE        ?C?LSTXDATA
-  C:01EAH         PUBLIC        ?C?LSTXDATA
+  C:03FAH         PUBLIC        ?C?LSTXDATA
   -------         ENDMOD        ?C?LSTXDATA
 
-BL51 BANKED LINKER/LOCATER V6.05            09/18/2026  15:10:51  PAGE 16
-
-
   -------         MODULE        ?C?LSTKXDATA
-  C:01F6H         PUBLIC        ?C?LSTKXDATA
+  C:0406H         PUBLIC        ?C?LSTKXDATA
   -------         ENDMOD        ?C?LSTKXDATA
 
   -------         MODULE        ABS
-  C:0F2EH         PUBLIC        _ABS
+  C:10EEH         PUBLIC        _ABS
   -------         ENDMOD        ABS
+
+BL51 BANKED LINKER/LOCATER V6.05            09/24/2026  14:54:30  PAGE 19
+
 
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?ADC2ULONG?ADC
-
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?INTERNCALIBO?ADC
-
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?INTERNCALIBG?ADC
 
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?SYSCALIBO?ADC
@@ -1046,16 +1236,7 @@ SYMBOL TABLE OF MODULE:  D:\12.RBC shaker\Projekat\RBC_shaker_project-17092026
     SEGMENT: ?PR?SYSCALIBG?ADC
 
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?ADCLOOP?ADC
-
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?DISPLAYLOOP?DISPLAY
-
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_SENDMOTORSPEED?FUNCTIONS
 
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?COMMUNICATIONLOOP?COMMUNICATION
-
-Program Size: data=9.5 xdata=261 code=3906
-LINK/LOCATE RUN COMPLETE.  9 WARNING(S),  0 ERROR(S)
+Program Size: data=10.7 xdata=241 code=4350
+LINK/LOCATE RUN COMPLETE.  4 WARNING(S),  0 ERROR(S)

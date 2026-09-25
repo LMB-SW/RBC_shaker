@@ -1,4 +1,4 @@
-C51 COMPILER V8.12   FUNCTIONS                                                             09/18/2026 15:10:50 PAGE 1   
+C51 COMPILER V8.12   FUNCTIONS                                                             09/24/2026 14:54:29 PAGE 1   
 
 
 C51 COMPILER V8.12, COMPILATION OF MODULE FUNCTIONS
@@ -57,77 +57,79 @@ line level    source
   48          
   49          void putc0(unsigned char dat)
   50          {               
-  51   1              SBUF0= dat;
-  52   1              sendByteDelay = 2;
-  53   1              while ((SCON0&0x02)==0  && sendByteDelay){}
-  54   1              SCON0 &= 0xfd;  
-  55   1      }
-C51 COMPILER V8.12   FUNCTIONS                                                             09/18/2026 15:10:50 PAGE 2   
+  51   1              EA = 0;
+  52   1              SBUF0= dat;
+  53   1              sendByteDelay = 2;
+  54   1              while ((SCON0&0x02)==0  && sendByteDelay){}
+  55   1              SCON0 &= 0xfd;  
+C51 COMPILER V8.12   FUNCTIONS                                                             09/24/2026 14:54:29 PAGE 2   
 
-  56          
-  57          ///////////////////////////////////////////////////////////////////////////////////////////////////
+  56   1              EA = 1;
+  57   1      }
   58          
-  59          unsigned char SetBoardAddress(void)
-  60          {
-  61   1              if(Jumper == 0)         //postoji jumper na plocici, spaja pin na GND
-  62   1                      return 0x34;
-  63   1              else                            //ne postoji jumper na plocici, spaja pin na Vmcu
-  64   1                      return 0x33;    
-  65   1      }
-  66          
-  67          ///////////////////////////////////////////////////////////////////////////////////////////////////
-  68          //----------------------------------------------------------------------------------------------
-  69          // Funkcija za slanje komande motornoj ploci preko softverskog UART-a (Tx = P0.3)
-  70          // duty_cycle   -       sadrzi podatak o brzini, odnosno procenat "duty cycle"-a;
-  71          //
-  72          // STx                  -       "softverski" Tx - pin procesora (PORT0-pin3)
-  73          //----------------------------------------------------------------------------------------------
-  74          
-  75          void SendMotorSpeed(unsigned char duty_cycle)
-  76          {
-  77   1              unsigned char SBUF;                                             // Buffer koji sadrzi bajt kojeg treba poslati  
-  78   1              unsigned char i;
-  79   1      //      unsigned char k;
-  80   1              bit b=0;
-  81   1      
-  82   1      
-  83   1                      SBUF = duty_cycle;                                      // Bajt (procenat brzine) se smesta u buffer za slanje
+  59          ///////////////////////////////////////////////////////////////////////////////////////////////////
+  60          
+  61          unsigned char SetBoardAddress(void)
+  62          {
+  63   1              if(Jumper == 0)         //postoji jumper na plocici, spaja pin na GND
+  64   1                      return 0x34;
+  65   1              else                            //ne postoji jumper na plocici, spaja pin na Vmcu
+  66   1                      return 0x33;    
+  67   1      }
+  68          
+  69          ///////////////////////////////////////////////////////////////////////////////////////////////////
+  70          //----------------------------------------------------------------------------------------------
+  71          // Funkcija za slanje komande motornoj ploci preko softverskog UART-a (Tx = P0.3)
+  72          // duty_cycle   -       sadrzi podatak o brzini, odnosno procenat "duty cycle"-a;
+  73          //
+  74          // STx                  -       "softverski" Tx - pin procesora (PORT0-pin3)
+  75          //----------------------------------------------------------------------------------------------
+  76          
+  77          void SendMotorSpeed(unsigned char duty_cycle)
+  78          {
+  79   1              unsigned char SBUF;                                             // Buffer koji sadrzi bajt kojeg treba poslati  
+  80   1              unsigned char i;
+  81   1      //      unsigned char k;
+  82   1              bit b=0;
+  83   1      
   84   1      
-  85   1                      EA = 0; //EIE2 &= ~1;                           // Zabrana interapta                    (// Zabrana interapta Timer-a br.3, da ne bi se narusilo
+  85   1                      SBUF = duty_cycle;                                      // Bajt (procenat brzine) se smesta u buffer za slanje
+  86   1      
+  87   1                      EA = 0; //EIE2 &= ~1;                           // Zabrana interapta                    (// Zabrana interapta Timer-a br.3, da ne bi se narusilo
              - slanje)
-  86   1                      
-  87   1                      STx = 0;                                                        // Pocetak slanja - formiranje START bita
-  88   1                      Delay_us(7);            ///Delay_us(55);        
-  89   1      
-  90   1              
-  91   1                      for (i=0; i<8; i++)                                     // Slanje bitova ponaosob
-  92   1                      {
-  93   2                              if ((SBUF & 0x01) == 0x01)              // Izdvajanje LSB-a, koji ce biti poslat u ovoj iteraciji 
-  94   2                                      b = 1;                                          // b = vrednost LSB-a
-  95   2                              else 
-  96   2                                      b = 0;
-  97   2      
-  98   2                              SBUF = SBUF >> 1;                               // Priprema za izdvajanje sledeceg LSB-a za slanje
-  99   2              
- 100   2                              STx = b;                                                // Slanje prethodno izdvojenog bita
- 101   2                              Delay_us(7);    
- 102   2                      }
- 103   1      
- 104   1                      STx = 1;                                                        // Zavrsetak slanje - formiranje STOP bita
- 105   1                      Delay_us(20);           
- 106   1      
- 107   1                      EA = 1; //EIE2 |= 1;                            // Vracanje dozvole inerapta            (// Vracanje dozvole inerapta od Timer-a br.3)
+  88   1                      
+  89   1                      STx = 0;                                                        // Pocetak slanja - formiranje START bita
+  90   1                      Delay_us(7);            ///Delay_us(55);        
+  91   1      
+  92   1              
+  93   1                      for (i=0; i<8; i++)                                     // Slanje bitova ponaosob
+  94   1                      {
+  95   2                              if ((SBUF & 0x01) == 0x01)              // Izdvajanje LSB-a, koji ce biti poslat u ovoj iteraciji 
+  96   2                                      b = 1;                                          // b = vrednost LSB-a
+  97   2                              else 
+  98   2                                      b = 0;
+  99   2      
+ 100   2                              SBUF = SBUF >> 1;                               // Priprema za izdvajanje sledeceg LSB-a za slanje
+ 101   2              
+ 102   2                              STx = b;                                                // Slanje prethodno izdvojenog bita
+ 103   2                              Delay_us(7);    
+ 104   2                      }
+ 105   1      
+ 106   1                      STx = 1;                                                        // Zavrsetak slanje - formiranje STOP bita
+ 107   1                      Delay_us(20);           
  108   1      
- 109   1      
- 110   1      }
- 111          
+ 109   1                      EA = 1; //EIE2 |= 1;                            // Vracanje dozvole inerapta            (// Vracanje dozvole inerapta od Timer-a br.3)
+ 110   1      
+ 111   1      
+ 112   1      }
+ 113          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    144    ----
-   CONSTANT SIZE    =   ----    ----
-C51 COMPILER V8.12   FUNCTIONS                                                             09/18/2026 15:10:50 PAGE 3   
+C51 COMPILER V8.12   FUNCTIONS                                                             09/24/2026 14:54:29 PAGE 3   
 
+   CODE SIZE        =    148    ----
+   CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----

@@ -11,4 +11,8 @@ sbit DS2	= P0^1;
 sbit DS3	= P0^7;
 sbit ComDir	= P0^6;
 
+sbit Jumper = P0^2;	//za odredjivanje adrese na osnovu jumper-a JP1 na plocici
+sbit STx 	= P0^3;	//za slanje komande motornoj plocici
+
+
 void CPUInit(char bip);

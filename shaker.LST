@@ -1,0 +1,82 @@
+C51 COMPILER V8.12   SHAKER                                                                09/24/2026 14:54:30 PAGE 1   
+
+
+C51 COMPILER V8.12, COMPILATION OF MODULE SHAKER
+OBJECT MODULE PLACED IN shaker.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.exe shaker.c DB OE BR INCDIR(C:\SiLabs\MCU\Inc) LARGE
+
+line level    source
+
+   1          #include "CPU_setup.h"
+   2          #include "shaker.h"
+   3          
+   4          extern bit Show_Weight;
+   5          extern bit Show_Time;
+   6          extern unsigned char ShakingTime;
+   7          
+   8          bit Shaker_Run = 0;
+   9          
+  10          ShakStat ShakerStatus = IDLE;
+  11          
+  12          
+  13          void ShakerLoop(void)
+  14          {
+  15   1              if (ShakerStatus == IDLE  &&  Shaker_Run)
+  16   1              {
+  17   2                      STx = 0;                        // run shaker motor
+  18   2                      Show_Time = 1;          // show shaking time on display
+  19   2                      Show_Weight = 0;
+  20   2                      Shaker_Run = 0;
+  21   2                      ShakerStatus = RUNNING;
+  22   2              }
+  23   1              else if (ShakerStatus == RUNNING  &&  ShakingTime == 0)
+  24   1              {
+  25   2                      STx = 1;                        // stop shaker motor
+  26   2                      Show_Time = 0;          
+  27   2                      Show_Weight = 1;        // show weight on display
+  28   2                      ShakerStatus = FINISHED;
+  29   2              }
+  30   1              else if (ShakerStatus == FINISHED  &&  ShakingTime == 0)
+  31   1              {
+  32   2                      
+  33   2                      ShakerStatus = IDLE;
+  34   2              }
+  35   1      
+  36   1      
+  37   1      /*      
+  38   1              switch (ShakerStatus)
+  39   1              {
+  40   1                      case IDLE:
+  41   1              
+  42   1                              STx = 1;                        // run shaker motor
+  43   1                              Show_Time = 0;          // show shaking time on display
+  44   1                              Show_Weight = 1;
+  45   1                              ShakerStatus = RUNNING;
+  46   1                              break;
+  47   1      
+  48   1                      case RUNNING:
+  49   1              
+  50   1                              STx = 0;                        // run shaker motor
+  51   1                              Show_Time = 1;          // show shaking time on display
+  52   1                              Show_Weight = 0;
+  53   1                              ShakerStatus = RUNNING;
+  54   1                              break;  
+  55   1              }
+C51 COMPILER V8.12   SHAKER                                                                09/24/2026 14:54:30 PAGE 2   
+
+  56   1      */
+  57   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     62    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =      1    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

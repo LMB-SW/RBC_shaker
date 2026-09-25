@@ -4,9 +4,15 @@
 
 Dspstruct  dspvar;
 
+bit Show_Weight = 0;
+bit Show_Time = 0;
+
+bit DPoint = 0;
+
 unsigned char digit=0;
 
 unsigned char DispOffset=2;
+
 
 code char	bcd27s[13] =
 {
@@ -31,36 +37,68 @@ code char	bcd27s[13] =
 	
 };
 
+extern char ADC_canrun;
+
 extern bit disp_show_flag;
+extern bit InternCalib_Done;
+extern unsigned char ShakingTime;
 
 
-void DspInit(void)
+void DisplayInit(void)
 {
   dspvar.oldweight= 0xFFFF; //inicira pocetni ispis
   dspvar.newweight= 0;
 }
 
-void DispLup(void)
+void DisplayLoop(void)
 {
 
  		 // pogledati da li je postavljen flag u timer3 na 3ms i ako nije => return.
 
-	if(!disp_show_flag)
+	if (!disp_show_flag)
   		return;
 	
-
-  	if (abs(dspvar.newweight - dspvar.oldweight) > DispOffset/*dspvar.newweight  != dspvar.oldweight*/){		// mozda treba dati neki offset !!!
-		dspvar.oldweight= dspvar.newweight;
-		//sracunaj 3 cifre i decimalne point- e (videti Kakobija.txt)
-		//i postavi dspvar.Cif i dspvar.Dsp 
-
-		//izdvajanje cifara
-		dspvar.Cif[0] = dspvar.oldweight % 10;
-		dspvar.Cif[1] = (dspvar.oldweight / 10) % 10;
-		dspvar.Cif[2] = (dspvar.oldweight / 100) % 10;
-		
+	if (!InternCalib_Done)
+	{
+		dspvar.Cif[0] = 10;
+		dspvar.Cif[1] = 10;
+		dspvar.Cif[2] = 10;
 	}
+	
+	else if (!ADC_canrun)
+	{
+		dspvar.Cif[0] = 12;
+		dspvar.Cif[1] = 12;
+		dspvar.Cif[2] = 12;	
+	}
+	else if (Show_Weight)
+	{
+		if (abs(dspvar.newweight - dspvar.oldweight) > DispOffset/*dspvar.newweight  != dspvar.oldweight*/)		// mozda treba dati neki offset !!!
+		{	
+			dspvar.oldweight= dspvar.newweight;
+			//sracunaj 3 cifre i decimalne point- e (videti Kakobija.txt)
+			//i postavi dspvar.Cif i dspvar.Dsp 
+	
+			//izdvajanje cifara
+			dspvar.Cif[0] = dspvar.oldweight % 10;
+			dspvar.Cif[1] = (dspvar.oldweight / 10) % 10;
+			dspvar.Cif[2] = (dspvar.oldweight / 100) % 10;		
+		}
+	}
+	else if (Show_Time)
+	{	
+		dspvar.newTime = ShakingTime;
 
+		if ((dspvar.oldTime - dspvar.newTime) > 0)
+		{	
+			dspvar.oldTime= dspvar.newTime;
+	
+			//izdvajanje cifara
+			dspvar.Cif[0] = dspvar.oldTime % 10;
+			dspvar.Cif[1] = (dspvar.oldTime / 10) % 10;
+			dspvar.Cif[2] = (dspvar.oldTime / 100) % 10;		
+		}	
+	}
   		//prikaz na osnovu dspvar.Cif i dspvar.Dsp 
 
 
@@ -78,9 +116,9 @@ void DispLup(void)
 	else
 	    digit = 0;
 
-//	if(zfl)
-//		P1 = ~(bcd27s[dspvar.Cif[0]]|0x80);
-//	else 
+	if(DPoint)
+		P1 = ~(bcd27s[dspvar.Cif[0]]|0x80);
+	else 
 		P1 = ~(bcd27s[dspvar.Cif[digit]]);
 
 

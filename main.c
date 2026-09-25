@@ -1,75 +1,124 @@
-#include "ADC.h"
 #include "CPU_setup.h"
+#include "ADC.h"
+#include "shaker.h"
 #include "display.h"
 #include "functions.h"
 #include "communication.h"
 
 
-//	bit intO=0, intG=0, intOG=0, scO=0, scG=0, acO=0, acG=0;		// pomocni flagovi za test samo
-//		int i;
+	bit intO=0;		// pomocni flagovi za test samo
 
-//		extern unsigned long X0, X1;
 
-extern char ADC_canrun;
+		extern unsigned long X0, X1, ADC_avg, Wght;
+
 extern unsigned char BoardAddress;
 
-//unsigned char speed = 0x64;
+		extern bit InternCalib_Done;
+
+		extern Dspstruct  dspvar;
+
+		extern ShakStat ShakerStatus;
+
+		extern bit Show_Weight;
+		extern bit Show_Time;
 
 
 int main(void)
 {
 
-//			unsigned long SumaX;
+//	DisableWDT();	//WDT disabled in the STARTUP file
 
-	/* disable watchdog timer */
-//	PCA0MD &= ~0x40;  /* WDTE = 0 (clear watchdog timer */
-
-	DisableWDT();
-
-  #ifdef BIPOLAR 
-  	CPUInit(1);
-  #else  
-    CPUInit(0);
-  #endif
+ 	#ifdef BIPOLAR 
+  		CPUInit(1);
+ 	#else  
+    	CPUInit(0);
+ 	#endif
 
 	BoardAddress = SetBoardAddress();
 
 	DisplayInit();
-	
+
+
+		dspvar.Cif[0] = 12;
+		dspvar.Cif[1] = 12;
+		dspvar.Cif[2] = 12;	
+
+	ShakerStatus = IDLE;
+
+/*
+	if(intO && !InternCalib_Done)
+	{
+		InternCalibO();
+		Delay_ms(100);
+		InternCalibG();
+		Delay_ms(100);
+		InternCalib_Done = 1;
+	}
+*/
+		InternCalibFull();
+		Delay_ms(100);
+		InternCalib_Done = 1;
+
+	X0 = 0;
+	X1 = 0;
+	ADC_avg = 0;
+	Wght=0;
+
+
+	ComDir = 0;
+
+	STx = 1;
+
+	Show_Weight = 1;
+	Show_Time = 0;		
+
 
 	EA = 1;
 
-//			SendMotorSpeed(speed);
-//			Delay_ms(100);
-
-		STx = 1;
 
   while(1)
   {
 
-//	STx = ~STx;
 
-//	SendMotorSpeed(0x0a);
-//	Delay_ms(1000);
+//		STx = ~STx;
+//		Delay_ms(5000);
 
-/*	SendMotorSpeed(0x23);
-	Delay_ms(1000);
-	SendMotorSpeed(0x32);
-	Delay_ms(1000);
-	SendMotorSpeed(0x64);
-	Delay_ms(1000);
-*/	
+		if(intO && !InternCalib_Done)
+		{
+			InternCalibFull();
+			Delay_ms(100);
+			InternCalib_Done = 1;
 
-//	STx = ~STx;
-//	Delay_us(10);
+//				ShakingTime = 60;
 
-	STx = ~STx;
-	Delay_ms(5000);
-	
+		/*	InternCalibO();
+			Delay_ms(100);
+			InternCalibG();
+			Delay_ms(100);
+			InternCalib_Done = 1;
+		*/
+		}
+		
+	//	dspvar.newweight= ShakingTime;
+/*
+		if(Shaker_Run)
+		{
+			STx = 0;
+			Show_Time = 1;
+			Show_Weight = 0;
+		}
+		else
+		{
+			STx = 1;
+			Show_Weight = 1;
+			Show_Time = 0;
+		}
+*/
 
-//	DisplayLoop();
-//  ADCLoop();
-	//CommLup();
+	DisplayLoop();
+	ADCLoop();
+	ShakerLoop();
+	CommunicationLoop();
 
   }
 

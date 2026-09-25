@@ -1,0 +1,57 @@
+#include "CPU_setup.h"
+#include "shaker.h"
+
+extern bit Show_Weight;
+extern bit Show_Time;
+extern unsigned char ShakingTime;
+
+bit Shaker_Run = 0;
+
+ShakStat ShakerStatus = IDLE;
+
+
+void ShakerLoop(void)
+{
+	if (ShakerStatus == IDLE  &&  Shaker_Run)
+	{
+		STx = 0;			// run shaker motor
+		Show_Time = 1;		// show shaking time on display
+		Show_Weight = 0;
+		Shaker_Run = 0;
+		ShakerStatus = RUNNING;
+	}
+	else if (ShakerStatus == RUNNING  &&  ShakingTime == 0)
+	{
+		STx = 1;			// stop shaker motor
+		Show_Time = 0;		
+		Show_Weight = 1;	// show weight on display
+		ShakerStatus = FINISHED;
+	}
+	else if (ShakerStatus == FINISHED  &&  ShakingTime == 0)
+	{
+		
+		ShakerStatus = IDLE;
+	}
+
+
+/*	
+	switch (ShakerStatus)
+	{
+		case IDLE:
+	
+			STx = 1;			// run shaker motor
+			Show_Time = 0;		// show shaking time on display
+			Show_Weight = 1;
+			ShakerStatus = RUNNING;
+			break;
+
+		case RUNNING:
+	
+			STx = 0;			// run shaker motor
+			Show_Time = 1;		// show shaking time on display
+			Show_Weight = 0;
+			ShakerStatus = RUNNING;
+			break;	
+	}
+*/
+}

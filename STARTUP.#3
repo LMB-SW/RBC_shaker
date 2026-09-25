@@ -129,9 +129,10 @@ DPH     DATA    83H
 
 STARTUP1:
 
-; ------ WATCHDOG TIMER DEACTIVATION ------
-								ANL     0D9H, #0BFH   
-; -----------------------------------------
+; --- DEAKTIVACIJA WATCHDOG TAJMERA ---
+; Brisemo bit 6 (WDTE) slanjem maske 0BFh (10111111 binarno) u PCA0MD registru
+;ANL     0D9H, #0BFH   
+; -------------------------------------
 
 IF IDATALEN <> 0
                 MOV     R0,#IDATALEN - 1

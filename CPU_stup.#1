@@ -90,6 +90,7 @@ void Timer3_Init(void)
 	////EA = 1;	
 }
 */
+/*
 void UARTInit (long bdr){
 
    SCON0 = 0x10;                       // SCON0: 8-bit variable bit rate
@@ -121,13 +122,88 @@ void UARTInit (long bdr){
   
    ES0 = 1;                            // Enable UART0 interrupts
 }
+*/
+/*
+void UART_Init(void)
+{  
 
+	CKCON |= 0x08;	//CKCON = 0x1A;
+
+	// donje dve postavljaju mod na 10 tj. mod 2: 8-bit counter/timer with auto-reload
+
+  	TMOD  |= 0x20;
+//  	TMOD  &= 0x2F;  
+
+ 	// zbog gornjeg CKCON (T1M= 0) => timer1 ne deli sistemski clock  za 115200
+    TH1   = 0xEE;	//0x96; //0x2B;// => 1/2 * ((49000000/(256- 0x2B)) = 115023 
+	TL1   = 0xEE;	//0x96; //0x2B;
+
+ 	TCON  |= 0x40;  // enable timer1
+
+ 	ET1 = 0; // zabrana interapta 
+	
+	//////////////////////////////////////
+
+	SCON0= 0x10;  // SCON1: mode 0, 8-bit UART, enable RX
+	
+	ES0 = 1;                            // Enable UART0 interrupts
+
+}
+*/
+
+void UART_Init(void)
+{
+    // -------------------------------------------------
+    // UART0: 8-bit, variable baud, 1 stop bit
+    // RX enabled
+    // -------------------------------------------------
+    SCON0 = 0x10; //0x90;
+
+    // -------------------------------------------------
+    // Timer 1:
+    // Mode 2 = 8-bit auto-reload
+    // Timer 1 clock = SYSCLK
+    // -------------------------------------------------
+
+    TMOD &= 0x0F;       // ocisti Timer1 konfiguraciju
+    TMOD |= 0x20;       // Timer1 Mode 2
+
+    CKCON |= 0x08;      // T1M = 1 -> Timer1 clock = SYSCLK
+
+    // 49 MHz / (2 * 115200) = 212.67
+    // 256 - 213 = 43 = 0x2B
+
+    TH1 = 0x96; //0x2B;
+    TL1 = 0x96; //0x2B;
+
+    // -------------------------------------------------
+    // Start Timer 1
+    // -------------------------------------------------
+    TR1 = 1;
+
+	ES0 = 1;                            // Enable UART0 interrupts
+ 
+}
+
+
+/*
+void EnUart0Int(void)
+{
+  ES0= 1;
+}
+
+void DisUart0Int(void)
+{
+  ES0= 0;
+}
+*/
 void CPUInit(char bip){
  
    OscInit();
    PortsInit();
    Timer2_Init();
    ADC0_Init (bip);
-   UARTInit (115200);
+   //UARTInit (115200);
+   UART_Init ();
 }
 

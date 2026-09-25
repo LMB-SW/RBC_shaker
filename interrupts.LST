@@ -1,4 +1,4 @@
-C51 COMPILER V8.12   INTERRUPTS                                                            09/18/2026 15:10:50 PAGE 1   
+C51 COMPILER V8.12   INTERRUPTS                                                            09/24/2026 14:54:29 PAGE 1   
 
 
 C51 COMPILER V8.12, COMPILATION OF MODULE INTERRUPTS
@@ -7,141 +7,163 @@ COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.exe interrupts.c DB OE BR INCDIR(C:\SiL
 
 line level    source
 
-   1          //#include <c8051f350.h>
-   2          #include "CPU_setup.h"
-   3          #include "display.h"
-   4          #include "communication.h"
+   1          #include "CPU_setup.h"
+   2          #include "display.h"
+   3          #include "communication.h"
+   4          #include "shaker.h"
    5          
    6          
    7          #define TIMER2_PERIOD   1       // 1ms
    8          
    9          extern bit MessageReceived;
-  10          
+  10          extern unsigned char BoardAddress;
   11          
-  12          xdata unsigned char ComData[UART0_BUFFER_SIZE];
+  12          extern bit DPoint;
   13          
-  14          unsigned int CntRX0 = 0;
-  15          
-  16          unsigned char sendByteDelay = 0;
+  14          
+  15          xdata unsigned char ComData[UART0_BUFFER_SIZE];
+  16          unsigned int CntRX0 = 0;
   17          
-  18          unsigned char Hundred_ms = 100 * TIMER2_PERIOD; // 100counts x 1ms = 100ms
-  19          unsigned int OneSecond = 1000 * TIMER2_PERIOD;          // 1000counts x 1ms = 1s
-  20          unsigned int OneMin = 60000 * TIMER2_PERIOD;            // 60000counts x 1ms = 1min
+  18          unsigned char ShakingTime = 0;
+  19          
+  20          unsigned char sendByteDelay = 0;
   21          
-  22          unsigned char disp_cnt = DISPLAY_REFRESH_PERID - 1;
-  23          bit disp_show_flag = 0;
-  24          
-  25                  unsigned char ADCsemp = 10;
-  26                  unsigned char ADCcnt = 10;
-  27          
-  28                  extern char ADC_Loop_Start;
-  29          
-  30          //      bit Gres=0;
+  22          unsigned char Hundred_ms = 100 * TIMER2_PERIOD; // 100counts x 1ms = 100ms
+  23          unsigned int OneSecond = 1000 * TIMER2_PERIOD;          // 1000counts x 1ms = 1s
+  24          unsigned int OneMin = 60000 * TIMER2_PERIOD;            // 60000counts x 1ms = 1min
+  25          
+  26          unsigned char disp_cnt = DISPLAY_REFRESH_PERID - 1;
+  27          bit disp_show_flag = 0;
+  28          
+  29                  unsigned char ADCsemp = 10;
+  30                  unsigned char ADCcnt = 10;
   31          
-  32          
-  33          void Timer2_ISR(void) interrupt 5{                      // na 1ms (PROVERITI !!!  --  jeste na 1ms, provereno osciloskopom)
-  34   1      
-  35   1              
-  36   1              TF2H = 0;         /* clear Timer2 interrupt flag */
-  37   1      
-  38   1              //////////////////////////////////////////////////////////
-  39   1      
-  40   1              if(Hundred_ms)
-  41   1                      Hundred_ms--;
-  42   1              else
-  43   1              {
-  44   2                      Hundred_ms = 100 * TIMER2_PERIOD;
-  45   2      
-  46   2                      if(sendByteDelay)
-  47   2                              sendByteDelay--;
-  48   2                      
-  49   2                      ///P1 = ~P1;
-  50   2      
-  51   2                      ///ADC_Loop_Start = 1;          //PRIVREMENO, ZA TEST
+  32                  extern char ADC_Loop_Start;
+  33          
+  34                  extern ShakStat ShakerStatus;
+  35          
+  36          //      bit Gres=0;
+  37          
+  38          
+  39          void Timer2_ISR(void) interrupt 5{                      // na 1ms (PROVERITI !!!  --  jeste na 1ms, provereno osciloskopom)
+  40   1      
+  41   1              
+  42   1              TF2H = 0;         /* clear Timer2 interrupt flag */
+  43   1      
+  44   1      
+  45   1              //////////////////// on every 1 ms ///////////////////////
+  46   1      
+  47   1              if(disp_cnt)
+  48   1                      disp_cnt--;
+  49   1              else
+  50   1              {
+  51   2                      disp_cnt = DISPLAY_REFRESH_PERID - 1;
   52   2      
-  53   2              }
-  54   1      
-  55   1              //////////////////////////////////////////////////////////
-C51 COMPILER V8.12   INTERRUPTS                                                            09/18/2026 15:10:50 PAGE 2   
+  53   2                      disp_show_flag = 1;
+  54   2      
+  55   2              }
+C51 COMPILER V8.12   INTERRUPTS                                                            09/24/2026 14:54:29 PAGE 2   
 
   56   1      
-  57   1              if(OneSecond)
-  58   1                      OneSecond--;
-  59   1              else
-  60   1              {
-  61   2                      OneSecond = 1000 * TIMER2_PERIOD;
-  62   2                      
-  63   2                      ///P1 = ~P1;
-  64   2      
-  65   2              }
-  66   1      
-  67   1              //////////////////////////////////////////////////////////
-  68   1      
-  69   1              if(disp_cnt)
-  70   1                      disp_cnt--;
-  71   1              else
-  72   1              {
-  73   2                      disp_cnt = DISPLAY_REFRESH_PERID - 1;
-  74   2      
-  75   2                      disp_show_flag = 1;
-  76   2      
-  77   2              }
-  78   1      
-  79   1                              if(ADCcnt)
-  80   1                                      ADCcnt--;
-  81   1                              else
-  82   1                              {
-  83   2                                      ADCcnt = ADCsemp;
-  84   2                                      ADC_Loop_Start = 1;             //PRIVREMENO, ZA TEST
-  85   2                              }
-  86   1      
-  87   1      }
-  88          
-  89          void Uart0_ISR(void) interrupt 4{  
-  90   1      
-  91   1              if(RI0 && !MessageReceived)             //Receiving
-  92   1              {
-  93   2                      ComData[CntRX0]=SBUF0;                          //Iz registra UART-a osmobitni podatak se smesta u elemente niza ComData                
-  94   2                      
-  95   2                      // ovde treba obezbediti validaciju pristiglog podatka
-  96   2                      
-  97   2                      CntRX0++;
-  98   2      
-  99   2                      if(CntRX0 == MESSAGE_SIZE)
- 100   2                              //kraj prijema - primljena kompletna poruka
- 101   2                              MessageReceived = 1;
- 102   2                              CntRX0 = 0; 
- 103   2      
- 104   2                      if(CntRX0 > (UART0_BUFFER_SIZE-1))
- 105   2                              CntRX0 = 0; 
- 106   2      
- 107   2      
- 108   2                      //RI0 = 0;      
- 109   2              }
- 110   1              
- 111   1              RI0 = 0;
- 112   1      
- 113   1                      
- 114   1              if(TI0)         //Transmitting
- 115   1              {
- 116   2                      
- 117   2                      TI0 = 0;        
-C51 COMPILER V8.12   INTERRUPTS                                                            09/18/2026 15:10:50 PAGE 3   
+  57   1                              if(ADCcnt)
+  58   1                                      ADCcnt--;
+  59   1                              else
+  60   1                              {
+  61   2                                      ADCcnt = ADCsemp;
+  62   2                                      ADC_Loop_Start = 1;             //PRIVREMENO, ZA TEST
+  63   2                              }
+  64   1              //////////////////////////////////////////////////////////
+  65   1      
+  66   1              //////////////////// on every 100 ms /////////////////////
+  67   1      
+  68   1              if(Hundred_ms)
+  69   1                      Hundred_ms--;
+  70   1              else
+  71   1              {
+  72   2                      Hundred_ms = 100 * TIMER2_PERIOD;
+  73   2      
+  74   2                      if(sendByteDelay)
+  75   2                              sendByteDelay--;
+  76   2                      
+  77   2                      ///P1 = ~P1;
+  78   2      
+  79   2                      ///ADC_Loop_Start = 1;          //PRIVREMENO, ZA TEST
+  80   2      
+  81   2              }
+  82   1              //////////////////////////////////////////////////////////
+  83   1      
+  84   1              //////////////////// on every 1 s ////////////////////////
+  85   1      
+  86   1              if(OneSecond)
+  87   1                      OneSecond--;
+  88   1              else
+  89   1              {
+  90   2                      OneSecond = 1000 * TIMER2_PERIOD;
+  91   2                      
+  92   2                      ///P1 = ~P1;
+  93   2      
+  94   2                      if(ShakingTime  &&  ShakerStatus == RUNNING)
+  95   2                      {
+  96   3                              ShakingTime--;
+  97   3                              DPoint = ~DPoint;
+  98   3                      }
+  99   2      
+ 100   2              }
+ 101   1      
+ 102   1              //////////////////////////////////////////////////////////
+ 103   1      
+ 104   1      }
+ 105          
+ 106          void Uart0_ISR(void) interrupt 4{  
+ 107   1      
+ 108   1              if(RI0 && !MessageReceived)             //Receiving
+ 109   1              {
+ 110   2                      ComData[CntRX0]=SBUF0;                          //Iz registra UART-a osmobitni podatak se smesta u elemente niza ComData                
+ 111   2      
+ 112   2                      if(CntRX0 == 1 && (ComData[CntRX0] != BoardAddress))    //stigo bajt koji sadrzi adresu, provera pristigle 
+             -adrese 
+ 113   2                      {
+ 114   3                              CntRX0 = 0;
+ 115   3                              RI0 = 0;
+ 116   3                              return; 
+C51 COMPILER V8.12   INTERRUPTS                                                            09/24/2026 14:54:29 PAGE 3   
 
- 118   2              }
- 119   1      
- 120   1      }
- 121          
- 122          /*
- 123          void ADC0_ISR (void) interrupt 10{
- 124          
- 125          }
- 126          */
- 127          
+ 117   3                      }
+ 118   2                      
+ 119   2                      CntRX0++;
+ 120   2                      
+ 121   2                      if(CntRX0 >= MESSAGE_SIZE)
+ 122   2                      {       //kraj prijema - primljena kompletna poruka
+ 123   3                              MessageReceived = 1;
+ 124   3                              CntRX0 = 0; 
+ 125   3                      }
+ 126   2      
+ 127   2      //              if(CntRX0 > (UART0_BUFFER_SIZE-1))
+ 128   2      //                      CntRX0 = 0; 
+ 129   2      
+ 130   2              }
+ 131   1              
+ 132   1              RI0 = 0;
+ 133   1      
+ 134   1                      
+ 135   1              if(TI0)         //Transmitting
+ 136   1              {
+ 137   2                      
+ 138   2                      TI0 = 0;        
+ 139   2              }
+ 140   1      
+ 141   1      }
+ 142          
+ 143          /*
+ 144          void ADC0_ISR (void) interrupt 10{
+ 145          
+ 146          }
+ 147          */
+ 148          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    218    ----
+   CODE SIZE        =    281    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =     21    ----
    PDATA SIZE       =   ----    ----

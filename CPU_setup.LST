@@ -1,4 +1,4 @@
-C51 COMPILER V8.12   CPU_SETUP                                                             09/16/2026 10:49:20 PAGE 1   
+C51 COMPILER V8.12   CPU_SETUP                                                             09/21/2026 09:15:24 PAGE 1   
 
 
 C51 COMPILER V8.12, COMPILATION OF MODULE CPU_SETUP
@@ -12,20 +12,21 @@ line level    source
    3          #define Seg7  P1 
    4          
    5          #define SYSTEMCLOCK     49000000  
-   6          #define MDCLK                   2457600   
-   7          #define OWR                     10            /* desired Output Word Rate in Hz */
-   8          
-   9          sbit DS1        = P0^0;
-  10          sbit DS2        = P0^1;
-  11          sbit DS3        = P0^7;
-  12          sbit ComDir     = P0^6;
-  13          
-  14          sbit Jumper = P0^2;     //za odredjivanje adrese na osnovu jumper-a JP1 na plocici
-  15          sbit STx        = P0^3; //za slanje komande motornoj plocici
-  16          
+   6          #define BAUDRATE                115200
+   7          #define MDCLK                   2457600   
+   8          #define OWR                     10            /* desired Output Word Rate in Hz */
+   9          
+  10          sbit DS1        = P0^0;
+  11          sbit DS2        = P0^1;
+  12          sbit DS3        = P0^7;
+  13          sbit ComDir     = P0^6;
+  14          
+  15          sbit Jumper = P0^2;     //za odredjivanje adrese na osnovu jumper-a JP1 na plocici
+  16          sbit STx        = P0^3; //za slanje komande motornoj plocici
   17          
-  18          void CPUInit(char bip);
-  19          void DisableWDT(void);
+  18          
+  19          void CPUInit(char bip);
+  20          void DisableWDT(void);
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE

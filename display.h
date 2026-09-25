@@ -5,6 +5,8 @@
 typedef struct {
   unsigned long oldweight;
   unsigned long newweight;
+  unsigned char oldTime;
+  unsigned char newTime;
   unsigned char Cif[3];
   char Dps[3];
 }Dspstruct;

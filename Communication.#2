@@ -1,15 +1,14 @@
-#include <c8051f350.h>
 #include "Communication.h"
 #include "functions.h"
+#include "CPU_setup.h"
+#include "shaker.h"
 #include "ADC.h"
 
 
 bit MessageReceived = 0;
 bit MessageSending = 0;
-
 unsigned char BoardAddress;
 unsigned char Command;
-
 unsigned char bufT[MESSAGE_SIZE];
 unsigned char bufR[MESSAGE_SIZE];
 
@@ -17,8 +16,13 @@ extern unsigned long Wght;
 extern unsigned long ADC_avg;
 extern unsigned long X0, X1;
 extern unsigned long REF_value;
+extern unsigned char ShakingTime;
 extern xdata unsigned char ComData[UART0_BUFFER_SIZE];
+extern bit AppCalibOffset_Done;
+extern bit AppCalibGain_Done;
+extern bit Shaker_Run;
 
+extern ShakStat ShakerStatus;
 
 void SendMessage(unsigned long Data)
 {
@@ -34,16 +38,18 @@ void SendMessage(unsigned long Data)
 	bufT[6] = (Data & 0x000000FF);
 
 	bufT[7] = END;
-	bufT[8] = GenCheckSum;
+	bufT[8] = GenCheckSum();
 
 	//sending
 	MessageSending = 1;
+	ComDir = 1;
 	ES0= 0;	//disable UART interrupt
-
+	
 	for(cnt = 0; cnt < 9; cnt++)
 		putc0(bufT[cnt]);
 
 	MessageSending = 0;
+	ComDir = 0;
 	ES0= 1;	//enable UART interrupt
 	
 }
@@ -85,9 +91,8 @@ unsigned long ConvertBytesToLong(unsigned char *command)
 
 unsigned char AnalyzeReceivedMessage(unsigned char *message)
 {
-	
-	//if(buf[0] != START || buf[])
-
+	unsigned long X0_temp=0, X1_temp=0;
+		
 	if(message[1] != BoardAddress)
 		return 0;							// neodgovarajuca adresa
 	
@@ -100,6 +105,12 @@ unsigned char AnalyzeReceivedMessage(unsigned char *message)
 
 	switch (Command)
 	{
+		case COM_TEST:	
+
+			SendMessage(1);			
+			break;
+
+
 		case REQUEST_FOR_WEIGHT:	
 
 			SendMessage(Wght);			
@@ -122,25 +133,76 @@ unsigned char AnalyzeReceivedMessage(unsigned char *message)
 
 		case TAKE_REF_POINT_FOR_ZER0:
 
-			AppCalibO();
+			if(AppCalibO())
+				SendMessage(1);
+			else
+				SendMessage(2);	
+
 			break;
 
 		case TAKE_REF_POINT_FOR_REF_VALUE:
 
-			REF_value = ConvertBytesToLong(message);	// vidi sta ces sa ovim REF_value
-			AppCalibG();
+			if(!AppCalibOffset_Done)	
+				SendMessage(3);	// nedostaje prethodno odradjena AppCalib za ofset
+			else 
+			{
+				REF_value = ConvertBytesToLong(message);	// vidi sta ces sa ovim REF_value
+				
+				if(AppCalibG())
+					SendMessage(1);	// uspesna
+				else 
+					SendMessage(2);	// neuspesna
+			}
+	
 			break;
 
 		case WRITE_X0_VALUE:
 
-			X0 = ConvertBytesToLong(message);
+			X0_temp = ConvertBytesToLong(message);
+
+			if(X0_temp > 0  &&  X0_temp < 1048576)
+			{
+				X0 = X0_temp;
+				SendMessage(1);
+			}
+			else
+				SendMessage(2);
+
 			break;
 	
 		case WRITE_X1_VALUE:	
 		
-			X1 = ConvertBytesToLong(message);
+			X1_temp = ConvertBytesToLong(message);
+
+			if(X1_temp > X0  &&  X1_temp < 1048576)
+			{
+				X1 = X1_temp;
+				SendMessage(1);
+			}
+			else
+				SendMessage(2);
+
+			break;
+
+		case RUN_SHAKER:	
+		
+			//ShakingTime = message[6];	//ShakingTime = ConvertBytesToLong(message);
+
+			if(message[6] /*ShakingTime*/ > 0  &&  ShakerStatus == IDLE)
+			{
+				ShakingTime = message[6];
+				Shaker_Run = 1;	//ShakerStatus = RUNNING; 
+				SendMessage(1);
+			}
+			else
+			{
+				Shaker_Run = 0;	//ShakerStatus = IDLE; 	
+				SendMessage(2);
+			}
 			break;
 	}
+
+	return 1;
 		
 }
 

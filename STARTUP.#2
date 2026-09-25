@@ -123,11 +123,16 @@ DPH     DATA    83H
                 PUBLIC  ?C_STARTUP
 
                 CSEG    AT      0
-?C_STARTUP:     LJMP    STARTUP1
+?C_STARTUP:     LJMP    STARTUP1 
 
                 RSEG    ?C_C51STARTUP
 
 STARTUP1:
+
+; --- DEAKTIVACIJA WATCHDOG TAJMERA ---
+; Brisemo bit 6 (WDTE) slanjem maske 0BFh (10111111 binarno) u PCA0MD registru
+		ANL     0D9H, #0BFH   
+; -------------------------------------
 
 IF IDATALEN <> 0
                 MOV     R0,#IDATALEN - 1

@@ -48,10 +48,12 @@ void Delay_ms(unsigned int ms)
 
 void putc0(unsigned char dat)
 {		
-  	SBUF0= dat;
+  	EA = 0;
+	SBUF0= dat;
 	sendByteDelay = 2;
   	while ((SCON0&0x02)==0  && sendByteDelay){}
   	SCON0 &= 0xfd; 	
+	EA = 1;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

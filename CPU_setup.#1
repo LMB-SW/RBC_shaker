@@ -3,6 +3,7 @@
 #define Seg7  P1 
 
 #define SYSTEMCLOCK   	49000000  
+#define BAUDRATE		115200
 #define MDCLK     		2457600   
 #define OWR       		10            /* desired Output Word Rate in Hz */
 
@@ -16,3 +17,4 @@ sbit STx 	= P0^3;	//za slanje komande motornoj plocici
 
 
 void CPUInit(char bip);
+void DisableWDT(void);

@@ -3,20 +3,25 @@
 #include "display.h"
 								// za sad ideja da ga pokrece PC posto je poslao kalibracione podatke (ako se ide na tu opciju tj ne na flash)
 char ADC_canrun= 0; 			// kako za system calib registre (offs i gain), tako i za aplikacione calib (X0 i X1) i tada postaviti ADC_canrun= 1 i ADC_Loop_Start= 1
-	 ADC_Loop_Start= 0;			// startuje prvu ADC konverziju
+char ADC_Loop_Start= 0;			// startuje prvu ADC konverziju
 
 int  sampCnt= 0;
 unsigned long  ADC_samps[MAXSAMPS];
 	unsigned long ADC_avg;
 unsigned long Wght= 0;
 unsigned long X0, X1;			// za nulu i za 500 gr, dobijeni komunikacijom
-	unsigned long REF_value;
+	unsigned long REF_value = 500;
 
 	unsigned int unit = 500; //50000;		///Privremeno
 
 	unsigned char FiltDivisor = 8;
 
-//	int Gres=0;
+bit InternCalib_Done = 0;
+bit AppCalibOffset_Done = 0;
+bit AppCalibGain_Done = 0;
+
+		bit Gres = 0;
+		bit filtriraj = 0;
 
 union{ 
 	unsigned long  ul;
@@ -24,6 +29,8 @@ union{
 }ULONG;
 
 extern Dspstruct  dspvar;
+
+
 
 long ADC2Blong(void){		    // bipolarna verzija
 long poml;
@@ -72,6 +79,18 @@ long ADC_Filter(long new_value)
 }
 
 /////////////////////////////////////////////////////////////////////
+void InternCalibFull(void)
+{
+	ADC0MD= 0x80;  // idle
+
+	ADC0MD= 0x81;  // startuj intern offs
+	while (!AD0INT) {}
+
+	ADC0STA &= ~0x20;	//ADC0STA |= ~0x20;
+}
+/////////////////////////////////////////////////////////////////////
+
+/*
 void InternCalibO(void)
 {
 	ADC0MD= 0x80;  // idle
@@ -80,7 +99,6 @@ void InternCalibO(void)
 	while (!AD0INT) {}
 
 	ADC0STA &= ~0x20;	//ADC0STA |= ~0x20;
-
 }
 /////////////////////////////////////////////////////////////////////
 
@@ -92,10 +110,9 @@ void InternCalibG(void)
 	while (!AD0INT) {}
 
 	ADC0STA &= ~0x20;	//ADC0STA |= ~0x20;
-
 }
 /////////////////////////////////////////////////////////////////////
-
+*/
 
 void SysCalibO(void){			// inicira ga serijska komunikacija 
 
@@ -139,7 +156,7 @@ void SysCalibG(void){					//19.52mV za PGA= 128
   //save ULONG.ul u flash ili salji na UART, ali verovatno u flash uz kontrolne karaktere (npr CS)
 }
 
-void AppCalibO(void){			// inicira ga serijska komunikacija  - daje X0
+unsigned char AppCalibO(void){			// inicira ga serijska komunikacija  - daje X0
 long pomL;
  
   ADC0MD= 0x80;  // idle
@@ -172,9 +189,20 @@ long pomL;
 
   	  	  	X0 = pomL;	// OVO SAMO RADI TESTA - KASNIJE TO TREBA DA SE SALJE APP-U
 
+			if(X0 > 0)
+			{
+				AppCalibOffset_Done = 1;
+				return 1;
+			}
+			else
+			{
+				AppCalibOffset_Done = 0;
+				return 0;
+			}
+
 }
 
-void AppCalibG(void){			// - daje X1
+unsigned char AppCalibG(void){			// - daje X1
 unsigned long adrd;
  
   ADC0MD= 0x80;  // idle
@@ -198,6 +226,19 @@ unsigned long adrd;
   //save u flash ili salji na UART kao X1
 
   		X1 = adrd;	// OVO SAMO RADI TESTA - KASNIJE TO TREBA DA SE SALJE APP-U
+
+		if(X1 > X0)
+		{
+			AppCalibGain_Done = 1;
+			ADC_canrun = 1;
+			return 1;
+		}
+		else
+		{
+			AppCalibGain_Done = 0;
+			ADC_canrun = 0;
+			return 0;
+		}
 }
 
 
@@ -216,8 +257,8 @@ int i;
 	 return;
   }
 
-//  		if(AD0BUSY || AD0CBSY || AD0ERR)
-//			Gres = 1;
+ 		if(/*AD0BUSY || AD0CBSY ||*/ AD0ERR)
+			Gres = 1;
 
   if (!AD0INT) return;
   else {
@@ -242,12 +283,19 @@ int i;
 			ADC_avg= suma/MAXSAMPS;
 			//Wght= (unit * (ADC_avg- X0)) / (X1-X0); // u 0.01 gramima			///Wght= (50000 * (ADC_avg- X0)) / (X1-X0); // u 0.01 gramima
 		
-			ADC_avg = ADC_Filter(ADC_avg);	// Dodatno filtriranje ADC vrednosti
+			if(filtriraj)
+				ADC_avg = ADC_Filter(ADC_avg);	// Dodatno filtriranje ADC vrednosti
 					
 				if(ADC_avg <= X0)
-					Wght=0;			
+				{
+					Wght=0;	
+
+					dspvar.Cif[0] = 0;
+					dspvar.Cif[1] = 0;
+					dspvar.Cif[2] = 0;
+				}		
 				else
-					Wght= (unit * (ADC_avg- X0)) / (X1-X0);
+					Wght= (/*unit*/REF_value * (ADC_avg- X0)) / (X1-X0);
 				
 /*
 				if(Wght>10000)
