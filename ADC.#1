@@ -2,8 +2,8 @@
 #include "ADC.h"
 #include "display.h"
 								// za sad ideja da ga pokrece PC posto je poslao kalibracione podatke (ako se ide na tu opciju tj ne na flash)
-char ADC_canrun= 0; 			// kako za system calib registre (offs i gain), tako i za aplikacione calib (X0 i X1) i tada postaviti ADC_canrun= 1 i ADC_Loop_Start= 1
-char ADC_Loop_Start= 0;			// startuje prvu ADC konverziju
+bit ADC_canrun= 0; 			// kako za system calib registre (offs i gain), tako i za aplikacione calib (X0 i X1) i tada postaviti ADC_canrun= 1 i ADC_Loop_Start= 1
+bit ADC_Loop_Start= 0;			// startuje prvu ADC konverziju
 
 int  sampCnt= 0;
 unsigned long  ADC_samps[MAXSAMPS];
@@ -28,7 +28,7 @@ union{
 	unsigned char  uch[4];
 }ULONG;
 
-extern Dspstruct  dspvar;
+//extern Dspstruct  dspvar;
 
 
 
@@ -73,6 +73,9 @@ long ADC_Filter(long new_value)
     else
     {
         filtered = filtered + (new_value - filtered) / FiltDivisor;	// delilac je bio 8
+
+//		if (filtered - new_value < (X1 - X0) / 10)
+//			filtered = X0;
     }
 
     return filtered;
@@ -250,7 +253,7 @@ int i;
   
   if (!ADC_canrun) return;
 
-  if (ADC_Loop_Start){
+  if (ADC_Loop_Start==1){
      ADC_Loop_Start= 0;
  	 ADC0MD= 0x80;  // idle 
   	 ADC0MD= 0x82;  // start conv  //verovatno moze samo jedna cmd ili mozda Delay izmedju (ispitati)
@@ -260,12 +263,14 @@ int i;
  		if(/*AD0BUSY || AD0CBSY ||*/ AD0ERR)
 			Gres = 1;
 
-  if (!AD0INT) return;
-  else {
+  
+  while(!AD0INT);	///if (!AD0INT) return;		//ZA PROBUUU
+  ///else {										//ZA PROBUUU
 	    ADC0STA &= ~0x20;	//ADC0STA |= ~0x20;
 
 		#ifdef  BIPOLAR
 			ADC_samps[sampCnt++]= ADC2Blong();
+			///ADC_samps[sampCnt++]= ADC_Filter(ADC2Blong());	// PROBAAA
 		#else
 			ADC_samps[sampCnt++]= ADC2Ulong();
 		#endif
@@ -275,19 +280,25 @@ int i;
 			suma= 0;
 			for (i= 0; i< MAXSAMPS; i++){
 			   #ifdef BIPOLAR
-			     suma+= (long)ADC_samps[i];
+			   		suma+= (long)ADC_samps[i];
 			   #else 
-			     suma+= ADC_samps[i];
+			    	suma+= ADC_samps[i];
 			   #endif
 			}
 			ADC_avg= suma/MAXSAMPS;
 			//Wght= (unit * (ADC_avg- X0)) / (X1-X0); // u 0.01 gramima			///Wght= (50000 * (ADC_avg- X0)) / (X1-X0); // u 0.01 gramima
 		
-			if(filtriraj)
-				ADC_avg = ADC_Filter(ADC_avg);	// Dodatno filtriranje ADC vrednosti
+				if(filtriraj)
+					ADC_avg = ADC_Filter(ADC_avg);	// Dodatno filtriranje ADC vrednosti
 					
 				if(ADC_avg <= X0)
-					Wght=0;			
+				{
+					Wght=0;	
+
+//					dspvar.Cif[0] = 0;
+//					dspvar.Cif[1] = 0;
+//					dspvar.Cif[2] = 0;
+				}		
 				else
 					Wght= (/*unit*/REF_value * (ADC_avg- X0)) / (X1-X0);
 				
@@ -302,11 +313,11 @@ int i;
 					Wght = Wght/1000;	//Wght = Wght >> 12;
 */
 
-			dspvar.newweight= Wght;
+		//	dspvar.newweight= Wght;
 		}
 
 //		ADC0MD= 0x80;   /// PRIVREMENO - ZA TEST
 //		ADC0MD= 0x82;  
-  }
+  ///}						//ZA PROBUUU
 }
 

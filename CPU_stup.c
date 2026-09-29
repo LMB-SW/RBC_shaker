@@ -49,9 +49,9 @@ void ADC0_Init (char bip)	// bip= 1 => bipolar mode
 	ADC0CLK = 19;		// MDCLK = SYSCLK / (ADC0CLK + 1) i za ADC Conversion clock = 2.45 MHz na 49MHz SYSCLK => ADC0CLK = 19
 	ADC0MUX = 0x10;		// diferencijalni
 
-	ADC0DECL= 20; //32;		//20=minimum
-	ADC0DECH= 0;
-	                            
+	ADC0DECH= 0x00;	//0;
+	ADC0DECL= 0x40;	//20; //32;		//20=minimum
+		                            
 	ADC0MD = 0x80;	//0x82;		//	ADC0 enable u single mode- u	// AKO STOJI "ADC0MD=0x82" ONDA "ADC0STA" POSTANE "0X32" IZ NEKOG RAZLOGA		
 	
 	//AD0INT = 1;

@@ -1,7 +1,7 @@
-//#include <c8051f350.h>
 #include "CPU_setup.h"
 #include "display.h"
 #include "communication.h"
+#include "shaker.h"
 
 
 #define TIMER2_PERIOD	1	// 1ms
@@ -26,10 +26,12 @@ unsigned int OneMin = 60000 * TIMER2_PERIOD;		// 60000counts x 1ms = 1min
 unsigned char disp_cnt = DISPLAY_REFRESH_PERID - 1;
 bit disp_show_flag = 0;
 
-	unsigned char ADCsemp = 10;
-	unsigned char ADCcnt = 10;
+	unsigned char ADCsemp = 100;
+	unsigned char ADCcnt = 100;
 
 	extern char ADC_Loop_Start;
+
+	extern ShakStat ShakerStatus;
 
 //	bit Gres=0;
 

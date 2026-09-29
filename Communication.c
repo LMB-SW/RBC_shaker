@@ -18,7 +18,7 @@ extern unsigned long X0, X1;
 extern unsigned long REF_value;
 extern unsigned char ShakingTime;
 extern xdata unsigned char ComData[UART0_BUFFER_SIZE];
-extern char ADC_canrun;
+extern bit ADC_canrun;
 extern bit AppCalibOffset_Done;
 extern bit AppCalibGain_Done;
 extern bit Shaker_Run;

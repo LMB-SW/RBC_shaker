@@ -1,4 +1,4 @@
-C51 COMPILER V8.12   FUNCTIONS                                                             09/24/2026 14:54:29 PAGE 1   
+C51 COMPILER V8.12   FUNCTIONS                                                             09/25/2026 15:18:21 PAGE 1   
 
 
 C51 COMPILER V8.12, COMPILATION OF MODULE FUNCTIONS
@@ -62,7 +62,7 @@ line level    source
   53   1              sendByteDelay = 2;
   54   1              while ((SCON0&0x02)==0  && sendByteDelay){}
   55   1              SCON0 &= 0xfd;  
-C51 COMPILER V8.12   FUNCTIONS                                                             09/24/2026 14:54:29 PAGE 2   
+C51 COMPILER V8.12   FUNCTIONS                                                             09/25/2026 15:18:21 PAGE 2   
 
   56   1              EA = 1;
   57   1      }
@@ -126,7 +126,7 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-C51 COMPILER V8.12   FUNCTIONS                                                             09/24/2026 14:54:29 PAGE 3   
+C51 COMPILER V8.12   FUNCTIONS                                                             09/25/2026 15:18:21 PAGE 3   
 
    CODE SIZE        =    148    ----
    CONSTANT SIZE    =   ----    ----

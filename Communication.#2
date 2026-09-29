@@ -163,10 +163,14 @@ unsigned char AnalyzeReceivedMessage(unsigned char *message)
 			if(X0_temp > 0  &&  X0_temp < 1048576)
 			{
 				X0 = X0_temp;
+				AppCalibOffset_Done = 1;
 				SendMessage(1);
 			}
 			else
+			{
+				AppCalibOffset_Done = 0;
 				SendMessage(2);
+			}
 
 			break;
 	
@@ -174,13 +178,25 @@ unsigned char AnalyzeReceivedMessage(unsigned char *message)
 		
 			X1_temp = ConvertBytesToLong(message);
 
-			if(X1_temp > X0  &&  X1_temp < 1048576)
+			if(!AppCalibOffset_Done)
+			{	
+				ADC_canrun = 0;
+				AppCalibGain_Done = 0;
+				SendMessage(3);	// nedostaje prethodno upisana vrednost za X0
+			}
+			else if(X1_temp > X0  &&  X1_temp < 1048576)
 			{
 				X1 = X1_temp;
+				ADC_canrun = 1;
+				AppCalibGain_Done = 1;
 				SendMessage(1);
 			}
 			else
+			{
+				ADC_canrun = 0;
+				AppCalibGain_Done = 0;
 				SendMessage(2);
+			}
 
 			break;
 

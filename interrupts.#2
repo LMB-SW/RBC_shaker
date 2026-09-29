@@ -1,7 +1,7 @@
-//#include <c8051f350.h>
 #include "CPU_setup.h"
 #include "display.h"
 #include "communication.h"
+#include "shaker.h"
 
 
 #define TIMER2_PERIOD	1	// 1ms

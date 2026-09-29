@@ -1,4 +1,4 @@
-C51 COMPILER V8.12   MAIN                                                                  09/24/2026 14:54:29 PAGE 1   
+C51 COMPILER V8.12   MAIN                                                                  09/25/2026 15:18:21 PAGE 1   
 
 
 C51 COMPILER V8.12, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   53   1                      InternCalibG();
   54   1                      Delay_ms(100);
   55   1                      InternCalib_Done = 1;
-C51 COMPILER V8.12   MAIN                                                                  09/24/2026 14:54:29 PAGE 2   
+C51 COMPILER V8.12   MAIN                                                                  09/25/2026 15:18:21 PAGE 2   
 
   56   1              }
   57   1      */
@@ -126,7 +126,7 @@ line level    source
  115   2                      }
  116   2      */
  117   2      
-C51 COMPILER V8.12   MAIN                                                                  09/24/2026 14:54:29 PAGE 3   
+C51 COMPILER V8.12   MAIN                                                                  09/25/2026 15:18:21 PAGE 3   
 
  118   2              DisplayLoop();
  119   2              ADCLoop();

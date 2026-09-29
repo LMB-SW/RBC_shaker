@@ -37,11 +37,12 @@ code char	bcd27s[13] =
 	
 };
 
-extern char ADC_canrun;
+extern bit ADC_canrun;
 
 extern bit disp_show_flag;
 extern bit InternCalib_Done;
 extern unsigned char ShakingTime;
+extern unsigned long Wght;
 
 
 void DisplayInit(void)
@@ -61,6 +62,8 @@ void DisplayLoop(void)
 
 	if (Show_Weight)	// prikaz izmerene tezine
 	{
+		dspvar.newweight= Wght;		// PREMESTENO IZ ADCLoop
+		
 		if (!InternCalib_Done)
 		{
 			dspvar.Cif[0] = 10;

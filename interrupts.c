@@ -26,10 +26,10 @@ unsigned int OneMin = 60000 * TIMER2_PERIOD;		// 60000counts x 1ms = 1min
 unsigned char disp_cnt = DISPLAY_REFRESH_PERID - 1;
 bit disp_show_flag = 0;
 
-	unsigned char ADCsemp = 10;
-	unsigned char ADCcnt = 10;
+	unsigned char ADCsemp = 20;		// bilo je 10
+	unsigned char ADCcnt = 20;		// bilo je 10
 
-	extern char ADC_Loop_Start;
+	extern bit ADC_Loop_Start;
 
 	extern ShakStat ShakerStatus;
 

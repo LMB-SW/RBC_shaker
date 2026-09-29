@@ -1,4 +1,4 @@
-C51 COMPILER V8.12   COMMUNICATION                                                         09/24/2026 14:54:29 PAGE 1   
+C51 COMPILER V8.12   COMMUNICATION                                                         09/25/2026 15:18:21 PAGE 1   
 
 
 C51 COMPILER V8.12, COMPILATION OF MODULE COMMUNICATION
@@ -27,7 +27,7 @@ line level    source
   18          extern unsigned long REF_value;
   19          extern unsigned char ShakingTime;
   20          extern xdata unsigned char ComData[UART0_BUFFER_SIZE];
-  21          extern char ADC_canrun;
+  21          extern bit ADC_canrun;
   22          extern bit AppCalibOffset_Done;
   23          extern bit AppCalibGain_Done;
   24          extern bit Shaker_Run;
@@ -62,7 +62,7 @@ line level    source
   53   1              ComDir = 0;
   54   1              ES0= 1; //enable UART interrupt
   55   1              
-C51 COMPILER V8.12   COMMUNICATION                                                         09/24/2026 14:54:29 PAGE 2   
+C51 COMPILER V8.12   COMMUNICATION                                                         09/25/2026 15:18:21 PAGE 2   
 
   56   1      }
   57          
@@ -126,7 +126,7 @@ line level    source
  115   2                      case REQUEST_FOR_WEIGHT:        
  116   2      
  117   2                              SendMessage(Wght);                      
-C51 COMPILER V8.12   COMMUNICATION                                                         09/24/2026 14:54:29 PAGE 3   
+C51 COMPILER V8.12   COMMUNICATION                                                         09/25/2026 15:18:21 PAGE 3   
 
  118   2                              break;
  119   2      
@@ -190,7 +190,7 @@ line level    source
  177   2              
  178   2                      case WRITE_X1_VALUE:    
  179   2                      
-C51 COMPILER V8.12   COMMUNICATION                                                         09/24/2026 14:54:29 PAGE 4   
+C51 COMPILER V8.12   COMMUNICATION                                                         09/25/2026 15:18:21 PAGE 4   
 
  180   2                              X1_temp = ConvertBytesToLong(message);
  181   2      
@@ -254,13 +254,13 @@ line level    source
  239   2                      MessageReceived = 0;                    
  240   2              }
  241   1      
-C51 COMPILER V8.12   COMMUNICATION                                                         09/24/2026 14:54:29 PAGE 5   
+C51 COMPILER V8.12   COMMUNICATION                                                         09/25/2026 15:18:21 PAGE 5   
 
  242   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1178    ----
+   CODE SIZE        =   1175    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =     20      26
    PDATA SIZE       =   ----    ----

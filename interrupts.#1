@@ -1,4 +1,3 @@
-//#include <c8051f350.h>
 #include "CPU_setup.h"
 #include "display.h"
 #include "communication.h"
@@ -30,7 +29,7 @@ bit disp_show_flag = 0;
 	unsigned char ADCsemp = 10;
 	unsigned char ADCcnt = 10;
 
-	extern char ADC_Loop_Start;
+	extern bit ADC_Loop_Start;
 
 	extern ShakStat ShakerStatus;
 

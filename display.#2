@@ -58,22 +58,26 @@ void DisplayLoop(void)
 	if (!disp_show_flag)
   		return;
 	
-	if (!InternCalib_Done)
+
+	if (Show_Weight)	// prikaz izmerene tezine
 	{
-		dspvar.Cif[0] = 10;
-		dspvar.Cif[1] = 10;
-		dspvar.Cif[2] = 10;
-	}
+		dspvar.newweight= Wght;		// PREMESTENO IZ ADCLoop
+		
+		if (!InternCalib_Done)
+		{
+			dspvar.Cif[0] = 10;
+			dspvar.Cif[1] = 10;
+			dspvar.Cif[2] = 10;
+		}
 	
-	else if (!ADC_canrun)
-	{
-		dspvar.Cif[0] = 12;
-		dspvar.Cif[1] = 12;
-		dspvar.Cif[2] = 12;	
-	}
-	else if (Show_Weight)
-	{
-		if (abs(dspvar.newweight - dspvar.oldweight) > DispOffset/*dspvar.newweight  != dspvar.oldweight*/)		// mozda treba dati neki offset !!!
+		else if (!ADC_canrun)
+		{
+			dspvar.Cif[0] = 12;
+			dspvar.Cif[1] = 12;
+			dspvar.Cif[2] = 12;	
+		}
+		
+		else if (abs(dspvar.newweight - dspvar.oldweight) > DispOffset/*dspvar.newweight  != dspvar.oldweight*/)		// mozda treba dati neki offset !!!
 		{	
 			dspvar.oldweight= dspvar.newweight;
 			//sracunaj 3 cifre i decimalne point- e (videti Kakobija.txt)
@@ -85,7 +89,7 @@ void DisplayLoop(void)
 			dspvar.Cif[2] = (dspvar.oldweight / 100) % 10;		
 		}
 	}
-	else if (Show_Time)
+	else if (Show_Time)		// prikaz preostalog vremena miksovanja
 	{	
 		dspvar.newTime = ShakingTime;
 
@@ -117,7 +121,7 @@ void DisplayLoop(void)
 	    digit = 0;
 
 	if(DPoint)
-		P1 = ~(bcd27s[dspvar.Cif[0]]|0x80);
+		P1 = ~(bcd27s[dspvar.Cif[digit]]|0x80);
 	else 
 		P1 = ~(bcd27s[dspvar.Cif[digit]]);
 

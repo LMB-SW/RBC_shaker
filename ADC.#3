@@ -10,7 +10,7 @@ unsigned long  ADC_samps[MAXSAMPS];
 	unsigned long ADC_avg;
 unsigned long Wght= 0;
 unsigned long X0, X1;			// za nulu i za 500 gr, dobijeni komunikacijom
-	unsigned long REF_value = 0;
+	unsigned long REF_value = 500;
 
 	unsigned int unit = 500; //50000;		///Privremeno
 
@@ -21,13 +21,14 @@ bit AppCalibOffset_Done = 0;
 bit AppCalibGain_Done = 0;
 
 		bit Gres = 0;
+		bit filtriraj = 0;
 
 union{ 
 	unsigned long  ul;
 	unsigned char  uch[4];
 }ULONG;
 
-extern Dspstruct  dspvar;
+//extern Dspstruct  dspvar;
 
 
 
@@ -72,6 +73,9 @@ long ADC_Filter(long new_value)
     else
     {
         filtered = filtered + (new_value - filtered) / FiltDivisor;	// delilac je bio 8
+
+//		if (filtered - new_value < (X1 - X0) / 10)
+//			filtered = X0;
     }
 
     return filtered;
@@ -259,12 +263,14 @@ int i;
  		if(/*AD0BUSY || AD0CBSY ||*/ AD0ERR)
 			Gres = 1;
 
-  if (!AD0INT) return;
-  else {
+  
+  while(!AD0INT);	///if (!AD0INT) return;		//ZA PROBUUU
+  ///else {										//ZA PROBUUU
 	    ADC0STA &= ~0x20;	//ADC0STA |= ~0x20;
 
 		#ifdef  BIPOLAR
 			ADC_samps[sampCnt++]= ADC2Blong();
+			///ADC_samps[sampCnt++]= ADC_Filter(ADC2Blong());	// PROBAAA
 		#else
 			ADC_samps[sampCnt++]= ADC2Ulong();
 		#endif
@@ -274,18 +280,25 @@ int i;
 			suma= 0;
 			for (i= 0; i< MAXSAMPS; i++){
 			   #ifdef BIPOLAR
-			     suma+= (long)ADC_samps[i];
+			   		suma+= (long)ADC_samps[i];
 			   #else 
-			     suma+= ADC_samps[i];
+			    	suma+= ADC_samps[i];
 			   #endif
 			}
 			ADC_avg= suma/MAXSAMPS;
 			//Wght= (unit * (ADC_avg- X0)) / (X1-X0); // u 0.01 gramima			///Wght= (50000 * (ADC_avg- X0)) / (X1-X0); // u 0.01 gramima
 		
-			ADC_avg = ADC_Filter(ADC_avg);	// Dodatno filtriranje ADC vrednosti
+				if(filtriraj)
+					ADC_avg = ADC_Filter(ADC_avg);	// Dodatno filtriranje ADC vrednosti
 					
 				if(ADC_avg <= X0)
-					Wght=0;			
+				{
+					Wght=0;	
+
+//					dspvar.Cif[0] = 0;
+//					dspvar.Cif[1] = 0;
+//					dspvar.Cif[2] = 0;
+				}		
 				else
 					Wght= (/*unit*/REF_value * (ADC_avg- X0)) / (X1-X0);
 				
@@ -300,11 +313,11 @@ int i;
 					Wght = Wght/1000;	//Wght = Wght >> 12;
 */
 
-			dspvar.newweight= Wght;
+		//	dspvar.newweight= Wght;
 		}
 
 //		ADC0MD= 0x80;   /// PRIVREMENO - ZA TEST
 //		ADC0MD= 0x82;  
-  }
+  ///}						//ZA PROBUUU
 }
 

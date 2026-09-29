@@ -17,11 +17,11 @@ int  i;
 	CLKSEL = 0x00;	
 }
 
-void DisableWDT(void)
-{
+//void DisableWDT(void)
+//{
 		/* disable watchdog timer */
-	PCA0MD &= ~0x40;  /* WDTE = 0 (clear watchdog timer */
-}
+//	PCA0MD &= ~0x40;  /* WDTE = 0 (clear watchdog timer */
+//}
 
 void PortsInit(void){
 	
@@ -173,8 +173,8 @@ void UART_Init(void)
     // 49 MHz / (2 * 115200) = 212.67
     // 256 - 213 = 43 = 0x2B
 
-    TH1 = 0x2B;
-    TL1 = 0x2B;
+    TH1 = 0x96; //0x2B;
+    TL1 = 0x96; //0x2B;
 
     // -------------------------------------------------
     // Start Timer 1
@@ -201,7 +201,7 @@ void CPUInit(char bip){
  
    OscInit();
    PortsInit();
-//   Timer2_Init();
+   Timer2_Init();
    ADC0_Init (bip);
    //UARTInit (115200);
    UART_Init ();
