@@ -1,4 +1,4 @@
-C51 COMPILER V8.12   CPU_STUP                                                              09/25/2026 15:18:20 PAGE 1   
+C51 COMPILER V8.12   CPU_STUP                                                              10/02/2026 15:06:53 PAGE 1   
 
 
 C51 COMPILER V8.12, COMPILATION OF MODULE CPU_STUP
@@ -49,186 +49,196 @@ line level    source
   39          
   40          void ADC0_Init (char bip)       // bip= 1 => bipolar mode
   41          {
-  42   1              if (bip) ADC0CN = 0x17;      // PGA 128, ADC Burnout onemogucen 
-  43   1              else ADC0CN= 0x07;
-  44   1              
-  45   1                      REF0CN |= 0x01; /* (enable if using internal vref) */
-  46   1                       
-  47   1              ADC0CF = 0x00;  //0x04;         // SINC3, Interni VREF (2.5V)           
-  48   1                 
-  49   1              ADC0CLK = 19;           // MDCLK = SYSCLK / (ADC0CLK + 1) i za ADC Conversion clock = 2.45 MHz na 49MHz SYSCLK => 
-             -ADC0CLK = 19
-  50   1              ADC0MUX = 0x10;         // diferencijalni
-  51   1      
-  52   1              ADC0DECH= 0x00; //0;
-  53   1              ADC0DECL= 0x40; //20; //32;             //20=minimum
-C51 COMPILER V8.12   CPU_STUP                                                              09/25/2026 15:18:20 PAGE 2   
+  42   1              //      unsigned long DECI = 0;
+  43   1              
+  44   1              if (bip) ADC0CN = 0x17;      // PGA 128, ADC Burnout onemogucen 
+  45   1              else ADC0CN = 0x07;
+  46   1              
+  47   1                      REF0CN |= 0x01; /* (enable if using internal vref) */
+  48   1                       
+  49   1              ADC0CF = 0x00;  //0x04;         // SINC3, Interni VREF (2.5V)           
+  50   1                 
+  51   1              ADC0CLK = 0x13; //19;           // MDCLK = SYSCLK / (ADC0CLK + 1) i za ADC Conversion clock = 2.45 MHz na 49MHz SY
+             -SCLK => ADC0CLK = 19
+  52   1              ADC0MUX = 0x10;         // diferencijalni
+  53   1      
+C51 COMPILER V8.12   CPU_STUP                                                              10/02/2026 15:06:53 PAGE 2   
 
-  54   1                                                  
-  55   1              ADC0MD = 0x80;  //0x82;         //      ADC0 enable u single mode- u    // AKO STOJI "ADC0MD=0x82" ONDA "ADC0STA" POSTANE
+  54   1                      //DECI = (MDCLK/OWR/128) - 1;
+  55   1                      ADC0DECH = (DECI & 0x0000FF00) >> 8;
+  56   1                      ADC0DECL = (DECI & 0x000000FF);
+  57   1      
+  58   1              //OWR:                          //      10Hz:   20Hz:   25Hz:   50Hz:   100Hz:  200Hz:  500Hz:  914Hz (minimum):
+  59   1      //      ADC0DECH = 0x00;        //      0x07;   0x03;   0x02:   0x01;   0x00;   0x00;   0x00;           0x00;                                   //0x02; //0;
+  60   1      //      ADC0DECL = 0xBF;        //      0x7F;   0xBF;   0xFF;   0x7F;   0xBF;   0x5F;   0x25;           0x14;                                   //0x58; //20; //32;             //20=mini
+             -mum                // radilo je dobro na 0x40
+  61   1      
+  62   1              ADC0BUF = 0x00;         // STAVLJENO ZA TEST    
+  63   1                                                  
+  64   1              ADC0MD = 0x80;  //0x82;         //      ADC0 enable u single mode- u    // AKO STOJI "ADC0MD=0x82" ONDA "ADC0STA" POSTANE
              - "0X32" IZ NEKOG RAZLOGA              
-  56   1              
-  57   1              //AD0INT = 1;
-  58   1              //ADC0STA &= ~0x20;     // JA SAM OVO OSTAVIO ZA PROBU                          
-  59   1      
-  60   1      //      EIE1 |= 0x08;   //Enable ADC0 interrupt - JA SAM OVO AKTIVIRAO, ZA PROBU        
-  61   1              
-  62   1      }
-  63          
-  64          void Timer2_Init(void) 
-  65          {
-  66   1              TMR2CN = 0;     //ovrflw- 0;  Stop timer; Auto-Reload sa 16 bita
-  67   1              CKCON = 0;      // 
+  65   1              
+  66   1              //AD0INT = 1;
+  67   1              //ADC0STA &= ~0x20;     // JA SAM OVO OSTAVIO ZA PROBU                          
   68   1      
-  69   1              TMR2RLH = 0xF8; //0xF0; // 1ms
-  70   1              TMR2RLL = 0x07; //0x0C; 
-  71   1      
-  72   1              TMR2CN |= 0x04; // startujes
-  73   1      
-  74   1              IE |= 0x20;     //EIE1 |= 0x80;
-  75   1              ////EA = 1;     
-  76   1      }
-  77          
-  78          /*
-  79          void Timer3_Init(void) 
-  80          {
-  81                  TMR3CN = 0;     //ovrflw- 0;  Stop timer; Auto-Reload sa 16 bita
-  82                  CKCON = 0;      // 
-  83          
-  84                  TMR3RLH = 0xF0; //0xF8; // 1ms
-  85                  TMR3RLL = 0x0C; //0x07; 
+  69   1      //      EIE1 |= 0x08;   //Enable ADC0 interrupt - JA SAM OVO AKTIVIRAO, ZA PROBU        
+  70   1              
+  71   1      }
+  72          
+  73          void Timer2_Init(void) 
+  74          {
+  75   1              TMR2CN = 0;     //ovrflw- 0;  Stop timer; Auto-Reload sa 16 bita
+  76   1              CKCON = 0;      // 
+  77   1      
+  78   1              TMR2RLH = 0xF8; //0xF0; // 1ms
+  79   1              TMR2RLL = 0x07; //0x0C; 
+  80   1      
+  81   1              TMR2CN |= 0x04; // startujes
+  82   1      
+  83   1              IE |= 0x20;     //EIE1 |= 0x80;
+  84   1              ////EA = 1;     
+  85   1      }
   86          
-  87                  TMR3CN |= 0x04; // startujes
-  88          
-  89                  EIE1 |= 0x80;
-  90                  ////EA = 1;     
-  91          }
-  92          */
-  93          /*
-  94          void UARTInit (long bdr){
+  87          /*
+  88          void Timer3_Init(void) 
+  89          {
+  90                  TMR3CN = 0;     //ovrflw- 0;  Stop timer; Auto-Reload sa 16 bita
+  91                  CKCON = 0;      // 
+  92          
+  93                  TMR3RLH = 0xF0; //0xF8; // 1ms
+  94                  TMR3RLL = 0x0C; //0x07; 
   95          
-  96             SCON0 = 0x10;                       // SCON0: 8-bit variable bit rate
-  97                                                 //        level of STOP bit is ignored
-  98                                                 //        RX enabled
-  99                                                 //        ninth bits are zeros
- 100                                                 //        clear RI0 and TI0 bits
- 101             if (SYSTEMCLOCK/bdr/2/256 < 1) {
- 102                TH1 = -(SYSTEMCLOCK/bdr/2);
- 103                CKCON &= ~0x0B;                  // T1M = 1; SCA1:0 = xx
- 104                CKCON |=  0x08;
- 105             } else if (SYSTEMCLOCK/bdr/2/256 < 4) {
- 106                TH1 = -(SYSTEMCLOCK/bdr/2/4);
- 107                CKCON &= ~0x0B;                  // T1M = 0; SCA1:0 = 01
- 108                CKCON |=  0x01;
- 109             } else if (SYSTEMCLOCK/bdr/2/256 < 12) {
- 110                TH1 = -(SYSTEMCLOCK/bdr/2/12);
- 111                CKCON &= ~0x0B;                  // T1M = 0; SCA1:0 = 00
- 112             } else {
- 113                TH1 = -(SYSTEMCLOCK/bdr/2/48);
- 114                CKCON &= ~0x0B;                  // T1M = 0; SCA1:0 = 10
-C51 COMPILER V8.12   CPU_STUP                                                              09/25/2026 15:18:20 PAGE 3   
+  96                  TMR3CN |= 0x04; // startujes
+  97          
+  98                  EIE1 |= 0x80;
+  99                  ////EA = 1;     
+ 100          }
+ 101          */
+ 102          /*
+ 103          void UARTInit (long bdr){
+ 104          
+ 105             SCON0 = 0x10;                       // SCON0: 8-bit variable bit rate
+ 106                                                 //        level of STOP bit is ignored
+ 107                                                 //        RX enabled
+ 108                                                 //        ninth bits are zeros
+ 109                                                 //        clear RI0 and TI0 bits
+ 110             if (SYSTEMCLOCK/bdr/2/256 < 1) {
+ 111                TH1 = -(SYSTEMCLOCK/bdr/2);
+ 112                CKCON &= ~0x0B;                  // T1M = 1; SCA1:0 = xx
+ 113                CKCON |=  0x08;
+C51 COMPILER V8.12   CPU_STUP                                                              10/02/2026 15:06:53 PAGE 3   
 
- 115                CKCON |=  0x02;
- 116             }
- 117          
- 118             TL1 = TH1;                          // init Timer1
- 119             TMOD &= ~0xf0;                      // TMOD: timer 1 in 8-bit autoreload
- 120             TMOD |=  0x20;
- 121             TR1 = 1;                            // START Timer1
- 122            
- 123             ES0 = 1;                            // Enable UART0 interrupts
- 124          }
- 125          */
- 126          /*
- 127          void UART_Init(void)
- 128          {  
- 129          
- 130                  CKCON |= 0x08;  //CKCON = 0x1A;
- 131          
- 132                  // donje dve postavljaju mod na 10 tj. mod 2: 8-bit counter/timer with auto-reload
- 133          
- 134                  TMOD  |= 0x20;
- 135          //      TMOD  &= 0x2F;  
- 136          
- 137                  // zbog gornjeg CKCON (T1M= 0) => timer1 ne deli sistemski clock  za 115200
- 138              TH1   = 0xEE;       //0x96; //0x2B;// => 1/2 * ((49000000/(256- 0x2B)) = 115023 
- 139                  TL1   = 0xEE;   //0x96; //0x2B;
+ 114             } else if (SYSTEMCLOCK/bdr/2/256 < 4) {
+ 115                TH1 = -(SYSTEMCLOCK/bdr/2/4);
+ 116                CKCON &= ~0x0B;                  // T1M = 0; SCA1:0 = 01
+ 117                CKCON |=  0x01;
+ 118             } else if (SYSTEMCLOCK/bdr/2/256 < 12) {
+ 119                TH1 = -(SYSTEMCLOCK/bdr/2/12);
+ 120                CKCON &= ~0x0B;                  // T1M = 0; SCA1:0 = 00
+ 121             } else {
+ 122                TH1 = -(SYSTEMCLOCK/bdr/2/48);
+ 123                CKCON &= ~0x0B;                  // T1M = 0; SCA1:0 = 10
+ 124                CKCON |=  0x02;
+ 125             }
+ 126          
+ 127             TL1 = TH1;                          // init Timer1
+ 128             TMOD &= ~0xf0;                      // TMOD: timer 1 in 8-bit autoreload
+ 129             TMOD |=  0x20;
+ 130             TR1 = 1;                            // START Timer1
+ 131            
+ 132             ES0 = 1;                            // Enable UART0 interrupts
+ 133          }
+ 134          */
+ 135          /*
+ 136          void UART_Init(void)
+ 137          {  
+ 138          
+ 139                  CKCON |= 0x08;  //CKCON = 0x1A;
  140          
- 141                  TCON  |= 0x40;  // enable timer1
+ 141                  // donje dve postavljaju mod na 10 tj. mod 2: 8-bit counter/timer with auto-reload
  142          
- 143                  ET1 = 0; // zabrana interapta 
- 144                  
- 145                  //////////////////////////////////////
- 146          
- 147                  SCON0= 0x10;  // SCON1: mode 0, 8-bit UART, enable RX
- 148                  
- 149                  ES0 = 1;                            // Enable UART0 interrupts
- 150          
- 151          }
- 152          */
- 153          
- 154          void UART_Init(void)
- 155          {
- 156   1          // -------------------------------------------------
- 157   1          // UART0: 8-bit, variable baud, 1 stop bit
- 158   1          // RX enabled
- 159   1          // -------------------------------------------------
- 160   1          SCON0 = 0x10; //0x90;
- 161   1      
- 162   1          // -------------------------------------------------
- 163   1          // Timer 1:
- 164   1          // Mode 2 = 8-bit auto-reload
- 165   1          // Timer 1 clock = SYSCLK
- 166   1          // -------------------------------------------------
- 167   1      
- 168   1          TMOD &= 0x0F;       // ocisti Timer1 konfiguraciju
- 169   1          TMOD |= 0x20;       // Timer1 Mode 2
+ 143                  TMOD  |= 0x20;
+ 144          //      TMOD  &= 0x2F;  
+ 145          
+ 146                  // zbog gornjeg CKCON (T1M= 0) => timer1 ne deli sistemski clock  za 115200
+ 147              TH1   = 0xEE;       //0x96; //0x2B;// => 1/2 * ((49000000/(256- 0x2B)) = 115023 
+ 148                  TL1   = 0xEE;   //0x96; //0x2B;
+ 149          
+ 150                  TCON  |= 0x40;  // enable timer1
+ 151          
+ 152                  ET1 = 0; // zabrana interapta 
+ 153                  
+ 154                  //////////////////////////////////////
+ 155          
+ 156                  SCON0= 0x10;  // SCON1: mode 0, 8-bit UART, enable RX
+ 157                  
+ 158                  ES0 = 1;                            // Enable UART0 interrupts
+ 159          
+ 160          }
+ 161          */
+ 162          
+ 163          void UART_Init(void)
+ 164          {
+ 165   1          // -------------------------------------------------
+ 166   1          // UART0: 8-bit, variable baud, 1 stop bit
+ 167   1          // RX enabled
+ 168   1          // -------------------------------------------------
+ 169   1          SCON0 = 0x10; //0x90;
  170   1      
- 171   1          CKCON |= 0x08;      // T1M = 1 -> Timer1 clock = SYSCLK
- 172   1      
- 173   1          // 49 MHz / (2 * 115200) = 212.67
- 174   1          // 256 - 213 = 43 = 0x2B
- 175   1      
- 176   1          TH1 = 0x96; //0x2B;
-C51 COMPILER V8.12   CPU_STUP                                                              09/25/2026 15:18:20 PAGE 4   
+ 171   1          // -------------------------------------------------
+ 172   1          // Timer 1:
+ 173   1          // Mode 2 = 8-bit auto-reload
+ 174   1          // Timer 1 clock = SYSCLK
+ 175   1          // -------------------------------------------------
+C51 COMPILER V8.12   CPU_STUP                                                              10/02/2026 15:06:53 PAGE 4   
 
- 177   1          TL1 = 0x96; //0x2B;
- 178   1      
- 179   1          // -------------------------------------------------
- 180   1          // Start Timer 1
- 181   1          // -------------------------------------------------
- 182   1          TR1 = 1;
- 183   1      
- 184   1              ES0 = 1;                            // Enable UART0 interrupts
- 185   1       
- 186   1      }
- 187          
- 188          
- 189          /*
- 190          void EnUart0Int(void)
- 191          {
- 192            ES0= 1;
- 193          }
- 194          
- 195          void DisUart0Int(void)
- 196          {
- 197            ES0= 0;
- 198          }
- 199          */
- 200          void CPUInit(char bip){
- 201   1       
- 202   1         OscInit();
- 203   1         PortsInit();
- 204   1         Timer2_Init();
- 205   1         ADC0_Init (bip);
- 206   1         //UARTInit (115200);
- 207   1         UART_Init ();
- 208   1      }
- 209          
+ 176   1      
+ 177   1          TMOD &= 0x0F;       // ocisti Timer1 konfiguraciju
+ 178   1          TMOD |= 0x20;       // Timer1 Mode 2
+ 179   1      
+ 180   1          CKCON |= 0x08;      // T1M = 1 -> Timer1 clock = SYSCLK
+ 181   1      
+ 182   1          // 49 MHz / (2 * 115200) = 212.67
+ 183   1          // 256 - 213 = 43 = 0x2B
+ 184   1      
+ 185   1          TH1 = 0x96; //0x2B;
+ 186   1          TL1 = 0x96; //0x2B;
+ 187   1      
+ 188   1          // -------------------------------------------------
+ 189   1          // Start Timer 1
+ 190   1          // -------------------------------------------------
+ 191   1          TR1 = 1;
+ 192   1      
+ 193   1              ES0 = 1;                            // Enable UART0 interrupts
+ 194   1       
+ 195   1      }
+ 196          
+ 197          
+ 198          /*
+ 199          void EnUart0Int(void)
+ 200          {
+ 201            ES0= 1;
+ 202          }
+ 203          
+ 204          void DisUart0Int(void)
+ 205          {
+ 206            ES0= 0;
+ 207          }
+ 208          */
+ 209          void CPUInit(char bip){
+ 210   1       
+ 211   1         OscInit();
+ 212   1         PortsInit();
+ 213   1         Timer2_Init();
+ 214   1         ADC0_Init (bip);
+ 215   1         //UARTInit (115200);
+ 216   1         UART_Init ();
+ 217   1      }
+ 218          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    150    ----
+   CODE SIZE        =    153    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

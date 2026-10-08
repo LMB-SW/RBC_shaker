@@ -1,6 +1,6 @@
-#define CUT 	4
+#define CUT 	4	//4		//6		//8		//10		//sa 6 i 8 bilo OK
 #define BIPOLAR
-#define MAXSAMPS	32	//20
+#define MAXSAMPS	8	//4	//32	//20		// sa 8 bilo dobro na 100Hz
 /*
 typedef enum{
 
@@ -20,6 +20,7 @@ void SysCalibO(void);
 void SysCalibG(void);
 unsigned char AppCalibO(void);
 unsigned char AppCalibG(void);
+void GetADCvalue(void);
 void ADCLoop(void);
 
 long ADC_Filter(long new_value);

@@ -23,7 +23,7 @@ void Delay_us(unsigned int us)
 	EA = 0;		// disable all interrupts
     while (us--)
     {
-	    _nop_();
+/*	    _nop_();
 		_nop_();
 		_nop_();
 		_nop_();
@@ -31,7 +31,7 @@ void Delay_us(unsigned int us)
 		_nop_();
 		_nop_();
 		_nop_();
-		_nop_();	
+		_nop_();	*/
     }
 	EA = 1;		// enable all interrupts
 }

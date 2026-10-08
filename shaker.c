@@ -3,7 +3,10 @@
 
 extern bit Show_Weight;
 extern bit Show_Time;
+extern bit Show_Error;
 extern unsigned char ShakingTime;
+extern unsigned long Wght;
+extern unsigned long REF_value;
 
 bit Shaker_Run = 0;
 
@@ -27,31 +30,22 @@ void ShakerLoop(void)
 		Show_Weight = 1;	// show weight on display
 		ShakerStatus = FINISHED;
 	}
-	else if (ShakerStatus == FINISHED  &&  ShakingTime == 0)
+	else if (ShakerStatus == RUNNING  &&  Wght < BAG_WEIGHT_THRESHOLD * REF_value)		// ovde je bilo  0.2*REF_value
 	{
-		
+		STx = 1;			// stop shaker motor
+		Show_Error = 1;
+		ShakerStatus = ERROR;
+	}
+	else if (ShakerStatus == ERROR  &&  Wght > BAG_WEIGHT_THRESHOLD * REF_value)		// ovde je bilo  0.9*REF_value
+	{
+		STx = 0;			// run shaker motor
+		Show_Error = 0;
+		ShakerStatus = RUNNING;
+	}
+	else if (ShakerStatus == FINISHED  &&  Wght < BAG_WEIGHT_THRESHOLD * REF_value)	// ovde je bilo  0.2*REF_value
+	{	
 		ShakerStatus = IDLE;
 	}
 
 
-/*	
-	switch (ShakerStatus)
-	{
-		case IDLE:
-	
-			STx = 1;			// run shaker motor
-			Show_Time = 0;		// show shaking time on display
-			Show_Weight = 1;
-			ShakerStatus = RUNNING;
-			break;
-
-		case RUNNING:
-	
-			STx = 0;			// run shaker motor
-			Show_Time = 1;		// show shaking time on display
-			Show_Weight = 0;
-			ShakerStatus = RUNNING;
-			break;	
-	}
-*/
 }

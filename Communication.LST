@@ -1,4 +1,4 @@
-C51 COMPILER V8.12   COMMUNICATION                                                         09/25/2026 15:18:21 PAGE 1   
+C51 COMPILER V8.12   COMMUNICATION                                                         10/02/2026 15:06:54 PAGE 1   
 
 
 C51 COMPILER V8.12, COMPILATION OF MODULE COMMUNICATION
@@ -21,246 +21,268 @@ line level    source
   12          unsigned char bufT[MESSAGE_SIZE];
   13          unsigned char bufR[MESSAGE_SIZE];
   14          
-  15          extern unsigned long Wght;
-  16          extern unsigned long ADC_avg;
-  17          extern unsigned long X0, X1;
-  18          extern unsigned long REF_value;
-  19          extern unsigned char ShakingTime;
-  20          extern xdata unsigned char ComData[UART0_BUFFER_SIZE];
-  21          extern bit ADC_canrun;
-  22          extern bit AppCalibOffset_Done;
-  23          extern bit AppCalibGain_Done;
-  24          extern bit Shaker_Run;
-  25          
-  26          extern ShakStat ShakerStatus;
-  27          
-  28          void SendMessage(unsigned long Data)
-  29          {
-  30   1              unsigned char cnt;
-  31   1              
-  32   1              bufT[0] = START;
-  33   1              bufT[1] = BoardAddress;
-  34   1              bufT[2] = Command;
-  35   1      
-  36   1              bufT[3] = (Data & 0xFF000000) >> 24;
-  37   1              bufT[4] = (Data & 0x00FF0000) >> 16;
-  38   1              bufT[5] = (Data & 0x0000FF00) >> 8;
-  39   1              bufT[6] = (Data & 0x000000FF);
-  40   1      
-  41   1              bufT[7] = END;
-  42   1              bufT[8] = GenCheckSum();
+  15          extern unsigned int CntRX0;
+  16          extern unsigned long Wght;
+  17          extern unsigned long ADC_avg;
+  18          extern unsigned long X0, X1;
+  19          extern unsigned long REF_value;
+  20          extern unsigned char ShakingTime;
+  21          extern xdata unsigned char ComData[UART0_BUFFER_SIZE];
+  22          //extern bit ADC_canrun;
+  23          extern bit Wght_Meas_canrun;
+  24          extern bit ADC_Loop_Start;
+  25          extern bit AppCalibOffset_Done;
+  26          extern bit AppCalibGain_Done;
+  27          extern bit Shaker_Run;
+  28          
+  29          extern ShakStat ShakerStatus;
+  30          
+  31          void SendMessage(unsigned long Data)
+  32          {
+  33   1              unsigned char cnt;
+  34   1              
+  35   1              bufT[0] = START;
+  36   1              bufT[1] = BoardAddress;
+  37   1              bufT[2] = Command;
+  38   1      
+  39   1              bufT[3] = (Data & 0xFF000000) >> 24;
+  40   1              bufT[4] = (Data & 0x00FF0000) >> 16;
+  41   1              bufT[5] = (Data & 0x0000FF00) >> 8;
+  42   1              bufT[6] = (Data & 0x000000FF);
   43   1      
-  44   1              //sending
-  45   1              MessageSending = 1;
-  46   1              ComDir = 1;
-  47   1              ES0= 0; //disable UART interrupt
-  48   1              
-  49   1              for(cnt = 0; cnt < 9; cnt++)
-  50   1                      putc0(bufT[cnt]);
-  51   1      
-  52   1              MessageSending = 0;
-  53   1              ComDir = 0;
-  54   1              ES0= 1; //enable UART interrupt
-  55   1              
-C51 COMPILER V8.12   COMMUNICATION                                                         09/25/2026 15:18:21 PAGE 2   
+  44   1              bufT[7] = END;
+  45   1              bufT[8] = GenCheckSum();
+  46   1      
+  47   1              //sending
+  48   1              MessageSending = 1;
+  49   1              ComDir = 1;
+  50   1                      Delay_us(20);
+  51   1              ES0= 0; //disable UART interrupt
+  52   1              
+  53   1              for(cnt = 0; cnt < 9; cnt++)
+  54   1                      putc0(bufT[cnt]);
+  55   1      
+C51 COMPILER V8.12   COMMUNICATION                                                         10/02/2026 15:06:54 PAGE 2   
 
-  56   1      }
-  57          
-  58          unsigned char GenCheckSum(void)
-  59          {
-  60   1              unsigned char cnt, chck=0;
-  61   1      
-  62   1              for(cnt = 0; cnt < MESSAGE_SIZE-1; cnt++)
-  63   1              chck = chck ^ bufT[cnt];
-  64   1       
-  65   1              return chck;    
-  66   1      }
-  67          
-  68          
-  69          unsigned char CalcCheckSum(unsigned char *buf)
-  70          {
-  71   1              unsigned char cnt, chck=0;
-  72   1      
-  73   1              for(cnt = 0; cnt < MESSAGE_SIZE-1; cnt++)
-  74   1              chck = chck ^ buf[cnt];
-  75   1       
-  76   1              return chck;    
-  77   1      }
-  78          
-  79          
-  80          unsigned long ConvertBytesToLong(unsigned char *command)
-  81          {
-  82   1              unsigned long val = 0;
-  83   1      
-  84   1              val = val + (long) command[3];
-  85   1              val = val * 256L + (long) command[4];
-  86   1              val = val * 256L + (long) command[5];
-  87   1              val = val * 256L + (long) command[6];
-  88   1      
-  89   1              return val;
-  90   1      }
-  91          
-  92          
-  93          unsigned char AnalyzeReceivedMessage(unsigned char *message)
-  94          {
-  95   1              unsigned long X0_temp=0, X1_temp=0;
-  96   1                      
-  97   1              if(message[1] != BoardAddress)
-  98   1                      return 0;                                                       // neodgovarajuca adresa
-  99   1              
- 100   1              if(message[8] != CalcCheckSum(message))
- 101   1                      return 2;                                                       // pogresna cek-suma
- 102   1      
- 103   1      
- 104   1              Command = message[2];
- 105   1              //CommandType = Command;        
- 106   1      
- 107   1              switch (Command)
- 108   1              {
- 109   2                      case COM_TEST:  
- 110   2      
- 111   2                              SendMessage(1);                 
- 112   2                              break;
- 113   2      
- 114   2      
- 115   2                      case REQUEST_FOR_WEIGHT:        
+  56   1              MessageSending = 0;
+  57   1                              Delay_us(100);
+  58   1              ComDir = 0;
+  59   1      
+  60   1              ES0= 1; //enable UART interrupt
+  61   1              
+  62   1      }
+  63          
+  64          unsigned char GenCheckSum(void)
+  65          {
+  66   1              unsigned char cnt, chck=0;
+  67   1      
+  68   1              for(cnt = 0; cnt < MESSAGE_SIZE-1; cnt++)
+  69   1              chck = chck ^ bufT[cnt];
+  70   1       
+  71   1              return chck;    
+  72   1      }
+  73          
+  74          
+  75          unsigned char CalcCheckSum(unsigned char *buf)
+  76          {
+  77   1              unsigned char cnt, chck=0;
+  78   1      
+  79   1              for(cnt = 0; cnt < MESSAGE_SIZE-1; cnt++)
+  80   1              chck = chck ^ buf[cnt];
+  81   1       
+  82   1              return chck;    
+  83   1      }
+  84          
+  85          
+  86          unsigned long ConvertBytesToLong(unsigned char *command)
+  87          {
+  88   1              unsigned long val = 0;
+  89   1      
+  90   1              val = val + (long) command[3];
+  91   1              val = val * 256L + (long) command[4];
+  92   1              val = val * 256L + (long) command[5];
+  93   1              val = val * 256L + (long) command[6];
+  94   1      
+  95   1              return val;
+  96   1      }
+  97          
+  98          
+  99          unsigned char AnalyzeReceivedMessage(unsigned char *message)
+ 100          {
+ 101   1              unsigned long X0_temp=0, X1_temp=0;
+ 102   1                      
+ 103   1              if(message[1] != BoardAddress)          /// OVO SADA VRVTNO NE TREBA - PROVERI
+ 104   1      //              return 0;                                                       // neodgovarajuca adresa
+ 105   1              
+ 106   1              if(message[8] != CalcCheckSum(message))
+ 107   1                      return 2;                                                       // pogresna cek-suma
+ 108   1      
+ 109   1      
+ 110   1              Command = message[2];
+ 111   1              //CommandType = Command;        
+ 112   1      
+ 113   1              switch (Command)
+ 114   1              {
+ 115   2                      case COM_TEST:  
  116   2      
- 117   2                              SendMessage(Wght);                      
-C51 COMPILER V8.12   COMMUNICATION                                                         09/25/2026 15:18:21 PAGE 3   
+ 117   2                              SendMessage(1);                 
+C51 COMPILER V8.12   COMMUNICATION                                                         10/02/2026 15:06:54 PAGE 3   
 
  118   2                              break;
  119   2      
- 120   2                      case REQUEST_FOR_AD_VALUE:       
- 121   2      
- 122   2                              SendMessage(ADC_avg); 
- 123   2                              break;
- 124   2                              
- 125   2                      case REQUEST_FOR_X0_CURRENT_VALUE:
- 126   2                              
- 127   2                              SendMessage(X0);
- 128   2                              break;
- 129   2      
- 130   2                      case REQUEST_FOR_X1_CURRENT_VALUE:
- 131   2      
- 132   2                              SendMessage(X1);
- 133   2                              break;
- 134   2      
- 135   2                      case TAKE_REF_POINT_FOR_ZER0:
- 136   2      
- 137   2                              if(AppCalibO())
- 138   2                                      SendMessage(1);
- 139   2                              else
- 140   2                                      SendMessage(2); 
- 141   2      
- 142   2                              break;
- 143   2      
- 144   2                      case TAKE_REF_POINT_FOR_REF_VALUE:
- 145   2      
- 146   2                              if(!AppCalibOffset_Done)        
- 147   2                                      SendMessage(3); // nedostaje prethodno odradjena AppCalib za ofset
- 148   2                              else 
- 149   2                              {
- 150   3                                      REF_value = ConvertBytesToLong(message);        // vidi sta ces sa ovim REF_value
- 151   3                                      
- 152   3                                      if(AppCalibG())
- 153   3                                              SendMessage(1); // uspesna
- 154   3                                      else 
- 155   3                                              SendMessage(2); // neuspesna
- 156   3                              }
- 157   2              
- 158   2                              break;
- 159   2      
- 160   2                      case WRITE_X0_VALUE:
+ 120   2      
+ 121   2                      case REQUEST_FOR_WEIGHT:        
+ 122   2      
+ 123   2                              SendMessage(Wght);                      
+ 124   2                              break;
+ 125   2      
+ 126   2                      case REQUEST_FOR_AD_VALUE:       
+ 127   2      
+ 128   2                              //ADC_Loop_Start = 1;
+ 129   2                              //Delay_ms(10);
+ 130   2                              SendMessage(ADC_avg); 
+ 131   2                              break;
+ 132   2                              
+ 133   2                      case REQUEST_FOR_X0_CURRENT_VALUE:
+ 134   2                              
+ 135   2                              SendMessage(X0);        //SendMessage(20000); //SendMessage(X0);
+ 136   2                              break;
+ 137   2      
+ 138   2                      case REQUEST_FOR_X1_CURRENT_VALUE:
+ 139   2      
+ 140   2                              SendMessage(X1);        //SendMessage(40000);   //SendMessage(X1);
+ 141   2                              break;
+ 142   2      
+ 143   2                      case TAKE_REF_POINT_FOR_ZER0:
+ 144   2      
+ 145   2                              //Delay_ms(10);
+ 146   2                              EA = 0;
+ 147   2                              while(AD0BUSY) {}               // MOZDA BI TREBALO OSIGURATI TRAJANJE UVE PETLJE
+ 148   2      
+ 149   2                              if(AppCalibO())
+ 150   2                                      SendMessage(1);
+ 151   2                              else
+ 152   2                                      SendMessage(2); 
+ 153   2                              EA = 1;
+ 154   2                              break;
+ 155   2      
+ 156   2                      case TAKE_REF_POINT_FOR_REF_VALUE:
+ 157   2      
+ 158   2                              //Delay_ms(10);
+ 159   2                              EA = 0;
+ 160   2                              while(AD0BUSY) {}               // MOZDA BI TREBALO OSIGURATI TRAJANJE UVE PETLJE
  161   2      
- 162   2                              X0_temp = ConvertBytesToLong(message);
- 163   2      
- 164   2                              if(X0_temp > 0  &&  X0_temp < 1048576)
+ 162   2                              if(!AppCalibOffset_Done)        
+ 163   2                                      SendMessage(3); // nedostaje prethodno odradjena AppCalib za ofset
+ 164   2                              else 
  165   2                              {
- 166   3                                      X0 = X0_temp;
- 167   3                                      AppCalibOffset_Done = 1;
- 168   3                                      SendMessage(1);
- 169   3                              }
- 170   2                              else
- 171   2                              {
- 172   3                                      AppCalibOffset_Done = 0;
- 173   3                                      SendMessage(2);
- 174   3                              }
+ 166   3                                      REF_value = ConvertBytesToLong(message);        // vidi sta ces sa ovim REF_value
+ 167   3                                      
+ 168   3                                      if(AppCalibG())
+ 169   3                                              SendMessage(1); // uspesna
+ 170   3                                      else 
+ 171   3                                              SendMessage(2); // neuspesna
+ 172   3                              }
+ 173   2                              EA = 1;
+ 174   2                              break;
  175   2      
- 176   2                              break;
- 177   2              
- 178   2                      case WRITE_X1_VALUE:    
- 179   2                      
-C51 COMPILER V8.12   COMMUNICATION                                                         09/25/2026 15:18:21 PAGE 4   
+ 176   2                      case WRITE_X0_VALUE:
+ 177   2      
+ 178   2                              X0_temp = ConvertBytesToLong(message);
+ 179   2      
+C51 COMPILER V8.12   COMMUNICATION                                                         10/02/2026 15:06:54 PAGE 4   
 
- 180   2                              X1_temp = ConvertBytesToLong(message);
- 181   2      
- 182   2                              if(!AppCalibOffset_Done)
- 183   2                              {       
- 184   3                                      ADC_canrun = 0;
- 185   3                                      AppCalibGain_Done = 0;
- 186   3                                      SendMessage(3); // nedostaje prethodno upisana vrednost za X0
- 187   3                              }
- 188   2                              else if(X1_temp > X0  &&  X1_temp < 1048576)
- 189   2                              {
- 190   3                                      X1 = X1_temp;
- 191   3                                      ADC_canrun = 1;
- 192   3                                      AppCalibGain_Done = 1;
- 193   3                                      SendMessage(1);
- 194   3                              }
- 195   2                              else
- 196   2                              {
- 197   3                                      ADC_canrun = 0;
- 198   3                                      AppCalibGain_Done = 0;
- 199   3                                      SendMessage(2);
- 200   3                              }
- 201   2      
- 202   2                              break;
- 203   2      
- 204   2                      case RUN_SHAKER:        
- 205   2                      
- 206   2                              //ShakingTime = message[6];     //ShakingTime = ConvertBytesToLong(message);
- 207   2      
- 208   2                              if(message[6] /*ShakingTime*/ > 0  &&  ShakerStatus == IDLE)
- 209   2                              {
- 210   3                                      ShakingTime = message[6];
- 211   3                                      Shaker_Run = 1; //ShakerStatus = RUNNING; 
- 212   3                                      SendMessage(1);
- 213   3                              }
- 214   2                              else
- 215   2                              {
- 216   3                                      Shaker_Run = 0; //ShakerStatus = IDLE;  
- 217   3                                      SendMessage(2);
- 218   3                              }
- 219   2                              break;
- 220   2              }
- 221   1      
- 222   1              return 1;
- 223   1                      
- 224   1      }
- 225          
- 226          
- 227          
- 228          void CommunicationLoop(void)
- 229          {
- 230   1              unsigned char i;
- 231   1      
- 232   1              if(MessageReceived)             // stigla poruka od masine
- 233   1              {
- 234   2                      for(i=0; i<MESSAGE_SIZE; i++)
- 235   2                      bufR[i] = ComData[i];
- 236   2      
- 237   2                      AnalyzeReceivedMessage(bufR);
- 238   2      
- 239   2                      MessageReceived = 0;                    
+ 180   2                              if(X0_temp > 0  &&  X0_temp < 1048576)
+ 181   2                              {
+ 182   3                                      X0 = X0_temp;
+ 183   3                                      AppCalibOffset_Done = 1;
+ 184   3                                      SendMessage(1);
+ 185   3                              }
+ 186   2                              else
+ 187   2                              {
+ 188   3                                      AppCalibOffset_Done = 0;
+ 189   3                                      SendMessage(2);
+ 190   3                              }
+ 191   2      
+ 192   2                              break;
+ 193   2              
+ 194   2                      case WRITE_X1_VALUE:    
+ 195   2                      
+ 196   2                              X1_temp = ConvertBytesToLong(message);
+ 197   2      
+ 198   2                              if(!AppCalibOffset_Done)
+ 199   2                              {       
+ 200   3                                      Wght_Meas_canrun = 0;   //ADC_canrun = 0;
+ 201   3                                      AppCalibGain_Done = 0;
+ 202   3                                      SendMessage(3); // nedostaje prethodno upisana vrednost za X0
+ 203   3                              }
+ 204   2                              else if(X1_temp > X0  &&  X1_temp < 1048576)
+ 205   2                              {
+ 206   3                                      X1 = X1_temp;
+ 207   3                                      Wght_Meas_canrun = 1;   //ADC_canrun = 1;
+ 208   3                                      AppCalibGain_Done = 1;
+ 209   3                                      SendMessage(1);
+ 210   3                              }
+ 211   2                              else
+ 212   2                              {
+ 213   3                                      Wght_Meas_canrun = 0;   //ADC_canrun = 0;
+ 214   3                                      AppCalibGain_Done = 0;
+ 215   3                                      SendMessage(2);
+ 216   3                              }
+ 217   2      
+ 218   2                              break;
+ 219   2      
+ 220   2                      case STATUS_REQUEST:
+ 221   2                              
+ 222   2                              SendMessage(ShakerStatus);
+ 223   2      
+ 224   2                              break;
+ 225   2      
+ 226   2                      case RUN_SHAKER:        
+ 227   2      
+ 228   2                              if(message[6] /*ShakingTime*/ > 0  &&  ShakerStatus == IDLE)
+ 229   2                              {
+ 230   3                                      ShakingTime = message[6];
+ 231   3                                      Shaker_Run = 1; //ShakerStatus = RUNNING; 
+ 232   3                                      SendMessage(1);
+ 233   3                              }
+ 234   2                              else
+ 235   2                              {
+ 236   3                                      Shaker_Run = 0; //ShakerStatus = IDLE;  
+ 237   3                                      SendMessage(2);
+ 238   3                              }
+ 239   2                              break;
  240   2              }
  241   1      
-C51 COMPILER V8.12   COMMUNICATION                                                         09/25/2026 15:18:21 PAGE 5   
+C51 COMPILER V8.12   COMMUNICATION                                                         10/02/2026 15:06:54 PAGE 5   
 
- 242   1      }
+ 242   1              return 1;
+ 243   1                      
+ 244   1      }
+ 245          
+ 246          
+ 247          
+ 248          void CommunicationLoop(void)
+ 249          {
+ 250   1              unsigned char i;
+ 251   1      
+ 252   1              if(MessageReceived)             // stigla poruka od masine
+ 253   1              {
+ 254   2                      for(i=0; i<MESSAGE_SIZE; i++)
+ 255   2                      bufR[i] = ComData[i];
+ 256   2      
+ 257   2                      AnalyzeReceivedMessage(bufR);
+ 258   2      
+ 259   2                      MessageReceived = 0;
+ 260   2                      //      CntRX0 = 0;
+ 261   2                      //      RI0 = 0;                        
+ 262   2              }
+ 263   1      
+ 264   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1175    ----
+   CODE SIZE        =   1216    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =     20      26
    PDATA SIZE       =   ----    ----

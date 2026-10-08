@@ -1,4 +1,4 @@
-C51 COMPILER V8.12   INTERRUPTS                                                            09/25/2026 15:18:21 PAGE 1   
+C51 COMPILER V8.12   INTERRUPTS                                                            10/02/2026 15:06:54 PAGE 1   
 
 
 C51 COMPILER V8.12, COMPILATION OF MODULE INTERRUPTS
@@ -15,161 +15,192 @@ line level    source
    6          
    7          #define TIMER2_PERIOD   1       // 1ms
    8          
-   9          extern bit MessageReceived;
-  10          extern unsigned char BoardAddress;
-  11          
-  12          extern bit DPoint;
+   9          bit MessageArriving = 0;
+  10          
+  11          extern bit MessageReceived;
+  12          extern unsigned char BoardAddress;
   13          
-  14          
-  15          xdata unsigned char ComData[UART0_BUFFER_SIZE];
-  16          unsigned int CntRX0 = 0;
-  17          
-  18          unsigned char ShakingTime = 0;
+  14          extern bit DPoint;
+  15          extern bit ADC_canrun;
+  16          
+  17          extern bit Show_Error;
+  18          extern bit Show_Error_Page;
   19          
-  20          unsigned char sendByteDelay = 0;
-  21          
-  22          unsigned char Hundred_ms = 100 * TIMER2_PERIOD; // 100counts x 1ms = 100ms
-  23          unsigned int OneSecond = 1000 * TIMER2_PERIOD;          // 1000counts x 1ms = 1s
-  24          unsigned int OneMin = 60000 * TIMER2_PERIOD;            // 60000counts x 1ms = 1min
+  20          
+  21          xdata unsigned char ComData[UART0_BUFFER_SIZE];
+  22          unsigned int CntRX0 = 0;
+  23          
+  24          unsigned char ShakingTime = 0;
   25          
-  26          unsigned char disp_cnt = DISPLAY_REFRESH_PERID - 1;
-  27          bit disp_show_flag = 0;
-  28          
-  29                  unsigned char ADCsemp = 20;             // bilo je 10
-  30                  unsigned char ADCcnt = 20;              // bilo je 10
+  26          unsigned char sendByteDelay = 0;
+  27          
+  28          unsigned char Hundred_ms = 100 * TIMER2_PERIOD; // 100counts x 1ms = 100ms
+  29          unsigned int OneSecond = 1000 * TIMER2_PERIOD;          // 1000counts x 1ms = 1s
+  30          unsigned int OneMin = 60000 * TIMER2_PERIOD;            // 60000counts x 1ms = 1min
   31          
-  32                  extern bit ADC_Loop_Start;
-  33          
-  34                  extern ShakStat ShakerStatus;
-  35          
-  36          //      bit Gres=0;
+  32          unsigned char disp_cnt = DISPLAY_REFRESH_PERID - 1;
+  33          bit disp_show_flag = 0;
+  34          
+  35                  unsigned char ADCsemp = 10;             // bilo je 10
+  36                  unsigned char ADCcnt = 10;              // bilo je 10
   37          
-  38          
-  39          void Timer2_ISR(void) interrupt 5{                      // na 1ms (PROVERITI !!!  --  jeste na 1ms, provereno osciloskopom)
-  40   1      
-  41   1              
-  42   1              TF2H = 0;         /* clear Timer2 interrupt flag */
-  43   1      
-  44   1      
-  45   1              //////////////////// on every 1 ms ///////////////////////
-  46   1      
-  47   1              if(disp_cnt)
-  48   1                      disp_cnt--;
-  49   1              else
-  50   1              {
-  51   2                      disp_cnt = DISPLAY_REFRESH_PERID - 1;
-  52   2      
-  53   2                      disp_show_flag = 1;
-  54   2      
-  55   2              }
-C51 COMPILER V8.12   INTERRUPTS                                                            09/25/2026 15:18:21 PAGE 2   
+  38                  unsigned char ErrShowTimeCnt = 0;
+  39          
+  40                  extern bit ADC_Loop_Start;
+  41          
+  42                  extern ShakStat ShakerStatus;
+  43          
+  44          
+  45          //////////////////////////////////////////////////////////////////////////////////////////////////////////
+             -///////////////////////////////////////////
+  46          //////////////////////////////////////////////////////////////////////////////////////////////////////////
+             -///////////////////////////////////////////
+  47          
+  48          void Timer2_ISR(void) interrupt 5{                      // na 1ms (PROVERITI !!!  --  jeste na 1ms, provereno osciloskopom)
+  49   1      
+  50   1              
+  51   1              TF2H = 0;         /* clear Timer2 interrupt flag */
+  52   1      
+  53   1      
+C51 COMPILER V8.12   INTERRUPTS                                                            10/02/2026 15:06:54 PAGE 2   
 
-  56   1      
-  57   1                              if(ADCcnt)
-  58   1                                      ADCcnt--;
-  59   1                              else
-  60   1                              {
-  61   2                                      ADCcnt = ADCsemp;
-  62   2                                      ADC_Loop_Start = 1;             //PRIVREMENO, ZA TEST
-  63   2                              }
-  64   1              //////////////////////////////////////////////////////////
+  54   1              //////////////////// on every 1 ms ///////////////////////
+  55   1      
+  56   1              if(disp_cnt)
+  57   1                      disp_cnt--;
+  58   1              else
+  59   1              {
+  60   2                      disp_cnt = DISPLAY_REFRESH_PERID - 1;
+  61   2      
+  62   2                      disp_show_flag = 1;
+  63   2      
+  64   2              }
   65   1      
-  66   1              //////////////////// on every 100 ms /////////////////////
-  67   1      
-  68   1              if(Hundred_ms)
-  69   1                      Hundred_ms--;
-  70   1              else
-  71   1              {
-  72   2                      Hundred_ms = 100 * TIMER2_PERIOD;
-  73   2      
-  74   2                      if(sendByteDelay)
-  75   2                              sendByteDelay--;
-  76   2                      
-  77   2                      ///P1 = ~P1;
-  78   2      
-  79   2                      ///ADC_Loop_Start = 1;          //PRIVREMENO, ZA TEST
-  80   2      
-  81   2              }
-  82   1              //////////////////////////////////////////////////////////
-  83   1      
-  84   1              //////////////////// on every 1 s ////////////////////////
-  85   1      
-  86   1              if(OneSecond)
-  87   1                      OneSecond--;
-  88   1              else
-  89   1              {
-  90   2                      OneSecond = 1000 * TIMER2_PERIOD;
-  91   2                      
-  92   2                      ///P1 = ~P1;
-  93   2      
-  94   2                      if(ShakingTime  &&  ShakerStatus == RUNNING)
-  95   2                      {
-  96   3                              ShakingTime--;
-  97   3                              DPoint = ~DPoint;
-  98   3                      }
-  99   2      
- 100   2              }
- 101   1      
- 102   1              //////////////////////////////////////////////////////////
- 103   1      
- 104   1      }
- 105          
- 106          void Uart0_ISR(void) interrupt 4{  
- 107   1      
- 108   1              if(RI0 && !MessageReceived)             //Receiving
- 109   1              {
- 110   2                      ComData[CntRX0]=SBUF0;                          //Iz registra UART-a osmobitni podatak se smesta u elemente niza ComData                
- 111   2      
- 112   2                      if(CntRX0 == 1 && (ComData[CntRX0] != BoardAddress))    //stigo bajt koji sadrzi adresu, provera pristigle 
-             -adrese 
- 113   2                      {
- 114   3                              CntRX0 = 0;
- 115   3                              RI0 = 0;
- 116   3                              return; 
-C51 COMPILER V8.12   INTERRUPTS                                                            09/25/2026 15:18:21 PAGE 3   
+  66   1                              if(ADCcnt  &&  ADC_canrun)
+  67   1                                      ADCcnt--;
+  68   1                              else
+  69   1                              {
+  70   2                                      ADCcnt = ADCsemp;
+  71   2                                      ADC_Loop_Start = 1;             //PRIVREMENO, ZA TEST
+  72   2                              }
+  73   1              //////////////////////////////////////////////////////////
+  74   1      
+  75   1              //////////////////// on every 100 ms /////////////////////
+  76   1      
+  77   1              if(Hundred_ms)
+  78   1                      Hundred_ms--;
+  79   1              else
+  80   1              {
+  81   2                      Hundred_ms = 100 * TIMER2_PERIOD;
+  82   2      
+  83   2      
+  84   2                      if(sendByteDelay)
+  85   2                              sendByteDelay--;
+  86   2      
+  87   2      
+  88   2                      if(Show_Error)
+  89   2                      {
+  90   3                              ErrShowTimeCnt++;
+  91   3                              if(ErrShowTimeCnt==4)
+  92   3                              {
+  93   4                                      Show_Error_Page = !Show_Error_Page;
+  94   4                                      ErrShowTimeCnt = 0;
+  95   4                              }
+  96   3                      }
+  97   2      
+  98   2              }
+  99   1              //////////////////////////////////////////////////////////
+ 100   1      
+ 101   1              //////////////////// on every 1 s ////////////////////////
+ 102   1      
+ 103   1              if(OneSecond)
+ 104   1                      OneSecond--;
+ 105   1              else
+ 106   1              {
+ 107   2                      OneSecond = 1000 * TIMER2_PERIOD;
+ 108   2                      
+ 109   2                      ///P1 = ~P1;
+ 110   2      
+ 111   2                      if(ShakingTime  &&  ShakerStatus == RUNNING)
+ 112   2                      {
+ 113   3                              ShakingTime--;
+ 114   3                              DPoint = !DPoint;       ///DPoint = ~DPoint;
+ 115   3                      }
+C51 COMPILER V8.12   INTERRUPTS                                                            10/02/2026 15:06:54 PAGE 3   
 
- 117   3                      }
- 118   2                      
- 119   2                      CntRX0++;
- 120   2                      
- 121   2                      if(CntRX0 >= MESSAGE_SIZE)
- 122   2                      {       //kraj prijema - primljena kompletna poruka
- 123   3                              MessageReceived = 1;
- 124   3                              CntRX0 = 0; 
- 125   3                      }
- 126   2      
- 127   2      //              if(CntRX0 > (UART0_BUFFER_SIZE-1))
- 128   2      //                      CntRX0 = 0; 
- 129   2      
- 130   2              }
- 131   1              
- 132   1              RI0 = 0;
- 133   1      
- 134   1                      
- 135   1              if(TI0)         //Transmitting
- 136   1              {
- 137   2                      
- 138   2                      TI0 = 0;        
- 139   2              }
- 140   1      
- 141   1      }
- 142          
- 143          /*
- 144          void ADC0_ISR (void) interrupt 10{
- 145          
- 146          }
- 147          */
- 148          
+ 116   2      
+ 117   2              }
+ 118   1      
+ 119   1              //////////////////////////////////////////////////////////
+ 120   1      
+ 121   1      }
+ 122          //////////////////////////////////////////////////////////////////////////////////////////////////////////
+             -///////////////////////////////////////////
+ 123          //////////////////////////////////////////////////////////////////////////////////////////////////////////
+             -///////////////////////////////////////////
+ 124          
+ 125          void Uart0_ISR(void) interrupt 4{  
+ 126   1      
+ 127   1              if(RI0 && !MessageReceived)             //Receiving
+ 128   1              {
+ 129   2                      ComData[CntRX0] = SBUF0;                                //Iz registra UART-a osmobitni podatak se smesta u elemente niza ComData                
+ 130   2      
+ 131   2                      
+ 132   2                      if(CntRX0 == 0  &&  ComData[CntRX0] == START)
+ 133   2                              CntRX0++;
+ 134   2                              
+ 135   2                      else if(CntRX0 == 1  &&  ComData[CntRX0] == BoardAddress)
+ 136   2                      {
+ 137   3                              CntRX0++;
+ 138   3                              MessageArriving = 1;
+ 139   3                      }
+ 140   2      
+ 141   2                      else if(MessageArriving)
+ 142   2                      {
+ 143   3                              CntRX0++;
+ 144   3      
+ 145   3                              if(CntRX0 >= MESSAGE_SIZE)
+ 146   3                              {
+ 147   4                                      MessageReceived = 1;
+ 148   4                                      MessageArriving = 0;
+ 149   4      
+ 150   4                                      CntRX0 = 0;
+ 151   4                              }       
+ 152   3                      }
+ 153   2              }
+ 154   1              
+ 155   1              RI0 = 0;
+ 156   1      
+ 157   1                      
+ 158   1              if(TI0)         //Transmitting
+ 159   1              {
+ 160   2                      
+ 161   2                      TI0 = 0;        
+ 162   2              }
+ 163   1      
+ 164   1      }
+ 165          
+ 166          //////////////////////////////////////////////////////////////////////////////////////////////////////////
+             -///////////////////////////////////////////
+ 167          //////////////////////////////////////////////////////////////////////////////////////////////////////////
+             -///////////////////////////////////////////
+ 168          /*
+ 169          void ADC0_ISR (void) interrupt 10{
+ 170          
+ 171          }
+ 172          */
+
+C51 COMPILER V8.12   INTERRUPTS                                                            10/02/2026 15:06:54 PAGE 4   
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    277    ----
+   CODE SIZE        =    356    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =     21    ----
+   XDATA SIZE       =     22    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
-   BIT SIZE         =      1    ----
+   BIT SIZE         =      2    ----
 END OF MODULE INFORMATION.
 
 

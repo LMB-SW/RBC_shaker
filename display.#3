@@ -4,14 +4,15 @@
 
 Dspstruct  dspvar;
 
-bit Show_Weight = 0;
-bit Show_Time = 0;
+bit Show_Weight = 1;
+bit Show_Time   = 0;
+bit Show_Error  = 0;
 
 bit DPoint = 0;
 
 unsigned char digit=0;
 
-unsigned char DispOffset=2;
+unsigned char DispOffset = 1;	// bilo je 2
 
 
 code char	bcd27s[13] =
@@ -37,11 +38,13 @@ code char	bcd27s[13] =
 	
 };
 
-extern char ADC_canrun;
+//extern bit ADC_canrun;
+extern bit Wght_Meas_canrun;
 
 extern bit disp_show_flag;
 extern bit InternCalib_Done;
 extern unsigned char ShakingTime;
+extern unsigned long Wght;
 
 
 void DisplayInit(void)
@@ -53,7 +56,7 @@ void DisplayInit(void)
 void DisplayLoop(void)
 {
 
- 		 // pogledati da li je postavljen flag u timer3 na 3ms i ako nije => return.
+ 		 // pogledati da li je postavljen flag u timer2 na 3ms i ako nije => return.
 
 	if (!disp_show_flag)
   		return;
@@ -61,6 +64,8 @@ void DisplayLoop(void)
 
 	if (Show_Weight)	// prikaz izmerene tezine
 	{
+		dspvar.newweight= Wght;		// PREMESTENO IZ ADCLoop
+		
 		if (!InternCalib_Done)
 		{
 			dspvar.Cif[0] = 10;
@@ -68,7 +73,7 @@ void DisplayLoop(void)
 			dspvar.Cif[2] = 10;
 		}
 	
-		else if (!ADC_canrun)
+		else if(!Wght_Meas_canrun)	//else if (!ADC_canrun)
 		{
 			dspvar.Cif[0] = 12;
 			dspvar.Cif[1] = 12;
@@ -87,10 +92,13 @@ void DisplayLoop(void)
 			dspvar.Cif[2] = (dspvar.oldweight / 100) % 10;		
 		}
 	}
+
 	else if (Show_Time)		// prikaz preostalog vremena miksovanja
 	{	
 		dspvar.newTime = ShakingTime;
 
+		if()
+		
 		if ((dspvar.oldTime - dspvar.newTime) > 0)
 		{	
 			dspvar.oldTime= dspvar.newTime;
@@ -142,7 +150,6 @@ void DisplayLoop(void)
 		DS2 = 1;
 		DS3 = 0;
 	}
-
 
 
 	disp_show_flag = 0;		//reset flaga iz ISR od Tim3

@@ -12,13 +12,16 @@ unsigned char Command;
 unsigned char bufT[MESSAGE_SIZE];
 unsigned char bufR[MESSAGE_SIZE];
 
+extern unsigned int CntRX0;
 extern unsigned long Wght;
 extern unsigned long ADC_avg;
 extern unsigned long X0, X1;
 extern unsigned long REF_value;
 extern unsigned char ShakingTime;
 extern xdata unsigned char ComData[UART0_BUFFER_SIZE];
-extern char ADC_canrun;
+//extern bit ADC_canrun;
+extern bit Wght_Meas_canrun;
+extern bit ADC_Loop_Start;
 extern bit AppCalibOffset_Done;
 extern bit AppCalibGain_Done;
 extern bit Shaker_Run;
@@ -44,13 +47,16 @@ void SendMessage(unsigned long Data)
 	//sending
 	MessageSending = 1;
 	ComDir = 1;
+		Delay_us(20);
 	ES0= 0;	//disable UART interrupt
 	
 	for(cnt = 0; cnt < 9; cnt++)
 		putc0(bufT[cnt]);
 
 	MessageSending = 0;
+			Delay_us(100);
 	ComDir = 0;
+
 	ES0= 1;	//enable UART interrupt
 	
 }
@@ -94,8 +100,8 @@ unsigned char AnalyzeReceivedMessage(unsigned char *message)
 {
 	unsigned long X0_temp=0, X1_temp=0;
 		
-	if(message[1] != BoardAddress)
-		return 0;							// neodgovarajuca adresa
+	if(message[1] != BoardAddress)		/// OVO SADA VRVTNO NE TREBA - PROVERI
+//		return 0;							// neodgovarajuca adresa
 	
 	if(message[8] != CalcCheckSum(message))
 		return 2;							// pogresna cek-suma
@@ -119,20 +125,25 @@ unsigned char AnalyzeReceivedMessage(unsigned char *message)
 
 		case REQUEST_FOR_AD_VALUE:	 
 
+			//ADC_Loop_Start = 1;
+			//Delay_ms(10);
 			SendMessage(ADC_avg); 
 			break;
 			
 		case REQUEST_FOR_X0_CURRENT_VALUE:
 			
-			SendMessage(X0);
+			SendMessage(X0);	//SendMessage(20000); //SendMessage(X0);
 			break;
 
 		case REQUEST_FOR_X1_CURRENT_VALUE:
 
-			SendMessage(X1);
+			SendMessage(X1);	//SendMessage(40000);	//SendMessage(X1);
 			break;
 
 		case TAKE_REF_POINT_FOR_ZER0:
+
+			//Delay_ms(10);
+			while(AD0BUSY) {}		// MOZDA BI TREBALO OSIGURATI TRAJANJE UVE PETLJE
 
 			if(AppCalibO())
 				SendMessage(1);
@@ -142,6 +153,9 @@ unsigned char AnalyzeReceivedMessage(unsigned char *message)
 			break;
 
 		case TAKE_REF_POINT_FOR_REF_VALUE:
+
+			//Delay_ms(10);
+			while(AD0BUSY) {}		// MOZDA BI TREBALO OSIGURATI TRAJANJE UVE PETLJE
 
 			if(!AppCalibOffset_Done)	
 				SendMessage(3);	// nedostaje prethodno odradjena AppCalib za ofset
@@ -181,29 +195,33 @@ unsigned char AnalyzeReceivedMessage(unsigned char *message)
 
 			if(!AppCalibOffset_Done)
 			{	
-				ADC_canrun = 0;
+				Wght_Meas_canrun = 0;	//ADC_canrun = 0;
 				AppCalibGain_Done = 0;
 				SendMessage(3);	// nedostaje prethodno upisana vrednost za X0
 			}
 			else if(X1_temp > X0  &&  X1_temp < 1048576)
 			{
 				X1 = X1_temp;
-				ADC_canrun = 1;
+				Wght_Meas_canrun = 1; 	//ADC_canrun = 1;
 				AppCalibGain_Done = 1;
 				SendMessage(1);
 			}
 			else
 			{
-				ADC_canrun = 0;
+				Wght_Meas_canrun = 0;	//ADC_canrun = 0;
 				AppCalibGain_Done = 0;
 				SendMessage(2);
 			}
 
 			break;
 
+		case STATUS_REQUEST:
+			
+			SendMessage(ShakerStatus);
+
+			break;
+
 		case RUN_SHAKER:	
-		
-			//ShakingTime = message[6];	//ShakingTime = ConvertBytesToLong(message);
 
 			if(message[6] /*ShakingTime*/ > 0  &&  ShakerStatus == IDLE)
 			{
@@ -236,7 +254,9 @@ void CommunicationLoop(void)
 
 		AnalyzeReceivedMessage(bufR);
 
-		MessageReceived = 0;			
+		MessageReceived = 0;
+		//	CntRX0 = 0;
+		//	RI0 = 0;			
 	}
 
 }

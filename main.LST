@@ -1,4 +1,4 @@
-C51 COMPILER V8.12   MAIN                                                                  09/25/2026 15:18:21 PAGE 1   
+C51 COMPILER V8.12   MAIN                                                                  10/02/2026 15:06:54 PAGE 1   
 
 
 C51 COMPILER V8.12, COMPILATION OF MODULE MAIN
@@ -15,138 +15,98 @@ line level    source
    6          #include "communication.h"
    7          
    8          
-   9                  bit intO=0;             // pomocni flagovi za test samo
-  10          
+   9          
+  10                          extern unsigned long X0, X1, ADC_avg, Wght;
   11          
-  12                          extern unsigned long X0, X1, ADC_avg, Wght;
+  12          extern unsigned char BoardAddress;
   13          
-  14          extern unsigned char BoardAddress;
+  14                          extern bit InternCalib_Done;
   15          
-  16                          extern bit InternCalib_Done;
+  16                          extern Dspstruct  dspvar;
   17          
-  18                          extern Dspstruct  dspvar;
+  18                          extern ShakStat ShakerStatus;
   19          
-  20                          extern ShakStat ShakerStatus;
+  20                          extern bit ADC_canrun;
   21          
-  22                          extern bit Show_Weight;
-  23                          extern bit Show_Time;
+  22                          extern unsigned long  ADC_samps[MAXSAMPS];
+  23                          extern int  sampCnt;
   24          
-  25          
-  26          int main(void)
-  27          {
-  28   1      
-  29   1      //      DisableWDT();   //WDT disabled in the STARTUP file
-  30   1      
-  31   1              #ifdef BIPOLAR 
-  32   1                      CPUInit(1);
-  33   1              #else  
+  25          ///             extern bit Show_Weight;
+  26          ///             extern bit Show_Time;
+  27          
+  28          
+  29          int main(void)
+  30          {
+  31   1      
+  32   1      //      DisableWDT();   //WDT disabled in the STARTUP file
+  33   1      
+  34   1              #ifdef BIPOLAR 
+  35   1                      CPUInit(1);
+  36   1              #else  
                       CPUInit(0);
                       #endif
-  36   1      
-  37   1              BoardAddress = SetBoardAddress();
-  38   1      
-  39   1              DisplayInit();
-  40   1      
+  39   1      
+  40   1              BoardAddress = SetBoardAddress();
   41   1      
-  42   1                      dspvar.Cif[0] = 12;
-  43   1                      dspvar.Cif[1] = 12;
-  44   1                      dspvar.Cif[2] = 12;     
-  45   1      
-  46   1              ShakerStatus = IDLE;
-  47   1      
-  48   1      /*
-  49   1              if(intO && !InternCalib_Done)
-  50   1              {
-  51   1                      InternCalibO();
-  52   1                      Delay_ms(100);
-  53   1                      InternCalibG();
-  54   1                      Delay_ms(100);
-  55   1                      InternCalib_Done = 1;
-C51 COMPILER V8.12   MAIN                                                                  09/25/2026 15:18:21 PAGE 2   
+  42   1              DisplayInit();
+  43   1      
+  44   1      
+  45   1                      dspvar.Cif[0] = 12;
+  46   1                      dspvar.Cif[1] = 12;
+  47   1                      dspvar.Cif[2] = 12;     
+  48   1      
+  49   1              ShakerStatus = IDLE;
+  50   1      
+  51   1      
+  52   1                      InternCalibFull();
+  53   1                      Delay_ms(10);
+  54   1                      InternCalib_Done = 1;
+  55   1      
+C51 COMPILER V8.12   MAIN                                                                  10/02/2026 15:06:54 PAGE 2   
 
-  56   1              }
-  57   1      */
-  58   1                      InternCalibFull();
-  59   1                      Delay_ms(100);
-  60   1                      InternCalib_Done = 1;
-  61   1      
-  62   1              X0 = 0;
-  63   1              X1 = 0;
-  64   1              ADC_avg = 0;
-  65   1              Wght=0;
+  56   1              X0 = 0L;
+  57   1              X1 = 0L;
+  58   1              Wght = 0L;
+  59   1              ADC_avg = 0L;
+  60   1      
+  61   1              for(sampCnt = 0; sampCnt < MAXSAMPS; sampCnt++)
+  62   1                      ADC_samps[sampCnt] = 0L;
+  63   1      
+  64   1              sampCnt = 0;
+  65   1      
   66   1      
-  67   1      
-  68   1              ComDir = 0;
-  69   1      
-  70   1              STx = 1;
-  71   1      
-  72   1              Show_Weight = 1;
-  73   1              Show_Time = 0;          
-  74   1      
+  67   1              ComDir = 0;
+  68   1      
+  69   1              STx = 1;
+  70   1      
+  71   1      ///     Show_Weight = 1;
+  72   1      ///     Show_Time = 0;          
+  73   1      
+  74   1              ADC_canrun = 1;
   75   1      
   76   1              EA = 1;
   77   1      
   78   1      
-  79   1        while(1)
-  80   1        {
-  81   2      
-  82   2      
-  83   2      //              STx = ~STx;
-  84   2      //              Delay_ms(5000);
-  85   2      
-  86   2                      if(intO && !InternCalib_Done)
-  87   2                      {
-  88   3                              InternCalibFull();
-  89   3                              Delay_ms(100);
-  90   3                              InternCalib_Done = 1;
-  91   3      
-  92   3      //                              ShakingTime = 60;
-  93   3      
-  94   3                      /*      InternCalibO();
-  95   3                              Delay_ms(100);
-  96   3                              InternCalibG();
-  97   3                              Delay_ms(100);
-  98   3                              InternCalib_Done = 1;
-  99   3                      */
- 100   3                      }
- 101   2                      
- 102   2              //      dspvar.newweight= ShakingTime;
- 103   2      /*
- 104   2                      if(Shaker_Run)
- 105   2                      {
- 106   2                              STx = 0;
- 107   2                              Show_Time = 1;
- 108   2                              Show_Weight = 0;
- 109   2                      }
- 110   2                      else
- 111   2                      {
- 112   2                              STx = 1;
- 113   2                              Show_Weight = 1;
- 114   2                              Show_Time = 0;
- 115   2                      }
- 116   2      */
- 117   2      
-C51 COMPILER V8.12   MAIN                                                                  09/25/2026 15:18:21 PAGE 3   
-
- 118   2              DisplayLoop();
- 119   2              ADCLoop();
- 120   2              ShakerLoop();
- 121   2              CommunicationLoop();
- 122   2      
- 123   2        }
- 124   1      
- 125   1      }
- 126          
+  79   1              while(1)
+  80   1              {
+  81   2                      DisplayLoop();
+  82   2                      ADCLoop();
+  83   2                      ShakerLoop();
+  84   2                      CommunicationLoop();
+  85   2              }
+  86   1      
+  87   1      }
+  88          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    125    ----
+   CODE SIZE        =    180    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
-   BIT SIZE         =      1    ----
+   BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
 
 

@@ -1,10 +1,11 @@
+#define BAG_WEIGHT_THRESHOLD	0.3
 
 typedef enum{
 
-	IDLE			= 0,
-	RUNNING			= 1,
-	FINISHED		= 2,
-	ERROR			= 3
+	IDLE			= 1,
+	RUNNING			= 2,
+	FINISHED		= 3,
+	ERROR			= 4
 		
 }ShakStat;
 

@@ -6,10 +6,16 @@
 
 #define TIMER2_PERIOD	1	// 1ms
 
+bit MessageArriving = 0;
+
 extern bit MessageReceived;
 extern unsigned char BoardAddress;
 
 extern bit DPoint;
+extern bit ADC_canrun;
+
+extern bit Show_Error;
+extern bit Show_Error_Page;
 
 
 xdata unsigned char ComData[UART0_BUFFER_SIZE];
@@ -26,15 +32,18 @@ unsigned int OneMin = 60000 * TIMER2_PERIOD;		// 60000counts x 1ms = 1min
 unsigned char disp_cnt = DISPLAY_REFRESH_PERID - 1;
 bit disp_show_flag = 0;
 
-	unsigned char ADCsemp = 20;		// bilo je 10
-	unsigned char ADCcnt = 20;		// bilo je 10
+	unsigned char ADCsemp = 10;		// bilo je 10
+	unsigned char ADCcnt = 10;		// bilo je 10
+
+	unsigned char ErrShowTimeCnt = 0;
 
 	extern bit ADC_Loop_Start;
 
 	extern ShakStat ShakerStatus;
 
-//	bit Gres=0;
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Timer2_ISR(void) interrupt 5{			// na 1ms (PROVERITI !!!  --  jeste na 1ms, provereno osciloskopom)
 
@@ -54,7 +63,7 @@ void Timer2_ISR(void) interrupt 5{			// na 1ms (PROVERITI !!!  --  jeste na 1ms,
 
 	}
 
-			if(ADCcnt)
+			if(ADCcnt  &&  ADC_canrun)
 				ADCcnt--;
 			else
 			{
@@ -71,12 +80,20 @@ void Timer2_ISR(void) interrupt 5{			// na 1ms (PROVERITI !!!  --  jeste na 1ms,
 	{
 		Hundred_ms = 100 * TIMER2_PERIOD;
 
+
 		if(sendByteDelay)
 			sendByteDelay--;
-		
-		///P1 = ~P1;
 
-		///ADC_Loop_Start = 1;		//PRIVREMENO, ZA TEST
+
+		if(Show_Error)
+		{
+			ErrShowTimeCnt++;
+			if(ErrShowTimeCnt==4)
+			{
+				Show_Error_Page = !Show_Error_Page;
+				ErrShowTimeCnt = 0;
+			}
+		}
 
 	}
 	//////////////////////////////////////////////////////////
@@ -94,7 +111,7 @@ void Timer2_ISR(void) interrupt 5{			// na 1ms (PROVERITI !!!  --  jeste na 1ms,
 		if(ShakingTime  &&  ShakerStatus == RUNNING)
 		{
 			ShakingTime--;
-			DPoint = ~DPoint;
+			DPoint = !DPoint;	///DPoint = ~DPoint;
 		}
 
 	}
@@ -102,31 +119,37 @@ void Timer2_ISR(void) interrupt 5{			// na 1ms (PROVERITI !!!  --  jeste na 1ms,
 	//////////////////////////////////////////////////////////
 
 }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Uart0_ISR(void) interrupt 4{  
 
 	if(RI0 && !MessageReceived)		//Receiving
 	{
-		ComData[CntRX0]=SBUF0;				//Iz registra UART-a osmobitni podatak se smesta u elemente niza ComData		
+		ComData[CntRX0] = SBUF0;				//Iz registra UART-a osmobitni podatak se smesta u elemente niza ComData		
 
-		if(CntRX0 == 1 && (ComData[CntRX0] != BoardAddress))	//stigo bajt koji sadrzi adresu, provera pristigle adrese 
+		
+		if(CntRX0 == 0  &&  ComData[CntRX0] == START)
+			CntRX0++;
+			
+		else if(CntRX0 == 1  &&  ComData[CntRX0] == BoardAddress)
 		{
-			CntRX0 = 0;
-			RI0 = 0;
-			return;	
-		}
-		
-		CntRX0++;
-		
-		if(CntRX0 >= MESSAGE_SIZE)
-		{	//kraj prijema - primljena kompletna poruka
-			MessageReceived = 1;
-			CntRX0 = 0; 
+			CntRX0++;
+			MessageArriving = 1;
 		}
 
-//		if(CntRX0 > (UART0_BUFFER_SIZE-1))
-//			CntRX0 = 0; 
+		else if(MessageArriving)
+		{
+			CntRX0++;
 
+			if(CntRX0 >= MESSAGE_SIZE)
+			{
+				MessageReceived = 1;
+				MessageArriving = 0;
+
+				CntRX0 = 0;
+			}	
+		}
 	}
 	
 	RI0 = 0;
@@ -140,9 +163,10 @@ void Uart0_ISR(void) interrupt 4{
 
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
 void ADC0_ISR (void) interrupt 10{
 
 }
 */
-

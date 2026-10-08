@@ -6,8 +6,6 @@
 #include "communication.h"
 
 
-	bit intO=0;		// pomocni flagovi za test samo
-
 
 		extern unsigned long X0, X1, ADC_avg, Wght;
 
@@ -17,7 +15,15 @@ extern unsigned char BoardAddress;
 
 		extern Dspstruct  dspvar;
 
-		extern ShakStat  ShakerStatus;
+		extern ShakStat ShakerStatus;
+
+		extern bit ADC_canrun;
+
+		extern unsigned long  ADC_samps[MAXSAMPS];
+		extern int  sampCnt;
+
+///		extern bit Show_Weight;
+///		extern bit Show_Time;
 
 
 int main(void)
@@ -42,30 +48,28 @@ int main(void)
 
 	ShakerStatus = IDLE;
 
-/*
-	if(intO && !InternCalib_Done)
-	{
-		InternCalibO();
-		Delay_ms(100);
-		InternCalibG();
-		Delay_ms(100);
-		InternCalib_Done = 1;
-	}
-*/
+
 		InternCalibFull();
 		Delay_ms(100);
 		InternCalib_Done = 1;
 
-	X0 = 0;
-	X1 = 0;
-	ADC_avg = 0;
-	Wght=0;
+	X0 = 0L;
+	X1 = 0L;
+	Wght = 0L;
+	ADC_avg = 0L;
+
+	for(sampCnt = 0; sampCnt < MAXSAMPS; sampCnt++)
+		ADC_samps[sampCnt] = 0L;
 
 
 	ComDir = 0;
 
 	STx = 1;
 
+///	Show_Weight = 1;
+///	Show_Time = 0;		
+
+	ADC_canrun = 1;
 
 	EA = 1;
 
@@ -77,37 +81,6 @@ int main(void)
 //		STx = ~STx;
 //		Delay_ms(5000);
 
-		if(intO && !InternCalib_Done)
-		{
-			InternCalibFull();
-			Delay_ms(100);
-			InternCalib_Done = 1;
-
-//				ShakingTime = 60;
-
-		/*	InternCalibO();
-			Delay_ms(100);
-			InternCalibG();
-			Delay_ms(100);
-			InternCalib_Done = 1;
-		*/
-		}
-		
-	//	dspvar.newweight= ShakingTime;
-/*
-		if(Shaker_Run)
-		{
-			STx = 0;
-			Show_Time = 1;
-			Show_Weight = 0;
-		}
-		else
-		{
-			STx = 1;
-			Show_Weight = 1;
-			Show_Time = 0;
-		}
-*/
 
 	DisplayLoop();
 	ADCLoop();

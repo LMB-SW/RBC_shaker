@@ -1,6 +1,10 @@
 
 #define	DISPLAY_REFRESH_PERID	3	// 3ms is refresh period for displays (3ms per digit)
 
+typedef enum {
+  WEIGHT,	
+  TIME
+}DispPage;
 
 typedef struct {
   unsigned long oldweight;

@@ -39,8 +39,10 @@ void PortsInit(void){
 
 void ADC0_Init (char bip)	// bip= 1 => bipolar mode
 {
+	//	unsigned long DECI = 0;
+	
 	if (bip) ADC0CN = 0x17;      // PGA 128, ADC Burnout onemogucen	
-	else ADC0CN= 0x07;
+	else ADC0CN = 0x07;
 	
 		REF0CN |= 0x01; /* (enable if using internal vref) */
 		 
@@ -49,9 +51,16 @@ void ADC0_Init (char bip)	// bip= 1 => bipolar mode
 	ADC0CLK = 19;		// MDCLK = SYSCLK / (ADC0CLK + 1) i za ADC Conversion clock = 2.45 MHz na 49MHz SYSCLK => ADC0CLK = 19
 	ADC0MUX = 0x10;		// diferencijalni
 
-	ADC0DECL= 20; //32;		//20=minimum
-	ADC0DECH= 0;
-	                            
+		//DECI = (MDCLK/OWR/128) - 1;
+		ADC0DECH = (DECI & 0x0000FF00) >> 8;
+		ADC0DECL = (DECI & 0x000000FF);
+
+	//OWR:				//	10Hz:	25Hz:	50Hz:	100Hz:	200Hz:	500Hz:	914Hz (minimum):
+	ADC0DECH = 0x00;	//	0x07;	0x02:	0x01;	0x00;	0x00;	0x00;		0x00;					//0x02;	//0;
+	ADC0DECL = 0xBF;	//	0x7F;	0xFF;	0x7F;	0xBF;	0x5F;	0x25;		0x14;					//0x58;	//20; //32;		//20=minimum		// radilo je dobro na 0x40
+
+	ADC0BUF = 0x00;		// STAVLJENO ZA TEST	
+		                            
 	ADC0MD = 0x80;	//0x82;		//	ADC0 enable u single mode- u	// AKO STOJI "ADC0MD=0x82" ONDA "ADC0STA" POSTANE "0X32" IZ NEKOG RAZLOGA		
 	
 	//AD0INT = 1;

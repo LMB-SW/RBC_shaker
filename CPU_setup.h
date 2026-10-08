@@ -5,7 +5,10 @@
 #define SYSTEMCLOCK   	49000000  
 #define BAUDRATE		115200
 #define MDCLK     		2457600   
-#define OWR       		10            /* desired Output Word Rate in Hz */
+#define OWR       		50	//25	//10            /* desired Output Word Rate in Hz */
+
+#define DECI  			(MDCLK/OWR/128) - 1
+
 
 sbit DS1	= P0^0;
 sbit DS2	= P0^1;
