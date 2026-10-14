@@ -13,7 +13,7 @@ extern unsigned char BoardAddress;
 
 extern bit DPoint;
 extern bit ADC_canrun;
-
+extern bit PauseMode;
 extern bit Show_Error;
 extern bit Show_Error_Page;
 
@@ -21,7 +21,9 @@ extern bit Show_Error_Page;
 xdata unsigned char ComData[UART0_BUFFER_SIZE];
 unsigned int CntRX0 = 0;
 
-unsigned char ShakingTime = 0;
+extern unsigned char ShakingTime;
+extern unsigned char Shaking_ActiveCnt;
+extern unsigned char Shaking_PauseCnt;
 
 unsigned char sendByteDelay = 0;
 
@@ -47,8 +49,13 @@ bit disp_show_flag = 0;
 
 void Timer2_ISR(void) interrupt 5{			// na 1ms (PROVERITI !!!  --  jeste na 1ms, provereno osciloskopom)
 
-	
+//	static unsigned char shaking_Active;
+//	static unsigned char shaking_Pause;
+
 	TF2H = 0;         /* clear Timer2 interrupt flag */
+
+//	shaking_Active = Shaking_ActivePeriod;
+//	shaking_Pause = Shaking_PausePeriod;
 
 
 	//////////////////// on every 1 ms ///////////////////////
@@ -88,7 +95,7 @@ void Timer2_ISR(void) interrupt 5{			// na 1ms (PROVERITI !!!  --  jeste na 1ms,
 		if(Show_Error)
 		{
 			ErrShowTimeCnt++;
-			if(ErrShowTimeCnt==4)
+			if(ErrShowTimeCnt==3)
 			{
 				Show_Error_Page = !Show_Error_Page;
 				ErrShowTimeCnt = 0;
@@ -107,11 +114,31 @@ void Timer2_ISR(void) interrupt 5{			// na 1ms (PROVERITI !!!  --  jeste na 1ms,
 		OneSecond = 1000 * TIMER2_PERIOD;
 		
 		///P1 = ~P1;
-
+/*
 		if(ShakingTime  &&  ShakerStatus == RUNNING)
 		{
 			ShakingTime--;
 			DPoint = !DPoint;	///DPoint = ~DPoint;
+		}
+*/
+		if(ShakingTime  &&  ShakerStatus != ERROR)
+		{
+			if(!PauseMode)
+				ShakingTime--;
+			else
+			{			
+				if(Shaking_ActiveCnt)
+				{
+					Shaking_ActiveCnt--;
+					ShakingTime--;
+				}
+				else if(Shaking_PauseCnt)
+				{
+					Shaking_PauseCnt--;
+				}
+			}	
+
+			DPoint = !DPoint;
 		}
 
 	}

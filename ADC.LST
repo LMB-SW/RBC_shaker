@@ -1,4 +1,4 @@
-C51 COMPILER V8.12   ADC                                                                   10/02/2026 15:06:53 PAGE 1   
+C51 COMPILER V8.12   ADC                                                                   10/05/2026 15:12:35 PAGE 1   
 
 
 C51 COMPILER V8.12, COMPILATION OF MODULE ADC
@@ -62,7 +62,7 @@ line level    source
   51   1      
   52   1        return poml >> CUT;
   53   1      }
-C51 COMPILER V8.12   ADC                                                                   10/02/2026 15:06:53 PAGE 2   
+C51 COMPILER V8.12   ADC                                                                   10/05/2026 15:12:35 PAGE 2   
 
   54          
   55          unsigned long ADC2Ulong(void){  // unipolarna verzija
@@ -126,7 +126,7 @@ line level    source
  113          {
  114                  ADC0MD= 0x80;  // idle
  115          
-C51 COMPILER V8.12   ADC                                                                   10/02/2026 15:06:53 PAGE 3   
+C51 COMPILER V8.12   ADC                                                                   10/05/2026 15:12:35 PAGE 3   
 
  116                  ADC0MD= 0x85;  // startuj intern offs
  117                  while (!AD0INT) {}
@@ -190,7 +190,7 @@ line level    source
  175            ADC0MD= 0x82;  // start conv
  176            while (!AD0INT) {}
  177             
-C51 COMPILER V8.12   ADC                                                                   10/02/2026 15:06:53 PAGE 4   
+C51 COMPILER V8.12   ADC                                                                   10/05/2026 15:12:35 PAGE 4   
 
  178            //ADC0MD= 0x80; vratice se automatski posle cit
  179          
@@ -254,7 +254,7 @@ line level    source
  237   1                      ADC0MD= 0x80;  // idle  
  238   1                      ADC0MD= 0x82;  // start conv
  239   1                      while (!AD0INT) {}
-C51 COMPILER V8.12   ADC                                                                   10/02/2026 15:06:53 PAGE 5   
+C51 COMPILER V8.12   ADC                                                                   10/05/2026 15:12:35 PAGE 5   
 
  240   1      
  241   1                      ADC0STA &= ~0x20;       //ADC0STA |= ~0x20;
@@ -318,7 +318,7 @@ line level    source
  299   1      
  300   1                              if(X0 > 0)
  301   1                              {
-C51 COMPILER V8.12   ADC                                                                   10/02/2026 15:06:53 PAGE 6   
+C51 COMPILER V8.12   ADC                                                                   10/05/2026 15:12:35 PAGE 6   
 
  302   2                                      AppCalibOffset_Done = 1;
  303   2      
@@ -382,7 +382,7 @@ line level    source
  361          */
  362          
  363          unsigned char AppCalibG(void){                  // - daje X1
-C51 COMPILER V8.12   ADC                                                                   10/02/2026 15:06:53 PAGE 7   
+C51 COMPILER V8.12   ADC                                                                   10/05/2026 15:12:35 PAGE 7   
 
  364   1      //unsigned long adrd;
  365   1      //unsigned int cnt = 0;
@@ -446,7 +446,7 @@ line level    source
  423   1                      if(X1 > X0)
  424   1                      {
  425   2                              AppCalibGain_Done = 1;
-C51 COMPILER V8.12   ADC                                                                   10/02/2026 15:06:53 PAGE 8   
+C51 COMPILER V8.12   ADC                                                                   10/05/2026 15:12:35 PAGE 8   
 
  426   2                              Wght_Meas_canrun = 1;   //ADC_canrun = 1;
  427   2      
@@ -510,7 +510,7 @@ line level    source
  485   2      
  486   2      //                      Sigma = Sigma + 0.2*(ADC_OutputVal - Sigma);            //Sigma = Sigma - ADC_samps[sampCnt] + ADC_OutputVal;
  487   2      
-C51 COMPILER V8.12   ADC                                                                   10/02/2026 15:06:53 PAGE 9   
+C51 COMPILER V8.12   ADC                                                                   10/05/2026 15:12:35 PAGE 9   
 
  488   2                              ADC_samps[sampCnt++] = ADC_OutputVal;   //Sigma;        //
  489   2      /*
@@ -574,7 +574,7 @@ line level    source
  547   1      
  548   1                              ADC_avg= suma/MAXSAMPS;
  549   1                      
-C51 COMPILER V8.12   ADC                                                                   10/02/2026 15:06:53 PAGE 10  
+C51 COMPILER V8.12   ADC                                                                   10/05/2026 15:12:35 PAGE 10  
 
  550   1      
  551   1                                      if(filtriraj)
@@ -587,109 +587,103 @@ line level    source
  558          
  559          void ADCLoop(void)
  560          {
- 561   1        
- 562   1              if(!ADC_canrun) return; 
- 563   1      
- 564   1              
- 565   1              GetADCvalue();
- 566   1                              
- 567   1                                              
- 568   1              if(Wght_Meas_canrun)            
- 569   1              {
- 570   2                      if(ADC_avg <= X0)
+ 561   1              if(!ADC_canrun) return; 
+ 562   1      
+ 563   1              GetADCvalue();
+ 564   1                                                                      
+ 565   1              if(Wght_Meas_canrun)            
+ 566   1              {
+ 567   2                      if(ADC_avg <= X0  ||  ADC_avg-X0 <= 3*(X1-X0)/REF_value)
+ 568   2                              Wght = 0;
+ 569   2                                                      
+ 570   2                      else
  571   2                      {
- 572   3                              Wght = 0;       
+ 572   3                              Wght = (REF_value * (ADC_avg- X0)) / (X1-X0);
  573   3      
- 574   3                      }               
- 575   2                      else
- 576   2                      {
- 577   3                              Wght = (REF_value * (ADC_avg- X0)) / (X1-X0);
- 578   3      
- 579   3                              if(Wght > 999)
- 580   3                                      Wght = 999;
- 581   3                      }
- 582   2              }
- 583   1                                              
- 584   1      }
- 585          
- 586          //////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 574   3                              if(Wght > 999)
+ 575   3                                      Wght = 999;
+ 576   3                      }
+ 577   2              }                                       
+ 578   1      }
+ 579          
+ 580          //////////////////////////////////////////////////////////////////////////////////////////////////////////
              -/////////////////////////////////
- 587          /*
- 588          void ADCLoop(void){
- 589          unsigned long suma;
- 590          int i;
- 591          //unsigned long ADC_avg;        ///unsigned int ADC_avg;        //ZA TEST
- 592          
- 593            
- 594          //  if (!ADC_canrun) return;            /// VIDI OVO DA RESIS
- 595          
- 596            if (ADC_Loop_Start==1){
- 597               ADC_Loop_Start= 0;
- 598                   ADC0MD= 0x80;  // idle 
- 599                   ADC0MD= 0x82;  // start conv  //verovatno moze samo jedna cmd ili mozda Delay izmedju (ispitati)
- 600                   return;
- 601            }
- 602          
- 603                          if( AD0ERR)
- 604                                  Gres = 1;
- 605          
- 606            
- 607            if (!AD0INT) return;          
- 608            else {                                                                        
- 609                      ADC0STA &= ~0x20;   //ADC0STA |= ~0x20;
- 610          
-C51 COMPILER V8.12   ADC                                                                   10/02/2026 15:06:53 PAGE 11  
+ 581          /*
+ 582          void ADCLoop(void){
+ 583          unsigned long suma;
+ 584          int i;
+ 585          //unsigned long ADC_avg;        ///unsigned int ADC_avg;        //ZA TEST
+ 586          
+ 587            
+ 588          //  if (!ADC_canrun) return;            /// VIDI OVO DA RESIS
+ 589          
+ 590            if (ADC_Loop_Start==1){
+ 591               ADC_Loop_Start= 0;
+ 592                   ADC0MD= 0x80;  // idle 
+ 593                   ADC0MD= 0x82;  // start conv  //verovatno moze samo jedna cmd ili mozda Delay izmedju (ispitati)
+ 594                   return;
+ 595            }
+ 596          
+ 597                          if( AD0ERR)
+ 598                                  Gres = 1;
+ 599          
+ 600            
+ 601            if (!AD0INT) return;          
+ 602            else {                                                                        
+ 603                      ADC0STA &= ~0x20;   //ADC0STA |= ~0x20;
+ 604          
+ 605                          #ifdef  BIPOLAR
+ 606                                  ADC_samps[sampCnt++]= ADC2Blong();
+ 607                                  ///ADC_samps[sampCnt++]= ADC_Filter(ADC2Blong());       // PROBAAA
+ 608                          #else
+ 609                                  ADC_samps[sampCnt++]= ADC2Ulong();
+ 610                          #endif
+C51 COMPILER V8.12   ADC                                                                   10/05/2026 15:12:35 PAGE 11  
 
- 611                          #ifdef  BIPOLAR
- 612                                  ADC_samps[sampCnt++]= ADC2Blong();
- 613                                  ///ADC_samps[sampCnt++]= ADC_Filter(ADC2Blong());       // PROBAAA
- 614                          #else
- 615                                  ADC_samps[sampCnt++]= ADC2Ulong();
- 616                          #endif
- 617          
- 618                          if (sampCnt == MAXSAMPS){
- 619                                  sampCnt= 0;
- 620                                  suma= 0;
- 621                                  for (i= 0; i< MAXSAMPS; i++){
- 622                                     #ifdef BIPOLAR
- 623                                                  suma+= (long)ADC_samps[i];
- 624                                     #else 
- 625                                          suma+= ADC_samps[i];
- 626                                     #endif
- 627                                  }
- 628                                  ADC_avg= suma/MAXSAMPS;
- 629                                  //Wght= (unit * (ADC_avg- X0)) / (X1-X0); // u 0.01 gramima                     ///Wght= (50000 * (ADC_avg- X0)) / (X1-X0
+ 611          
+ 612                          if (sampCnt == MAXSAMPS){
+ 613                                  sampCnt= 0;
+ 614                                  suma= 0;
+ 615                                  for (i= 0; i< MAXSAMPS; i++){
+ 616                                     #ifdef BIPOLAR
+ 617                                                  suma+= (long)ADC_samps[i];
+ 618                                     #else 
+ 619                                          suma+= ADC_samps[i];
+ 620                                     #endif
+ 621                                  }
+ 622                                  ADC_avg= suma/MAXSAMPS;
+ 623                                  //Wght= (unit * (ADC_avg- X0)) / (X1-X0); // u 0.01 gramima                     ///Wght= (50000 * (ADC_avg- X0)) / (X1-X0
              -); // u 0.01 gramima
- 630                          
- 631                                          if(filtriraj)
- 632                                                  ADC_avg = ADC_Filter(ADC_avg);  // Dodatno filtriranje ADC vrednosti
- 633                          
- 634                                  if (ADC_canrun)         
- 635                                  {
- 636                                          if(ADC_avg <= X0)
- 637                                          {
- 638                                                  Wght=0; 
- 639          
- 640          //                                      dspvar.Cif[0] = 0;
- 641          //                                      dspvar.Cif[1] = 0;
- 642          //                                      dspvar.Cif[2] = 0;
- 643                                          }               
- 644                                          else
- 645                                                  Wght= (REF_value * (ADC_avg- X0)) / (X1-X0);
- 646                                  }
- 647          
- 648                          //      dspvar.newweight= Wght;
- 649                          }
- 650          
- 651          //              ADC0MD= 0x80;   /// PRIVREMENO - ZA TEST
- 652          //              ADC0MD= 0x82;  
- 653                  }                                       
- 654          }
- 655          */
+ 624                          
+ 625                                          if(filtriraj)
+ 626                                                  ADC_avg = ADC_Filter(ADC_avg);  // Dodatno filtriranje ADC vrednosti
+ 627                          
+ 628                                  if (ADC_canrun)         
+ 629                                  {
+ 630                                          if(ADC_avg <= X0)
+ 631                                          {
+ 632                                                  Wght=0; 
+ 633          
+ 634          //                                      dspvar.Cif[0] = 0;
+ 635          //                                      dspvar.Cif[1] = 0;
+ 636          //                                      dspvar.Cif[2] = 0;
+ 637                                          }               
+ 638                                          else
+ 639                                                  Wght= (REF_value * (ADC_avg- X0)) / (X1-X0);
+ 640                                  }
+ 641          
+ 642                          //      dspvar.newweight= Wght;
+ 643                          }
+ 644          
+ 645          //              ADC0MD= 0x80;   /// PRIVREMENO - ZA TEST
+ 646          //              ADC0MD= 0x82;  
+ 647                  }                                       
+ 648          }
+ 649          */
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    992    ----
+   CODE SIZE        =   1111    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =     73      14
    PDATA SIZE       =   ----    ----

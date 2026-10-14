@@ -1,4 +1,4 @@
-C51 COMPILER V8.12   DISPLAY                                                               10/02/2026 15:06:54 PAGE 1   
+C51 COMPILER V8.12   DISPLAY                                                               10/05/2026 15:12:36 PAGE 1   
 
 
 C51 COMPILER V8.12, COMPILATION OF MODULE DISPLAY
@@ -62,7 +62,7 @@ line level    source
   53   1        dspvar.oldweight= 0xFFFF; //inicira pocetni ispis
   54   1        dspvar.newweight= 0;
   55   1      }
-C51 COMPILER V8.12   DISPLAY                                                               10/02/2026 15:06:54 PAGE 2   
+C51 COMPILER V8.12   DISPLAY                                                               10/05/2026 15:12:36 PAGE 2   
 
   56          
   57          void DisplayLoop(void)
@@ -126,7 +126,7 @@ line level    source
  114   4                              }
  115   3                      }
  116   2                      
-C51 COMPILER V8.12   DISPLAY                                                               10/02/2026 15:06:54 PAGE 3   
+C51 COMPILER V8.12   DISPLAY                                                               10/05/2026 15:12:36 PAGE 3   
 
  117   2                      else if ((dspvar.oldTime - dspvar.newTime) > 0)
  118   2                      {       
@@ -190,7 +190,7 @@ line level    source
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
    CODE SIZE        =    440    ----
-C51 COMPILER V8.12   DISPLAY                                                               10/02/2026 15:06:54 PAGE 4   
+C51 COMPILER V8.12   DISPLAY                                                               10/05/2026 15:12:36 PAGE 4   
 
    CONSTANT SIZE    =     13    ----
    XDATA SIZE       =     18    ----

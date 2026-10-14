@@ -1,4 +1,4 @@
-C51 COMPILER V8.12   CPU_STUP                                                              10/02/2026 15:06:53 PAGE 1   
+C51 COMPILER V8.12   CPU_STUP                                                              10/05/2026 15:12:35 PAGE 1   
 
 
 C51 COMPILER V8.12, COMPILATION OF MODULE CPU_STUP
@@ -62,7 +62,7 @@ line level    source
              -SCLK => ADC0CLK = 19
   52   1              ADC0MUX = 0x10;         // diferencijalni
   53   1      
-C51 COMPILER V8.12   CPU_STUP                                                              10/02/2026 15:06:53 PAGE 2   
+C51 COMPILER V8.12   CPU_STUP                                                              10/05/2026 15:12:35 PAGE 2   
 
   54   1                      //DECI = (MDCLK/OWR/128) - 1;
   55   1                      ADC0DECH = (DECI & 0x0000FF00) >> 8;
@@ -126,7 +126,7 @@ line level    source
  111                TH1 = -(SYSTEMCLOCK/bdr/2);
  112                CKCON &= ~0x0B;                  // T1M = 1; SCA1:0 = xx
  113                CKCON |=  0x08;
-C51 COMPILER V8.12   CPU_STUP                                                              10/02/2026 15:06:53 PAGE 3   
+C51 COMPILER V8.12   CPU_STUP                                                              10/05/2026 15:12:35 PAGE 3   
 
  114             } else if (SYSTEMCLOCK/bdr/2/256 < 4) {
  115                TH1 = -(SYSTEMCLOCK/bdr/2/4);
@@ -190,7 +190,7 @@ line level    source
  173   1          // Mode 2 = 8-bit auto-reload
  174   1          // Timer 1 clock = SYSCLK
  175   1          // -------------------------------------------------
-C51 COMPILER V8.12   CPU_STUP                                                              10/02/2026 15:06:53 PAGE 4   
+C51 COMPILER V8.12   CPU_STUP                                                              10/05/2026 15:12:35 PAGE 4   
 
  176   1      
  177   1          TMOD &= 0x0F;       // ocisti Timer1 konfiguraciju

@@ -1,4 +1,4 @@
-C51 COMPILER V8.12   MAIN                                                                  10/02/2026 15:06:54 PAGE 1   
+C51 COMPILER V8.12   MAIN                                                                  10/05/2026 15:12:36 PAGE 1   
 
 
 C51 COMPILER V8.12, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   53   1                      Delay_ms(10);
   54   1                      InternCalib_Done = 1;
   55   1      
-C51 COMPILER V8.12   MAIN                                                                  10/02/2026 15:06:54 PAGE 2   
+C51 COMPILER V8.12   MAIN                                                                  10/05/2026 15:12:36 PAGE 2   
 
   56   1              X0 = 0L;
   57   1              X1 = 0L;

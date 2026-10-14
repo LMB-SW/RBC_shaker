@@ -18,6 +18,8 @@ extern unsigned long ADC_avg;
 extern unsigned long X0, X1;
 extern unsigned long REF_value;
 extern unsigned char ShakingTime;
+extern unsigned char Shaking_ActivePeriod;
+extern unsigned char Shaking_PausePeriod;
 extern xdata unsigned char ComData[UART0_BUFFER_SIZE];
 //extern bit ADC_canrun;
 extern bit Wght_Meas_canrun;
@@ -25,6 +27,7 @@ extern bit ADC_Loop_Start;
 extern bit AppCalibOffset_Done;
 extern bit AppCalibGain_Done;
 extern bit Shaker_Run;
+extern bit PauseMode;
 
 extern ShakStat ShakerStatus;
 
@@ -100,8 +103,6 @@ unsigned char AnalyzeReceivedMessage(unsigned char *message)
 {
 	unsigned long X0_temp=0, X1_temp=0;
 		
-	if(message[1] != BoardAddress)		/// OVO SADA VRVTNO NE TREBA - PROVERI
-//		return 0;							// neodgovarajuca adresa
 	
 	if(message[8] != CalcCheckSum(message))
 		return 2;							// pogresna cek-suma
@@ -228,6 +229,14 @@ unsigned char AnalyzeReceivedMessage(unsigned char *message)
 			if(message[6] /*ShakingTime*/ > 0  &&  ShakerStatus == IDLE)
 			{
 				ShakingTime = message[6];
+				Shaking_ActivePeriod = message[5];
+				Shaking_PausePeriod  = message[4];
+
+				if(Shaking_ActivePeriod > 0  &&  Shaking_PausePeriod > 0)
+					PauseMode = 1;
+				else
+					PauseMode = 0;
+
 				Shaker_Run = 1;	//ShakerStatus = RUNNING; 
 				SendMessage(1);
 			}

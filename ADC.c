@@ -558,20 +558,15 @@ void GetADCvalue(void)
 
 void ADCLoop(void)
 {
-  
 	if(!ADC_canrun) return;	
 
-	
 	GetADCvalue();
-			
-					
+								
 	if(Wght_Meas_canrun)		
 	{
-		if(ADC_avg <= X0)
-		{
-			Wght = 0;	
-
-		}		
+		if(ADC_avg <= X0  ||  ADC_avg-X0 <= 3*(X1-X0)/REF_value)
+			Wght = 0;
+						
 		else
 		{
 			Wght = (REF_value * (ADC_avg- X0)) / (X1-X0);
@@ -579,8 +574,7 @@ void ADCLoop(void)
 			if(Wght > 999)
 				Wght = 999;
 		}
-	}
-					
+	}					
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
